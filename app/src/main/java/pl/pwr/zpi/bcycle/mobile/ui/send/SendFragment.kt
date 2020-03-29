@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import pl.pwr.zpi.bcycle.mobile.R
 
@@ -19,13 +20,10 @@ class SendFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sendViewModel =
-            ViewModelProviders.of(this).get(SendViewModel::class.java)
+        sendViewModel = ViewModelProvider(this).get(SendViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_send, container, false)
         val textView: TextView = root.findViewById(R.id.text_send)
-        sendViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
+        sendViewModel.text.observe(viewLifecycleOwner, Observer { textView.text = it })
         return root
     }
 }

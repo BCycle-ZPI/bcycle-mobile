@@ -1,21 +1,28 @@
 package pl.pwr.zpi.bcycle.mobile
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.Menu
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +49,22 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navView.setNavigationItemSelectedListener {
+            if (it.itemId == R.id.nav_logout) {
+                auth.signOut()
+                finish()
+            }
+            true
+        }
+
+        auth.currentUser?.run {
+            val header = navView.getHeaderView(0)
+            header.currentUserName.text = displayName
+            header.currentUserEmail.text = email
+            storage.getReferenceFromUrl(this.photoUrl.toString()).downloadUrl
+                .addOnSuccessListener{ Picasso.get().load(it).into(header.currentUserImage) }
+        } ?: finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
