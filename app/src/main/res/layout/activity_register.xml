@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_infoTv" />
 
     <EditText
-        android:id="@+id/EmailPT"
+        android:id="@+id/emailPT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/namePT" />
 
     <EditText
-        android:id="@+id/PasswordPT"
+        android:id="@+id/passwordPT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -73,10 +73,10 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailPT" />
+        app:layout_constraintTop_toBottomOf="@+id/emailPT" />
 
     <EditText
-        android:id="@+id/RepeatPasswordPT"
+        android:id="@+id/repeatPasswordPT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordPT" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordPT" />
 
     <ImageView
         android:id="@+id/DefoultAvatarIV"
@@ -99,7 +99,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toStartOf="@+id/CameraBt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RepeatPasswordPT"
+        app:layout_constraintTop_toBottomOf="@+id/repeatPasswordPT"
         app:srcCompat="@drawable/default_avatar" />
 
     <TextView
@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toEndOf="@+id/DefoultAvatarIV"
-        app:layout_constraintTop_toBottomOf="@+id/RepeatPasswordPT" />
+        app:layout_constraintTop_toBottomOf="@+id/repeatPasswordPT" />
 
     <Button
         android:id="@+id/CameraBt"
@@ -138,7 +138,7 @@
         app:layout_constraintTop_toBottomOf="@+id/Photo_infoTV" />
 
     <CheckBox
-        android:id="@+id/PrivacyCB"
+        android:id="@+id/privacyCB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -158,6 +158,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PrivacyCB" />
+        app:layout_constraintTop_toBottomOf="@+id/privacyCB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

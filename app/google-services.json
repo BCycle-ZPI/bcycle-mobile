@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "735289696982",
+    "firebase_url": "https://bcycle-6d8e7.firebaseio.com",
+    "project_id": "bcycle-6d8e7",
+    "storage_bucket": "bcycle-6d8e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735289696982:android:5507ff93ef22fdece95f77",
+        "android_client_info": {
+          "package_name": "pl.bcycle.firebasetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEnptQvlMZ9f9w-zHJoey6EYGp26EvN8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735289696982:android:138f5f1459330ed0e95f77",
+        "android_client_info": {
+          "package_name": "pl.pwr.zpi.bcycle.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEnptQvlMZ9f9w-zHJoey6EYGp26EvN8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
