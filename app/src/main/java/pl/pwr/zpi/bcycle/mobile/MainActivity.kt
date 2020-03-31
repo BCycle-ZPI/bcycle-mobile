@@ -2,7 +2,6 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -11,6 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -77,5 +78,23 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPlayServicesAvailability()
+    }
+
+    /** Check Google Play Services availability, and prompt the user to install it if needed. */
+    private fun checkPlayServicesAvailability() {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val isAvailable = googleApiAvailability.isGooglePlayServicesAvailable(applicationContext)
+        if (isAvailable != ConnectionResult.SUCCESS) {
+            // request code currently not used
+            googleApiAvailability.getErrorDialog(
+                this, isAvailable, REQUEST_CODE_AFTER_GOOGLE_PLAY
+            ) { finish() }?.show()
+
+        }
     }
 }
