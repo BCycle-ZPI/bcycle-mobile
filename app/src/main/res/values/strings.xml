@@ -32,4 +32,15 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="add_a_photo_info">Add a photo from:</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="distance_placeholder">0.00 km</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="time_placeholder">00:00:00</string>
+    <string name="notification_channel_ongoing_name">Ongoing Trip</string>
+    <string name="notification_channel_ongoing_description">Notification about the ongoing trip.</string>
+    <string name="notification_ongoing_title">Trip in progress</string>
+    <string name="distance_format">%1$.2f km</string>
+    <string name="location_permission_message">In order to track your trips, BCycle requires access to your location.</string>
+    <string name="location_permission_title">Location permission required</string>
 </resources>

@@ -13,6 +13,9 @@ data class OngoingTripEvent(
     val eventType: OngoingTripEventType
 ) {
 
+    val isMidPoint: Boolean
+        get() = eventType == OngoingTripEventType.MIDPOINT
+
     fun asTripPoint(): TripPoint {
         if (eventType != OngoingTripEventType.MIDPOINT) {
             throw UnsupportedOperationException("Only midpoints can be converted to TripPoints")
