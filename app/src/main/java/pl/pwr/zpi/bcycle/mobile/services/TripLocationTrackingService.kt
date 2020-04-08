@@ -3,7 +3,6 @@ package pl.pwr.zpi.bcycle.mobile.services
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -16,8 +15,7 @@ import com.google.android.gms.location.LocationServices
 import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.*
 import pl.pwr.zpi.bcycle.mobile.models.*
-import pl.pwr.zpi.bcycle.mobile.ui.record_trip.RecordTripActivity
-import kotlin.reflect.KFunction1
+import pl.pwr.zpi.bcycle.mobile.RecordTripActivity
 
 class TripLocationTrackingService : Service() {
     private val myBinder = LocalBinder()

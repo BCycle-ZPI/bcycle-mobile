@@ -43,4 +43,8 @@
     <string name="distance_format">%1$.2f km</string>
     <string name="location_permission_message">In order to track your trips, BCycle requires access to your location.</string>
     <string name="location_permission_title">Location permission required</string>
+    <string name="uploading_trip">Saving your trip, please wait...</string>
+    <string name="upload_try_again">Try again</string>
+    <string name="uploading_error_title">Failed to save trip</string>
+    <string name="uploading_error_generic">Could not upload your trip. Check your Internet connectivity and try again.</string>
 </resources>

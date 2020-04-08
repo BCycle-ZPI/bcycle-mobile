@@ -1,22 +1,21 @@
-package pl.pwr.zpi.bcycle.mobile.ui.record_trip
+package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.content_record_trip.*
-import pl.pwr.zpi.bcycle.mobile.PERMISSIONS_REQUEST_LOCAITON
-import pl.pwr.zpi.bcycle.mobile.R
+import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
 
@@ -32,8 +31,7 @@ class RecordTripActivity : AppCompatActivity() {
             synchronized(this) {
                 // We've bound to TripLocationTrackingService, cast the IBinder and get TripLocationTrackingService instance
                 val binder = service as TripLocationTrackingService.LocalBinder
-                val service = binder.getService()
-                this@RecordTripActivity.service = service
+                this@RecordTripActivity.service = binder.getService()
                 isBound = true
                 if (canStart) startOrContinueTrip()
             }
@@ -60,9 +58,47 @@ class RecordTripActivity : AppCompatActivity() {
         stopFAB.setOnClickListener {
             if (isBound) {
                 service.endTrip()
-                // TODO send to API and stop service
+                uploadTripData()
             }
         }
+    }
+
+    fun uploadTripData() {
+        stopFAB.isEnabled = false
+        pauseFAB.isEnabled = false
+        photoBt.isEnabled = false
+        uploadingCard.visibility = View.VISIBLE
+        val trip = service.getTrip()
+        service.endTrip()
+        val sub = ApiClient.tripApi!!.post(trip)
+            .background().subscribe(
+                { result -> handleTripUploadSuccess(result.result) },
+                { error ->
+                    showTripUploadError(error.message)
+                }
+            )
+    }
+
+    fun handleTripUploadSuccess(tripId: Int) {
+        // TODO go to the trip page
+        finish()
+    }
+
+    fun showTripUploadError(description: String?) {
+        stopFAB.isEnabled = true
+        pauseFAB.isEnabled = true
+        photoBt.isEnabled = true
+        uploadingCard.visibility = View.GONE
+        val descriptionAuto = description ?: getString(R.string.uploading_error_generic)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(descriptionAuto)
+            .setTitle(R.string.uploading_error_title)
+                .setPositiveButton(R.string.upload_try_again
+                ) { _, _ -> uploadTripData() }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -91,6 +127,7 @@ class RecordTripActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        // TODO does not start trip?
         when (requestCode) {
             PERMISSIONS_REQUEST_LOCAITON -> {
                 // If request is cancelled, the result arrays are empty.
@@ -98,7 +135,6 @@ class RecordTripActivity : AppCompatActivity() {
                     startOrContinueTripWithWait()
                 } else {
                     showPermissionExplanationDialog(this::finish)
-                    finish()
                 }
                 return
             }
