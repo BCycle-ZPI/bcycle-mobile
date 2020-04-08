@@ -1,5 +1,12 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
+import io.reactivex.internal.functions.ObjectHelper
+import io.reactivex.internal.observers.ConsumerSingleObserver
+import io.reactivex.schedulers.Schedulers
 import org.gavaghan.geodesy.Ellipsoid
 import org.gavaghan.geodesy.GeodeticCalculator
 import org.gavaghan.geodesy.GlobalPosition
@@ -42,3 +49,8 @@ fun getTime(tripPoints: List<TripPoint>): Int {
     val d = Duration.between(tripPoints.first().timeReached, tripPoints.last().timeReached)
     return d.seconds.toInt()
 }
+
+fun <T> Single<T>.background(): Single<T>
+    = this
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())

@@ -8,10 +8,10 @@ class Trip(
     val time: Int,
     val started: ZonedDateTime,
     val finished: ZonedDateTime,
-    val tripPoints: List<TripPoint>,
     val mapImageUrl: String?,
-    val userId: String?,
-    val GroupTripId: Int?
+    val groupTripId: Int?,
+    val tripPoints: List<TripPoint>,
+    val tripPhotos: List<String>
 ) {
     constructor(
         distance: Double,
@@ -20,5 +20,5 @@ class Trip(
         finished: ZonedDateTime,
         tripPoints: List<TripPoint>
     ) :
-            this(null, distance, time, started, finished, tripPoints, null, null, null)
+            this(null, distance, time, started, finished, null, null, tripPoints, listOf())
 }
