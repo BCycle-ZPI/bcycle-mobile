@@ -98,7 +98,7 @@
         android:layout_marginTop="27dp"
         android:layout_marginEnd="16dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/CameraBt"
+        app:layout_constraintEnd_toStartOf="@+id/cameraBt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatPasswordPT"
         app:srcCompat="@drawable/default_avatar" />
@@ -115,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/repeatPasswordPT" />
 
     <Button
-        android:id="@+id/CameraBt"
+        android:id="@+id/cameraBt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
