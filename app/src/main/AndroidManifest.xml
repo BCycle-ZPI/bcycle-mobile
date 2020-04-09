@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <!-- TODO remove usesCleartextTraffic -->
-        <activity android:name=".ui.record_trip.RecordTripActivity"
+        <activity android:name=".RecordTripActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
