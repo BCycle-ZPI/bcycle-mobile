@@ -70,7 +70,7 @@ class RecordTripActivity : AppCompatActivity() {
         uploadingCard.visibility = View.VISIBLE
         val trip = service.getTrip()
         service.endTrip()
-        val sub = ApiClient.tripApi!!.post(trip)
+        val sub = ApiClient.tripApi.post(trip)
             .background().subscribe(
                 { result -> handleTripUploadSuccess(result.result) },
                 { error ->

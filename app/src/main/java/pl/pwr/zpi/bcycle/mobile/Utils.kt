@@ -2,15 +2,17 @@ package pl.pwr.zpi.bcycle.mobile
 
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
-import io.reactivex.internal.functions.ObjectHelper
-import io.reactivex.internal.observers.ConsumerSingleObserver
 import io.reactivex.schedulers.Schedulers
 import org.gavaghan.geodesy.Ellipsoid
 import org.gavaghan.geodesy.GeodeticCalculator
 import org.gavaghan.geodesy.GlobalPosition
 import org.threeten.bp.Duration
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.chrono.IsoChronology
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.DateTimeFormatterBuilder
+import org.threeten.bp.format.ResolverStyle
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEventType
 import pl.pwr.zpi.bcycle.mobile.models.TripPoint
@@ -54,3 +56,19 @@ fun <T> Single<T>.background(): Single<T>
     = this
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+
+
+private var isoUtcFormatter =
+        DateTimeFormatterBuilder().parseCaseInsensitive()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffset("+HH:MM:ss", "Z")
+            .toFormatter()
+            .withChronology(IsoChronology.INSTANCE)
+
+fun dateToIso(date: ZonedDateTime): String =
+    date.withZoneSameInstant(ZoneId.of("UTC")).format(isoUtcFormatter)
+
+fun dateFromIso(date: String): ZonedDateTime =
+    ZonedDateTime.parse(date, isoUtcFormatter)
+
+fun localDateFromIso(date: String): ZonedDateTime =
+    ZonedDateTime.parse(date, isoUtcFormatter).withZoneSameInstant(ZoneId.systemDefault())
