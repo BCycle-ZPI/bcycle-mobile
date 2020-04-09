@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,11 +8,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_register.*
 import pl.pwr.zpi.bcycle.mobile.utils.content
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
+
 class RegisterActivity : AppCompatActivity() {
+
+
 
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
@@ -20,13 +26,37 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         supportActionBar?.hide()
 
+
+        galleryBt.setOnClickListener {
+            loadPhotoFromGallery()
+        }
+
         registerBt.isEnabled = false
         registerBt.setOnClickListener {
-            if (isFormValid()) register() else showToast("Register form invalid")
+            if (isFormValid()) register() else showToast("Please, enter all the data!")
         }
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
     }
+
+
+    private fun loadPhotoFromGallery() {
+        intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode== PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data !=null && data.data != null){
+
+            mImageUri = data.data
+            Picasso.get().load(mImageUri).into(avatarImV)
+        }
+    }
+
 
     // TODO: Implement actual form validation
     private fun isFormValid(): Boolean =
@@ -41,9 +71,13 @@ class RegisterActivity : AppCompatActivity() {
         .addOnFailureListener { showToast("Failed to register: ${it.localizedMessage}") }
 
     private fun updateUserDetails(user: FirebaseUser) {
-        // TODO: Pick image from device's storage and upload to firebase storage
+        val avatar: Uri? = if(uploadImageToFirebase()) {
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${namePT.content()}.png")
+        } else {
+            defaultAvatarUri
+        }
         val profile = UserProfileChangeRequest.Builder()
-            .setPhotoUri(defaultAvatarUri)
+            .setPhotoUri(avatar)
             .setDisplayName(namePT.content())
             .build()
 
@@ -57,7 +91,18 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
+    private fun uploadImageToFirebase() :Boolean {
+        if(mImageUri!=null) {
+             val imageRef = FirebaseStorage.getInstance().reference.child(namePT.content()+ ".png")
+            imageRef.putFile(mImageUri!!)
+            return true
+        }
+        return false
+    }
+
     companion object {
+        private var mImageUri: Uri? = null
+        private final val PICK_IMAGE_REQUEST = 1
         private val defaultAvatarUri =
             Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
     }

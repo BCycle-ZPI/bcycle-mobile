@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             header.currentUserEmail.text = email
             storage.getReferenceFromUrl(this.photoUrl.toString()).downloadUrl
                 .addOnSuccessListener{ Picasso.get().load(it).into(header.currentUserImage) }
+
         } ?: finish()
     }
 
