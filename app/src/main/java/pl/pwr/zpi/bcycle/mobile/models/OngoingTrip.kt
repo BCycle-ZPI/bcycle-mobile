@@ -1,8 +1,8 @@
 package pl.pwr.zpi.bcycle.mobile.models
 
 import org.threeten.bp.ZonedDateTime
-import pl.pwr.zpi.bcycle.mobile.getDistance
-import pl.pwr.zpi.bcycle.mobile.getTime
+import pl.pwr.zpi.bcycle.mobile.utils.getDistance
+import pl.pwr.zpi.bcycle.mobile.utils.getTime
 
 
 data class OngoingTrip(
@@ -35,7 +35,9 @@ data class OngoingTrip(
 
             if (e.eventType == OngoingTripEventType.PAUSE) {
                 // A group ends when the trip is paused.
-                distance += getDistance(currentGroup)
+                distance += getDistance(
+                    currentGroup
+                )
                 time += getTime(currentGroup)
                 allPoints.addAll(currentGroup)
                 currentGroup.clear()

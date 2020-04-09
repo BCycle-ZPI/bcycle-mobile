@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.content_record_trip.*
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
+import pl.pwr.zpi.bcycle.mobile.utils.background
 
 
 class RecordTripActivity : AppCompatActivity() {

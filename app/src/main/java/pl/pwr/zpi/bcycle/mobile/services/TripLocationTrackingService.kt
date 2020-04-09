@@ -16,6 +16,7 @@ import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.*
 import pl.pwr.zpi.bcycle.mobile.models.*
 import pl.pwr.zpi.bcycle.mobile.RecordTripActivity
+import pl.pwr.zpi.bcycle.mobile.utils.getDistance
 
 class TripLocationTrackingService : Service() {
     private val myBinder = LocalBinder()
@@ -110,7 +111,10 @@ class TripLocationTrackingService : Service() {
             val newPoint = OngoingTripEvent.midpoint(it)
             ongoingTrip.events.add(newPoint)
             if (lastLocation != null) {
-                currentDistance += getDistance(lastLocation!!, newPoint)
+                currentDistance += getDistance(
+                    lastLocation!!,
+                    newPoint
+                )
             }
             newLocationCallback?.invoke(newPoint)
             lastLocation = newPoint

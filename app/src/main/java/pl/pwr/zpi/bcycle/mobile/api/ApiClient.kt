@@ -9,8 +9,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.API_BASE_URL
-import pl.pwr.zpi.bcycle.mobile.dateFromIso
-import pl.pwr.zpi.bcycle.mobile.dateToIso
+import pl.pwr.zpi.bcycle.mobile.utils.dateFromIso
+import pl.pwr.zpi.bcycle.mobile.utils.dateToIso
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
