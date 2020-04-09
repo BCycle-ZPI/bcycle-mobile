@@ -17,6 +17,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ApiClient {
+    var currentToken: String = "" // updated by MainActivity
+
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(API_BASE_URL)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
+    }
+
+    val tripApi: TripApi by lazy {
+        retrofit.create(TripApi::class.java)
+    }
+
     private val gson = GsonBuilder().registerTypeAdapter(ZonedDateTime::class.java, object :
         TypeAdapter<ZonedDateTime>() {
         override fun read(reader: JsonReader): ZonedDateTime? {
@@ -37,34 +52,7 @@ object ApiClient {
         }
     }).create()
 
-    private var _retrofit: Retrofit? = null
-    private var _tripApi: TripApi? = null
-
-    private val retrofit: Retrofit
-        get() {
-            if (_retrofit == null) {
-                _retrofit = Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(okHttpClient)
-                    .build()
-            }
-            return _retrofit!!
-        }
-
-    val tripApi: TripApi
-        get() {
-            if (_tripApi == null) {
-                _tripApi = retrofit.create(TripApi::class.java)
-            }
-            return _tripApi!!
-        }
-
-    var currentToken: String = "" // TODO provide a valid token
-
-
-    private var okHttpClient =
+    private val okHttpClient =
         OkHttpClient().newBuilder().addInterceptor { chain ->
             val originalRequest: Request = chain.request()
             val builder: Request.Builder = originalRequest.newBuilder().header(

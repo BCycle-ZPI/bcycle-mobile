@@ -3,7 +3,6 @@ package pl.pwr.zpi.bcycle.mobile.utils
 import org.gavaghan.geodesy.Ellipsoid
 import org.gavaghan.geodesy.GeodeticCalculator
 import org.gavaghan.geodesy.GlobalPosition
-import org.threeten.bp.Duration
 import pl.pwr.zpi.bcycle.mobile.M_TO_KM
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEventType
@@ -40,9 +39,9 @@ fun getDistance(from: OngoingTripEvent, to: OngoingTripEvent): Double {
 }
 
 /** Given a list of TripPoints, get the time between them in seconds. */
-fun getTime(tripPoints: List<TripPoint>): Int {
-    val d = Duration.between(tripPoints.first().timeReached, tripPoints.last().timeReached)
-    return d.seconds.toInt()
-}
+fun getTime(tripPoints: List<TripPoint>): Int
+    = getTime(tripPoints.first().timeReached, tripPoints.last().timeReached)
 
-
+/** Given two OngoingTripEvents, get the time between them in seconds. */
+fun getTimeExact(from: OngoingTripEvent, to: OngoingTripEvent): Double
+        = getTimeExact(from.timeReached, to.timeReached)

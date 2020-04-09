@@ -1,7 +1,8 @@
 package pl.pwr.zpi.bcycle.mobile
 
-const val API_BASE_URL = ""
+const val API_BASE_URL = "" // TODO
 const val M_TO_KM: Double = 1000.0
+const val MS_TO_S: Double = 1000.0
 const val LOCATION_UPDATE_INTERVAL_MS: Long = 5000
 // notifications
 const val NOTIFICATION_CHANNEL_ONGOING_ID = "ongoing"
