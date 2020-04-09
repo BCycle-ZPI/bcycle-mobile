@@ -17,7 +17,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_register.*
 import pl.pwr.zpi.bcycle.mobile.utils.content
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
@@ -43,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
 
         registerBt.isEnabled = false
         registerBt.setOnClickListener {
-            if (isFormValid()) register() else showToast("Please, enter all the data!")
+            if (isFormValid()) register()
         }
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
@@ -147,13 +146,47 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: Implement actual form validation
     private fun isFormValid(): Boolean =
-        namePT.content().isNotEmpty()
+     allDataFilled() && isPasswordOk() && isPasswordIdentical() && accountNotExists()
+
+    private fun allDataFilled(): Boolean {
+        if(namePT.content().isEmpty()) {
+            namePT.error = "empty!"
+        }
+        if(emailPT.content().isEmpty()) {
+            emailPT.error = "empty!"
+        }
+        if(passwordPT.content().isEmpty()) {
+            passwordPT.error = "empty!"
+        }
+        if(repeatPasswordPT.content().isEmpty()){
+            repeatPasswordPT.error = "empty!"
+        }
+
+        return namePT.content().isNotEmpty()
                 && emailPT.content().isNotEmpty()
                 && passwordPT.content().isNotEmpty()
-                && passwordPT.content() == repeatPasswordPT.content()
+                && repeatPasswordPT.content().isNotEmpty()
+    }
 
+    private fun accountNotExists() :Boolean {
+        return !auth.isSignInWithEmailLink(emailPT.content())
+    }
+
+    private fun isPasswordOk() : Boolean {
+        if(passwordPT.content().length <6 ){
+            passwordPT.error = "Password should be at least 6 characters!"
+        }
+        return passwordPT.content().length >5
+    }
+
+    private fun isPasswordIdentical() : Boolean {
+        if(passwordPT.content()!= repeatPasswordPT.content()) {
+            repeatPasswordPT.error ="different password"
+        }
+
+        return passwordPT.content()== repeatPasswordPT.content()
+    }
     private fun register() = auth
         .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
         .addOnSuccessListener { updateUserDetails(it.user!!) }
