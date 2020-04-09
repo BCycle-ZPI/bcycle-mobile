@@ -2,14 +2,18 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,6 +22,7 @@ import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
 import pl.pwr.zpi.bcycle.mobile.utils.background
+import pl.pwr.zpi.bcycle.mobile.utils.timeToString
 
 
 class RecordTripActivity : AppCompatActivity() {
@@ -25,10 +30,12 @@ class RecordTripActivity : AppCompatActivity() {
     private var isBound: Boolean = false
     private var canStart: Boolean = false
     private val LOG_TAG = "BCycle-Rec"
+    private var time: Double = 0.0
+    private var lastClockUpdate: Long = -1
+    private val timerHandler = Handler()
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
-
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             Log.i(LOG_TAG, "Location recording service connected.")
             synchronized(this) {
@@ -48,6 +55,16 @@ class RecordTripActivity : AppCompatActivity() {
         }
     }
 
+    private val timerRunnable = object : Runnable {
+        override fun run() {
+            val currentTime = System.currentTimeMillis()
+            if (lastClockUpdate == -1L) lastClockUpdate = currentTime
+            time += (currentTime - lastClockUpdate) / MS_TO_S
+            lastClockUpdate = currentTime
+            timerHandler.postDelayed(this, 1000)
+            updateTimeDisplay(time)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +75,18 @@ class RecordTripActivity : AppCompatActivity() {
             if (isBound) {
                 service.togglePauseTrip()
             }
-            pauseFAB.setImageDrawable(getDrawable(if (service.isPaused) R.drawable.ic_play_white else R.drawable.ic_pause_white))
+            if (service.isPaused) {
+                stopTimer()
+                pauseFAB.setImageDrawable(getDrawable(R.drawable.ic_play_white))
+            } else {
+                startTimer()
+                pauseFAB.setImageDrawable(getDrawable(R.drawable.ic_pause_white))
+            }
         }
 
         stopFAB.setOnClickListener {
             if (isBound) {
+                stopTimer()
                 service.endTrip()
                 uploadTripData()
             }
@@ -118,6 +142,25 @@ class RecordTripActivity : AppCompatActivity() {
         distanceTV.text = getString(R.string.distance_format, distance)
     }
 
+    private fun updateTimeDisplay(time: Double) {
+        timeTV.text = timeToString(time)
+    }
+
+    private fun updateTimeFromService(time: Double) {
+        stopTimer()
+        this.time = time
+        lastClockUpdate = System.currentTimeMillis()
+        startTimer()
+    }
+
+    private fun startTimer() {
+        timerHandler.postDelayed(timerRunnable, 1000)
+    }
+
+    private fun stopTimer() {
+        timerHandler.removeCallbacks(timerRunnable)
+        lastClockUpdate = -1
+    }
 
     private fun startOrContinueTripWithWait() {
         synchronized(this) {
@@ -132,11 +175,10 @@ class RecordTripActivity : AppCompatActivity() {
     }
 
     private fun startOrContinueTrip() {
-        service.startOrContinueTrip(this::updateDistance, this::newLocation)
+        service.startOrContinueTrip(this::updateDistance, this::updateTimeFromService, this::newLocation)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        // TODO does not start trip?
         when (requestCode) {
             PERMISSIONS_REQUEST_LOCAITON -> {
                 // If request is cancelled, the result arrays are empty.

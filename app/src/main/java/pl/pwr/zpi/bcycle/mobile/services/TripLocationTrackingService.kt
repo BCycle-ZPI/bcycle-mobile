@@ -15,8 +15,8 @@ import com.google.android.gms.location.LocationServices
 import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.*
 import pl.pwr.zpi.bcycle.mobile.models.*
-import pl.pwr.zpi.bcycle.mobile.RecordTripActivity
 import pl.pwr.zpi.bcycle.mobile.utils.getDistance
+import pl.pwr.zpi.bcycle.mobile.utils.getTimeExact
 
 class TripLocationTrackingService : Service() {
     private val myBinder = LocalBinder()
@@ -25,10 +25,12 @@ class TripLocationTrackingService : Service() {
     private lateinit var ongoingTrip: OngoingTrip
     private var hasOngoingTrip = false
     private lateinit var notificationManager: NotificationManager
+    private lateinit var notification: Notification
     private var distanceUpdateCallback: ((Double) -> Unit)? = null
     private var newLocationCallback: ((OngoingTripEvent) -> Unit)? = null
     private var pendingIntent: PendingIntent? = null
     private var currentDistance = 0.0
+    private var currentTime = 0.0
 
     val isPaused: Boolean
         get() = tripState == OngoingTripState.PAUSED
@@ -48,6 +50,7 @@ class TripLocationTrackingService : Service() {
 
     fun startOrContinueTrip(
         distanceUpdateCallback: ((Double) -> Unit)?,
+        timeUpdateCallback: ((Double) -> Unit)?,
         newLocationCallback: ((OngoingTripEvent) -> Unit)?
     ) {
         if (hasOngoingTrip) {
@@ -60,6 +63,7 @@ class TripLocationTrackingService : Service() {
 
         // restore data in activity
         distanceUpdateCallback?.invoke(currentDistance)
+        timeUpdateCallback?.invoke(currentTime)
         if (newLocationCallback != null) {
             ongoingTrip.events.filter { it.isMidPoint }
                 .forEach(newLocationCallback)
@@ -76,6 +80,7 @@ class TripLocationTrackingService : Service() {
         ongoingTrip = OngoingTrip()
         hasOngoingTrip = true
         currentDistance = 0.0
+        currentTime = 0.0
         startListeningForLocation()
     }
 
@@ -115,6 +120,9 @@ class TripLocationTrackingService : Service() {
                     lastLocation!!,
                     newPoint
                 )
+                currentTime += getTimeExact(lastLocation!!, newPoint)
+            } else {
+                currentTime += getTimeExact(ongoingTrip.started, newPoint.timeReached)
             }
             newLocationCallback?.invoke(newPoint)
             lastLocation = newPoint
@@ -209,8 +217,9 @@ class TripLocationTrackingService : Service() {
             .setContentTitle(getString(R.string.notification_ongoing_title))
             .setContentIntent(openPendingIntent)
             .setSmallIcon(R.drawable.bike_icon)
+        notification = notificationBuilder.build()
         startForeground(
-            ONGOING_NOTIFICATION_ID, notificationBuilder.build())
+            ONGOING_NOTIFICATION_ID, notification)
     }
 
     inner class LocalBinder : Binder() {
