@@ -7,33 +7,38 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.content_record_trip.*
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
 
+
 class RecordTripActivity : AppCompatActivity() {
     private lateinit var service: TripLocationTrackingService
     private var isBound: Boolean = false
-    private var canStart: Boolean = true
+    private var canStart: Boolean = false
+    private val LOG_TAG = "BCycle-Rec"
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            Log.i(LOG_TAG, "Location recording service connected.")
             synchronized(this) {
                 // We've bound to TripLocationTrackingService, cast the IBinder and get TripLocationTrackingService instance
                 val binder = service as TripLocationTrackingService.LocalBinder
                 this@RecordTripActivity.service = binder.getService()
                 isBound = true
-                if (canStart) startOrContinueTrip()
+                if (canStart) {
+                    Log.i(LOG_TAG, "Starting trip (via canStart).")
+                    startOrContinueTrip()
+                }
             }
         }
 
@@ -116,12 +121,15 @@ class RecordTripActivity : AppCompatActivity() {
     private fun startOrContinueTripWithWait() {
         synchronized(this) {
             if (!isBound) {
+                Log.i(LOG_TAG, "Allowing to start trip after binding")
                 canStart = true
             } else {
+                Log.i(LOG_TAG, "Starting trip (after binding)")
                 startOrContinueTrip()
             }
         }
     }
+
     private fun startOrContinueTrip() {
         service.startOrContinueTrip(this::updateDistance, this::newLocation)
     }
