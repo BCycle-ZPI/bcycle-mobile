@@ -40,11 +40,6 @@ class RegisterActivity : AppCompatActivity() {
         .addOnSuccessListener { updateUserDetails(it.user!!) }
         .addOnFailureListener { showToast("Failed to register: ${it.localizedMessage}") }
 
-    companion object {
-        private val defaultAvatarUri =
-            Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
-    }
-
     private fun updateUserDetails(user: FirebaseUser) {
         // TODO: Pick image from device's storage and upload to firebase storage
         val profile = UserProfileChangeRequest.Builder()
@@ -60,5 +55,10 @@ class RegisterActivity : AppCompatActivity() {
                 showToast("Failed to register: ${it.localizedMessage}")
                 user.delete()
             }
+    }
+
+    companion object {
+        private val defaultAvatarUri =
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
     }
 }

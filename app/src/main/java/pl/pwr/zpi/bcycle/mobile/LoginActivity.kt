@@ -18,6 +18,10 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        if(auth.currentUser != null){
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
         loginBt.setOnClickListener {
             if (isFormFilled()) signIn() else showToast("Enter both email and password")
         }
