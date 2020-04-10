@@ -190,7 +190,16 @@ class RegisterActivity : AppCompatActivity() {
     private fun register() = auth
         .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
         .addOnSuccessListener { updateUserDetails(it.user!!) }
-        .addOnFailureListener { showToast("Failed to register: ${it.localizedMessage}") }
+        .addOnFailureListener {
+
+            if (it.message.equals("The email address is already in use by another account.")) {
+                emailPT.error = "The email address is already in use by another account!"
+            }
+
+            if (it.message.equals("The email address is badly formatted.")) {
+                emailPT.error = "The email address is badly formatted!"
+            }
+        }
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
@@ -198,6 +207,7 @@ class RegisterActivity : AppCompatActivity() {
         } else {
             defaultAvatarUri
         }
+
         val profile = UserProfileChangeRequest.Builder()
             .setPhotoUri(avatar)
             .setDisplayName(namePT.content())
@@ -220,7 +230,7 @@ class RegisterActivity : AppCompatActivity() {
             return true
         }
         return false
-    }
+    }   
 
 
     companion object {
