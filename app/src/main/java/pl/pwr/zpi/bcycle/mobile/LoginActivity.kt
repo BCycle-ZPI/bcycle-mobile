@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun isNotEmailEmpty() : Boolean {
         if(email.content().isEmpty()) {
-            email.error = "empty!"
+            email.error = getString(R.string.empty_edit_text)
         }
 
         return  email.content().isNotEmpty()
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun isNotPasswordEmpty() : Boolean {
         if(password.content().isEmpty()) {
-            password.error = "empty!"
+            password.error = getString(R.string.empty_edit_text)
         }
 
         return  email.content().isNotEmpty()
@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 startActivity(Intent(this, MainActivity::class.java))
             }.addOnFailureListener {
-                showToast("Failed to sign in: ${it.localizedMessage}")
+                showToast("${getString(R.string.failed_to_sign_in)} + ${it.localizedMessage}")
             }
     }
 }

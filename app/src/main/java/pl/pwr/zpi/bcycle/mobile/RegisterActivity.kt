@@ -65,8 +65,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun openCamera() {
         val values  = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New avatar")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the camera")
+        values.put(MediaStore.Images.Media.TITLE, getString(R.string.new_avatar_info))
+        values.put(MediaStore.Images.Media.DESCRIPTION, getString(R.string.camera_source_info))
         mImageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values)
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                                     openCamera()
             PERMISSION_CODE_GALLERY -> if(grantResults.size>0  && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                                     openGallery()
-            else -> showToast("Permission denied...")
+            else -> showToast(getString(R.string.permission_denied_info))
 
         }
     }
@@ -104,7 +104,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun openGallery() {
         intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
+        intent.type = getString(R.string.intent_image_type)
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -151,16 +151,16 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun allDataFilled(): Boolean {
         if(namePT.content().isEmpty()) {
-            namePT.error = "empty!"
+            namePT.error = getString(R.string.empty_edit_text)
         }
         if(emailPT.content().isEmpty()) {
-            emailPT.error = "empty!"
+            emailPT.error = getString(R.string.empty_edit_text)
         }
         if(passwordPT.content().isEmpty()) {
-            passwordPT.error = "empty!"
+            passwordPT.error = getString(R.string.empty_edit_text)
         }
         if(repeatPasswordPT.content().isEmpty()){
-            repeatPasswordPT.error = "empty!"
+            repeatPasswordPT.error = getString(R.string.empty_edit_text)
         }
 
         return namePT.content().isNotEmpty()
@@ -175,14 +175,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun isPasswordOk() : Boolean {
         if(passwordPT.content().length <6 ){
-            passwordPT.error = "Password should be at least 6 characters!"
+            passwordPT.error = getString(R.string.too_short_password_message)
         }
         return passwordPT.content().length >5
     }
 
     private fun isPasswordIdentical() : Boolean {
         if(passwordPT.content()!= repeatPasswordPT.content()) {
-            repeatPasswordPT.error ="different password"
+            repeatPasswordPT.error
         }
 
         return passwordPT.content()== repeatPasswordPT.content()
@@ -192,18 +192,19 @@ class RegisterActivity : AppCompatActivity() {
         .addOnSuccessListener { updateUserDetails(it.user!!) }
         .addOnFailureListener {
 
-            if (it.message.equals("The email address is already in use by another account.")) {
-                emailPT.error = "The email address is already in use by another account!"
+            if (it.message.equals(getString(R.string.emial_exists_message))) {
+                emailPT.error = getString(R.string.emial_exists_message)
             }
 
-            if (it.message.equals("The email address is badly formatted.")) {
-                emailPT.error = "The email address is badly formatted!"
+            if (it.message.equals(getString(R.string.badly_formated_email_message))) {
+                emailPT.error = getString(R.string.badly_formated_email_message)
             }
         }
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
-            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${emailPT.content()}.png")
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${auth.currentUser!!.uid}  + ${getString(
+                R.string.image_type)}")
         } else {
             defaultAvatarUri
         }
@@ -215,17 +216,18 @@ class RegisterActivity : AppCompatActivity() {
 
         user.updateProfile(profile)
             .addOnSuccessListener {
-                showToast("You have been registered successfully")
+                showToast(getString(R.string.register_success_message))
                 finish()
             }.addOnFailureListener {
-                showToast("Failed to register: ${it.localizedMessage}")
+                showToast("${getString(R.string.failed_to_register)} ${it.localizedMessage}")
                 user.delete()
             }
     }
 
     private fun uploadImageToFirebase() :Boolean {
         if(mImageUri!=null) {
-             val imageRef = FirebaseStorage.getInstance().reference.child(emailPT.content()+ ".png")
+             val imageRef = FirebaseStorage.getInstance().reference.child(auth.currentUser!!.uid+ getString(
+                              R.string.image_type))
             imageRef.putFile(mImageUri!!)
             return true
         }
