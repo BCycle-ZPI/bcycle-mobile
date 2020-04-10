@@ -203,7 +203,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
-            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${namePT.content()}.png")
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${emailPT.content()}.png")
         } else {
             defaultAvatarUri
         }
@@ -225,12 +225,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun uploadImageToFirebase() :Boolean {
         if(mImageUri!=null) {
-             val imageRef = FirebaseStorage.getInstance().reference.child(namePT.content()+ ".png")
+             val imageRef = FirebaseStorage.getInstance().reference.child(emailPT.content()+ ".png")
             imageRef.putFile(mImageUri!!)
             return true
         }
         return false
-    }   
+    }
 
 
     companion object {

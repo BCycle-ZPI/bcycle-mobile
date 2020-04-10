@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginBt.setOnClickListener {
-            if (isFormFilled()) signIn() else showToast("Enter both email and password")
+            if (isFormFilled()) signIn()
         }
 
         registerBt.setOnClickListener {
@@ -32,7 +32,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun isFormFilled(): Boolean =
-        email.content().isNotEmpty() && password.content().isNotEmpty()
+        isNotEmailEmpty() && isNotPasswordEmpty()
+
+    private fun isNotEmailEmpty() : Boolean {
+        if(email.content().isEmpty()) {
+            email.error = "empty!"
+        }
+
+        return  email.content().isNotEmpty()
+    }
+
+    private fun isNotPasswordEmpty() : Boolean {
+        if(password.content().isEmpty()) {
+            password.error = "empty!"
+        }
+
+        return  email.content().isNotEmpty()
+    }
 
     private fun signIn() {
         auth.signInWithEmailAndPassword(email.content(), password.content())
