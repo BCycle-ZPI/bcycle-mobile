@@ -39,10 +39,10 @@
     <string name="new_avatar_info">New avatar</string>
     <string name="camera_source_info">From the camera</string>
     <string name="permission_denied_info">Permission denied...</string>
-    <string name="intent_image_type">image/*</string>
     <string name="too_short_password_message">Password should be at least 6 characters!</string>
     <string name="register_success_message">You have been registered successfully</string>
     <string name="emial_exists_message">The email address is already in use by another account.</string>
     <string name="badly_formated_email_message">The email address is badly formatted.</string>
     <string name="image_type">.png</string>
+    <string name="different_password_message">different password</string>
 </resources>

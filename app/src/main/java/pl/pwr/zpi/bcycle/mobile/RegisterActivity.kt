@@ -104,7 +104,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun openGallery() {
         intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = getString(R.string.intent_image_type)
+        intent.type = "image/*"
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -182,7 +182,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun isPasswordIdentical() : Boolean {
         if(passwordPT.content()!= repeatPasswordPT.content()) {
-            repeatPasswordPT.error
+            repeatPasswordPT.error = getString(R.string.different_password_message)
         }
 
         return passwordPT.content()== repeatPasswordPT.content()
@@ -203,8 +203,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
-            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${auth.currentUser!!.uid}  + ${getString(
-                R.string.image_type)}")
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/${auth.currentUser!!.uid}.png")
         } else {
             defaultAvatarUri
         }
@@ -226,8 +225,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun uploadImageToFirebase() :Boolean {
         if(mImageUri!=null) {
-             val imageRef = FirebaseStorage.getInstance().reference.child(auth.currentUser!!.uid+ getString(
-                              R.string.image_type))
+             val imageRef = FirebaseStorage.getInstance().reference.child(auth.currentUser!!.uid+".png")
             imageRef.putFile(mImageUri!!)
             return true
         }
