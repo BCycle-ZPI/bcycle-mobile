@@ -39,9 +39,9 @@ fun getDistance(from: OngoingTripEvent, to: OngoingTripEvent): Double {
 }
 
 /** Given a list of TripPoints, get the time between them in seconds. */
-fun getTime(tripPoints: List<TripPoint>): Int
-    = getTime(tripPoints.first().timeReached, tripPoints.last().timeReached)
+fun getTime(tripPoints: List<TripPoint>): Int =
+    getTime(tripPoints.first().timeReached, tripPoints.last().timeReached)
 
 /** Given two OngoingTripEvents, get the time between them in seconds. */
-fun getTimeExact(from: OngoingTripEvent, to: OngoingTripEvent): Double
-        = getTimeExact(from.timeReached, to.timeReached)
+fun getTimeExact(from: OngoingTripEvent, to: OngoingTripEvent): Double =
+    getTimeExact(from.timeReached, to.timeReached)

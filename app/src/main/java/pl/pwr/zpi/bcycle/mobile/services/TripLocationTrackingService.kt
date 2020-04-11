@@ -35,9 +35,7 @@ class TripLocationTrackingService : Service() {
     val isPaused: Boolean
         get() = tripState == OngoingTripState.PAUSED
 
-    override fun onBind(intent: Intent): IBinder? {
-        return myBinder
-    }
+    override fun onBind(intent: Intent): IBinder? = myBinder
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == INTENT_LOCATION_UPDATE) {
@@ -75,7 +73,7 @@ class TripLocationTrackingService : Service() {
         this.newLocationCallback = null
     }
 
-    fun startNewTrip() {
+    private fun startNewTrip() {
         locationProvider = LocationServices.getFusedLocationProviderClient(this)
         ongoingTrip = OngoingTrip()
         hasOngoingTrip = true
@@ -134,7 +132,7 @@ class TripLocationTrackingService : Service() {
         if (tripState == OngoingTripState.PAUSED) unpauseTrip() else pauseTrip()
     }
 
-    fun pauseTrip() {
+    private fun pauseTrip() {
         if (tripState == OngoingTripState.NOT_STARTED || tripState == OngoingTripState.FINISHED) {
             throw IllegalStateException("Cannot pause, trip is finished or not started")
         }
@@ -143,7 +141,7 @@ class TripLocationTrackingService : Service() {
         tripState = OngoingTripState.PAUSED
     }
 
-    fun unpauseTrip() {
+    private fun unpauseTrip() {
         if (tripState == OngoingTripState.ONGOING) {
             throw IllegalStateException("Cannot unpause, trip is ongoing")
         }
@@ -165,10 +163,6 @@ class TripLocationTrackingService : Service() {
         if (ongoingTrip.finished == null) {
             ongoingTrip.finished = ZonedDateTime.now()
         }
-    }
-
-    fun getTripPoints(): List<TripPoint> {
-        return ongoingTrip.getTripPoints()
     }
 
     fun getTrip(): Trip {
@@ -201,7 +195,8 @@ class TripLocationTrackingService : Service() {
             createChannel()
         }
 
-        val notificationBuilder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ONGOING_ID)
+        val notificationBuilder =
+            NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ONGOING_ID)
 
         val openIntent = Intent(applicationContext, RecordTripActivity::class.java)
         openIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -218,14 +213,11 @@ class TripLocationTrackingService : Service() {
             .setContentIntent(openPendingIntent)
             .setSmallIcon(R.drawable.bike_icon)
         notification = notificationBuilder.build()
-        startForeground(
-            ONGOING_NOTIFICATION_ID, notification)
+        startForeground(ONGOING_NOTIFICATION_ID, notification)
     }
 
     inner class LocalBinder : Binder() {
-        fun getService(): TripLocationTrackingService {
-            return this@TripLocationTrackingService
-        }
+        fun getService(): TripLocationTrackingService = this@TripLocationTrackingService
     }
 
 }

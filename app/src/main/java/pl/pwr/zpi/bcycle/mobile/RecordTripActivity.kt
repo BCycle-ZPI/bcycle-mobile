@@ -29,7 +29,6 @@ class RecordTripActivity : AppCompatActivity() {
     private lateinit var service: TripLocationTrackingService
     private var isBound: Boolean = false
     private var canStart: Boolean = false
-    private val LOG_TAG = "BCycle-Rec"
     private var time: Double = 0.0
     private var lastClockUpdate: Long = -1
     private val timerHandler = Handler()
@@ -93,7 +92,7 @@ class RecordTripActivity : AppCompatActivity() {
         }
     }
 
-    fun uploadTripData() {
+    private fun uploadTripData() {
         stopFAB.isEnabled = false
         pauseFAB.isEnabled = false
         photoBt.isEnabled = false
@@ -109,12 +108,12 @@ class RecordTripActivity : AppCompatActivity() {
             )
     }
 
-    fun handleTripUploadSuccess(tripId: Int) {
+    private fun handleTripUploadSuccess(tripId: Int) {
         // TODO go to the trip page
         finish()
     }
 
-    fun showTripUploadError(description: String?) {
+    private fun showTripUploadError(description: String?) {
         stopFAB.isEnabled = true
         pauseFAB.isEnabled = true
         photoBt.isEnabled = true
@@ -124,8 +123,9 @@ class RecordTripActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(descriptionAuto)
             .setTitle(R.string.uploading_error_title)
-                .setPositiveButton(R.string.upload_try_again
-                ) { _, _ -> uploadTripData() }
+            .setPositiveButton(
+                R.string.upload_try_again
+            ) { _, _ -> uploadTripData() }
 
         val dialog = builder.create()
         dialog.show()
@@ -175,10 +175,18 @@ class RecordTripActivity : AppCompatActivity() {
     }
 
     private fun startOrContinueTrip() {
-        service.startOrContinueTrip(this::updateDistance, this::updateTimeFromService, this::newLocation)
+        service.startOrContinueTrip(
+            this::updateDistance,
+            this::updateTimeFromService,
+            this::newLocation
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             PERMISSIONS_REQUEST_LOCAITON -> {
                 // If request is cancelled, the result arrays are empty.
@@ -194,7 +202,7 @@ class RecordTripActivity : AppCompatActivity() {
                 // Ignore all other requests.
             }
         }
-}
+    }
 
     private fun showPermissionExplanationDialog(andThen: () -> Unit) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -208,11 +216,17 @@ class RecordTripActivity : AppCompatActivity() {
 
 
     private fun ensureLocationPermissionAndStartTrip() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
                 showPermissionExplanationDialog(this::ensureLocationPermissionAndStartTrip)
             } else {
                 // No explanation needed, we can request the permission.
@@ -243,4 +257,7 @@ class RecordTripActivity : AppCompatActivity() {
         isBound = false
     }
 
+    companion object {
+        private val LOG_TAG = "BCycle-Rec"
+    }
 }

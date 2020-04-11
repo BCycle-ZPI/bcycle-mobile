@@ -10,10 +10,6 @@ data class OngoingTrip(
     var finished: ZonedDateTime?,
     val events: MutableList<OngoingTripEvent>
 ) {
-    fun getTripPoints(): List<TripPoint> {
-        return events.filter { e -> e.eventType == OngoingTripEventType.MIDPOINT }
-            .map { e -> e.asTripPoint() }
-    }
 
     fun asTrip(): Trip {
         if (finished == null) {

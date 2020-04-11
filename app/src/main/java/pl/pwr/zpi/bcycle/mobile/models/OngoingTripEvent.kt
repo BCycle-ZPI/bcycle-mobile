@@ -24,23 +24,18 @@ data class OngoingTripEvent(
     }
 
     companion object {
-        fun pause(): OngoingTripEvent {
-            return OngoingTripEvent(
-                null, null, null, ZonedDateTime.now(), OngoingTripEventType.PAUSE
-            )
-        }
+        fun pause() = OngoingTripEvent(
+            null, null, null, ZonedDateTime.now(), OngoingTripEventType.PAUSE
+        )
 
-        fun unpause(): OngoingTripEvent {
-            return OngoingTripEvent(
-                null, null, null, ZonedDateTime.now(), OngoingTripEventType.UNPAUSE
-            )
-        }
+        fun unpause() = OngoingTripEvent(
+            null, null, null, ZonedDateTime.now(), OngoingTripEventType.UNPAUSE
+        )
 
-        fun midpoint(location: Location): OngoingTripEvent {
-            return midpoint(location.latitude, location.longitude, location.altitude, location.time)
-        }
+        fun midpoint(location: Location) =
+            midpoint(location.latitude, location.longitude, location.altitude, location.time)
 
-        fun midpoint(
+        private fun midpoint(
             latitude: Double,
             longitude: Double,
             altitude: Double?,

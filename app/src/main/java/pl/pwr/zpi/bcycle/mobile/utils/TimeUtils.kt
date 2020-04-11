@@ -10,10 +10,10 @@ import org.threeten.bp.format.DateTimeFormatterBuilder
 import pl.pwr.zpi.bcycle.mobile.MS_TO_S
 
 private var isoUtcFormatter =
-        DateTimeFormatterBuilder().parseCaseInsensitive()
-            .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffset("+HH:MM:ss", "Z")
-            .toFormatter()
-            .withChronology(IsoChronology.INSTANCE)
+    DateTimeFormatterBuilder().parseCaseInsensitive()
+        .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffset("+HH:MM:ss", "Z")
+        .toFormatter()
+        .withChronology(IsoChronology.INSTANCE)
 
 fun dateToIso(date: ZonedDateTime): String =
     date.withZoneSameInstant(ZoneId.of("UTC")).format(
