@@ -18,10 +18,6 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        if(auth.currentUser != null){
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-
         loginBt.setOnClickListener {
             if (isFormFilled()) signIn() else showToast("Enter both email and password")
         }
@@ -38,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email.content(), password.content())
             .addOnSuccessListener {
                 startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }.addOnFailureListener {
                 showToast("Failed to sign in: ${it.localizedMessage}")
             }
