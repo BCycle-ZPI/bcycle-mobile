@@ -1,6 +1,5 @@
 package pl.pwr.zpi.bcycle.mobile.utils
 
-import android.util.Log
 import org.threeten.bp.Duration
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -49,6 +48,5 @@ fun timeToString(time: Double): String {
     val seconds = lTime % 60
     val minutes = (lTime / 60) % 60
     val hours = lTime / 3600
-    Log.wtf("WTF", "$hours:$minutes:$seconds")
     return String.format("%02d:%02d:%02d", hours, minutes, seconds)
 }
