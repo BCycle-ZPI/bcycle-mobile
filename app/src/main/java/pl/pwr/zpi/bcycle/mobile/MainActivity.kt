@@ -19,7 +19,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
-import pl.pwr.zpi.bcycle.mobile.api.ApiClient
+import pl.pwr.zpi.bcycle.mobile.api.ApiTokenManager
+import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,11 +62,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         auth.currentUser?.run {
-            this.getIdToken(false).addOnSuccessListener {
-                ApiClient.currentToken = it.token!!
-            }.addOnFailureListener {
-                finish() // TODO: or refresh?
-            }
+            ApiTokenManager.updateToken(this)
+                .addOnFailureListener {
+                    showToast(getString(R.string.token_update_failed))
+                }
             val header = navView.getHeaderView(0)
             header.currentUserName.text = displayName
             header.currentUserEmail.text = email

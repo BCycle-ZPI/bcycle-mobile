@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile.api
 
+import com.google.android.gms.tasks.Tasks
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
@@ -17,8 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ApiClient {
-    var currentToken: String = "" // updated by MainActivity
-
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(API_BASE_URL)
@@ -52,14 +51,22 @@ object ApiClient {
         }
     }).create()
 
+    private fun updateRequestWithToken(request: Request): Request =
+        request.newBuilder().header(
+            "Authorization",
+            "Bearer ${ApiTokenManager.token}"
+        ).build()
+
     private val okHttpClient =
         OkHttpClient().newBuilder().addInterceptor { chain ->
             val originalRequest: Request = chain.request()
-            val builder: Request.Builder = originalRequest.newBuilder().header(
-                "Authorization",
-                "Bearer $currentToken"
-            )
-            val newRequest: Request = builder.build()
-            chain.proceed(newRequest)
+            val newRequest: Request = updateRequestWithToken(originalRequest)
+            val response = chain.proceed(newRequest)
+            if (response.code() == 401) {
+                Tasks.await(ApiTokenManager.updateToken()!!)
+                chain.proceed(updateRequestWithToken(originalRequest))
+            } else {
+                response
+            }
         }.build()
 }
