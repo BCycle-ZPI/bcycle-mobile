@@ -86,7 +86,6 @@ class RecordTripActivity : AppCompatActivity() {
         stopFAB.setOnClickListener {
             if (isBound) {
                 stopTimer()
-                service.endTrip()
                 uploadTripData()
             }
         }
@@ -97,8 +96,8 @@ class RecordTripActivity : AppCompatActivity() {
         pauseFAB.isEnabled = false
         photoBt.isEnabled = false
         uploadingCard.visibility = View.VISIBLE
-        val trip = service.getTrip()
         service.endTrip()
+        val trip = service.getTrip()
         val sub = ApiClient.tripApi.post(trip)
             .background().subscribe(
                 { result -> handleTripUploadSuccess(result.result) },

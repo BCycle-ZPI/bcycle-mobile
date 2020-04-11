@@ -163,6 +163,7 @@ class TripLocationTrackingService : Service() {
         if (ongoingTrip.finished == null) {
             ongoingTrip.finished = ZonedDateTime.now()
         }
+        stopForeground(true)
     }
 
     fun getTrip(): Trip {
