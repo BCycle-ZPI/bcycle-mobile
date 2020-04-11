@@ -3,12 +3,12 @@ package pl.pwr.zpi.bcycle.mobile
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_register.*
 import pl.pwr.zpi.bcycle.mobile.utils.content
@@ -16,10 +16,8 @@ import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 
 class RegisterActivity : AppCompatActivity() {
-
-
-
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private var allControls: List<View> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +35,8 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
+
+        allControls = listOf(namePT, emailPT, passwordPT, repeatPasswordPT, CameraBt, galleryBt, privacyCB, registerBt)
     }
 
 
@@ -65,10 +65,16 @@ class RegisterActivity : AppCompatActivity() {
                 && passwordPT.content().isNotEmpty()
                 && passwordPT.content() == repeatPasswordPT.content()
 
-    private fun register() = auth
-        .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
-        .addOnSuccessListener { updateUserDetails(it.user!!) }
-        .addOnFailureListener { showToast("Failed to register: ${it.localizedMessage}") }
+    private fun register() {
+        showSpinnerAndDisableControls()
+        auth
+            .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
+            .addOnSuccessListener { updateUserDetails(it.user!!) }
+            .addOnFailureListener {
+                hideSpinnerAndEnableControls()
+                showToast("Failed to register: ${it.localizedMessage}")
+            }
+    }
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
@@ -88,6 +94,7 @@ class RegisterActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 showToast("Failed to register: ${it.localizedMessage}")
                 user.delete()
+                hideSpinnerAndEnableControls()
             }
     }
 
@@ -98,6 +105,16 @@ class RegisterActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    private fun showSpinnerAndDisableControls() {
+        progressBar.visibility = View.VISIBLE
+        allControls.forEach { v -> v.isEnabled = false }
+    }
+
+    private fun hideSpinnerAndEnableControls() {
+        progressBar.visibility = View.GONE
+        allControls.forEach { v -> v.isEnabled = true }
     }
 
     companion object {
