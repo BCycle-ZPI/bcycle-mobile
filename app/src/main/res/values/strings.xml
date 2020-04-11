@@ -32,4 +32,14 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="add_a_photo_info">Add a photo from:</string>
+
+    <string name="next_button">Next</string>
+    <string name="begin_date">Begin date</string>
+    <string name="begin_time">Begin time</string>
+    <string name="end_date">End date</string>
+    <string name="end_time">End time</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="draw_the_route_of_your_trip">Draw the route of your trip</string>
+    <string name="form_not_filled_info">Fill all marked fields</string>
 </resources>

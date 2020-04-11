@@ -32,6 +32,7 @@ class DashboardActivity : AppCompatActivity() {
         rv_trips.layoutManager = LinearLayoutManager(this)
         rv_trips.adapter = HistoryTripAdapter(tripList)
     }
+
 }
 
 class HistoryTripAdapter(val trips:List<Trip>) : RecyclerView.Adapter<HistoryTripAdapter.ViewHolder>() {
@@ -48,7 +49,7 @@ class HistoryTripAdapter(val trips:List<Trip>) : RecyclerView.Adapter<HistoryTri
     }
 
     override fun onBindViewHolder(holder: HistoryTripAdapter.ViewHolder, position: Int) {
-        var item = trips[position]
+        val item = trips[position]
         holder.itemView.tv_date.text = item.started.toString()
         holder.itemView.tv_duration.text/// = Duration.between(item.finished.toLocalDate(), item.started.toLocalDate()).toString()
         holder.itemView.tv_hours.text = item.finished.toString()
