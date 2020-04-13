@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="record_trip_margin_main">24dp</dimen>
     <dimen name="record_trip_margin_counters">16dp</dimen>
+    <dimen name="large_spinner_wh">150dp</dimen>
 </resources>

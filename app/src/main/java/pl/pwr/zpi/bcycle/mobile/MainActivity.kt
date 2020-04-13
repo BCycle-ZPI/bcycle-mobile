@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +73,12 @@ class MainActivity : AppCompatActivity() {
             storage.getReferenceFromUrl(this.photoUrl.toString()).downloadUrl
                 .addOnSuccessListener{ Picasso.get().load(it).into(header.currentUserImage) }
 
-        } ?: finish()
+        } ?: openLoginScreen()
+    }
+
+    private fun openLoginScreen() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
