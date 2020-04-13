@@ -3,7 +3,6 @@ package pl.pwr.zpi.bcycle.mobile
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,6 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import pl.pwr.zpi.bcycle.mobile.api.ApiTokenManager
+import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,6 +63,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         auth.currentUser?.run {
+            ApiTokenManager.updateToken(this)
+                .addOnFailureListener {
+                    showToast(getString(R.string.token_update_failed))
+                }
             val header = navView.getHeaderView(0)
             header.currentUserName.text = displayName
             header.currentUserEmail.text = email
@@ -83,5 +90,23 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPlayServicesAvailability()
+    }
+
+    /** Check Google Play Services availability, and prompt the user to install it if needed. */
+    private fun checkPlayServicesAvailability() {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val isAvailable = googleApiAvailability.isGooglePlayServicesAvailable(applicationContext)
+        if (isAvailable != ConnectionResult.SUCCESS) {
+            // request code currently not used
+            googleApiAvailability.getErrorDialog(
+                this, isAvailable, REQUEST_CODE_AFTER_GOOGLE_PLAY
+            ) { finish() }?.show()
+
+        }
     }
 }
