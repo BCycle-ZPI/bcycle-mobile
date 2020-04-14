@@ -25,6 +25,6 @@ class TripCreationActivity : AppCompatActivity() {
     }
 
     private fun isFormFilled(): Boolean {
-
+        return true //todo
     }
 }

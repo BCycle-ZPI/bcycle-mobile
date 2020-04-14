@@ -16,23 +16,19 @@ import pl.pwr.zpi.bcycle.mobile.models.Trip
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.TemporalUnit
+import java.util.*
 
 class DashboardActivity : AppCompatActivity() {
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    val tripList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        mutableListOf(Trip(1.0f, LocalDateTime.MIN, LocalDateTime.MAX,""), Trip(2.9f, LocalDateTime.MAX, LocalDateTime.MAX, ""))
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+        val calendar = Calendar.getInstance()
+        val tripList =
+            mutableListOf(Trip(1.0f, calendar.time, calendar.time,""), Trip(2.9f, calendar.time, calendar.time, ""))
         rv_trips.layoutManager = LinearLayoutManager(this)
         rv_trips.adapter = HistoryTripAdapter(tripList)
     }
-
 }
 
 class HistoryTripAdapter(val trips:List<Trip>) : RecyclerView.Adapter<HistoryTripAdapter.ViewHolder>() {
@@ -51,7 +47,7 @@ class HistoryTripAdapter(val trips:List<Trip>) : RecyclerView.Adapter<HistoryTri
     override fun onBindViewHolder(holder: HistoryTripAdapter.ViewHolder, position: Int) {
         val item = trips[position]
         holder.itemView.tv_date.text = item.started.toString()
-        holder.itemView.tv_duration.text/// = Duration.between(item.finished.toLocalDate(), item.started.toLocalDate()).toString()
+        holder.itemView.tv_duration.text = "2h12min"/// = Duration.between(item.finished.toLocalDate(), item.started.toLocalDate()).toString()
         holder.itemView.tv_hours.text = item.finished.toString()
         holder.itemView.tv_road.text = item.distance.toString()
         //holder.itemView.iv_photo.load(item.mapImagrUrl)

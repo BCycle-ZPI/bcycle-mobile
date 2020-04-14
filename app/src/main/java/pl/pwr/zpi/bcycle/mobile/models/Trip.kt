@@ -1,10 +1,8 @@
 package pl.pwr.zpi.bcycle.mobile.models
 
 import java.time.LocalDateTime
+import java.util.*
 
-class Trip(var distance:Float, var started: LocalDateTime, var finished: LocalDateTime, var mapImagrUrl:String){
-    //private var
-    init {
+class Trip(var distance:Float, var started: Date, var finished: Date, var mapImagrUrl:String){
 
-    }
 }

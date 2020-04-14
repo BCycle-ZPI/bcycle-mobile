@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:alpha="0.8"
+    android:background="#FFFFFF"
     android:padding="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,12 +28,13 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
             android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/tv_duration"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
