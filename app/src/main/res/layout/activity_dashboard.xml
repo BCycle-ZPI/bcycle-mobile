@@ -5,8 +5,7 @@
     android:id="@+id/dashboard_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/buttonColor"
-    android:backgroundTint="@color/buttonColor"
+    android:background="@color/colorAccent"
     android:padding="5dp"
     tools:context=".DashboardActivity">
 
@@ -53,8 +52,6 @@
         android:id="@+id/layout_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        android:backgroundTint="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
