@@ -63,5 +63,6 @@
     <string name="uploading_error_title">Failed to save trip</string>
     <string name="uploading_error_generic">Could not upload your trip. Check your Internet connectivity and try again.</string>
     <string name="token_update_failed">Cannot access your account. Check your Internet connectivity and try logging in again.</string>
+    <string name="start_trip">Start Trip</string>
 
 </resources>

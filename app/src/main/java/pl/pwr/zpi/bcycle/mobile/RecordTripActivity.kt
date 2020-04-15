@@ -109,6 +109,7 @@ class RecordTripActivity : AppCompatActivity() {
 
     private fun handleTripUploadSuccess(tripId: Int) {
         // TODO go to the trip page
+        service.stopSelf()
         finish()
     }
 
