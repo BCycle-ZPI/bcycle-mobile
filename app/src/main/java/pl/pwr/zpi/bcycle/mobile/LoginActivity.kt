@@ -2,6 +2,7 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         allControls = listOf(email, password, loginBt, registerBt)
 
         loginBt.setOnClickListener {
-            if (isFormFilled()) signIn() else showToast("Enter both email and password")
+            if (isFormFilled()) signIn()
         }
 
         registerBt.setOnClickListener {
@@ -29,8 +30,31 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun isFormFilled(): Boolean =
-        email.content().isNotEmpty() && password.content().isNotEmpty()
+    private fun isFormFilled(): Boolean {
+        isNotPasswordEmpty()
+        isNotEmailEmpty()
+
+        return isNotPasswordEmpty() && isNotEmailEmpty()
+
+    }
+
+
+
+    private fun isNotEmailEmpty() : Boolean {
+        if(email.content().isEmpty()) {
+            email.error = getString(R.string.empty_edit_text)
+        }
+
+        return  email.content().isNotEmpty()
+    }
+
+    private fun isNotPasswordEmpty() : Boolean {
+        if(password.content().isEmpty()) {
+            password.error = getString(R.string.empty_edit_text)
+        }
+
+        return  password.content().isNotEmpty()
+    }
 
     private fun signIn() {
         showSpinnerAndDisableControls()
@@ -39,8 +63,9 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.addOnFailureListener {
-                hideSpinnerAndEnableControls()
-                showToast("Failed to sign in: ${it.localizedMessage}")
+                showToast("${getString(R.string.failed_to_sign_in)} + ${it.localizedMessage}")
+              hideSpinnerAndEnableControls()
+
             }
     }
 
