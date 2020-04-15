@@ -10,11 +10,13 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.API_BASE_URL
+import pl.pwr.zpi.bcycle.mobile.HTTP_TIMEOUT_S
 import pl.pwr.zpi.bcycle.mobile.utils.dateFromIso
 import pl.pwr.zpi.bcycle.mobile.utils.dateToIso
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 object ApiClient {
@@ -58,15 +60,19 @@ object ApiClient {
         ).build()
 
     private val okHttpClient =
-        OkHttpClient().newBuilder().addInterceptor { chain ->
-            val originalRequest: Request = chain.request()
-            val newRequest: Request = updateRequestWithToken(originalRequest)
-            val response = chain.proceed(newRequest)
-            if (response.code() == 401) {
-                Tasks.await(ApiTokenManager.updateToken()!!)
-                chain.proceed(updateRequestWithToken(originalRequest))
-            } else {
-                response
-            }
-        }.build()
+        OkHttpClient().newBuilder()
+            .connectTimeout(HTTP_TIMEOUT_S, TimeUnit.SECONDS)
+            .readTimeout(HTTP_TIMEOUT_S, TimeUnit.SECONDS)
+            .writeTimeout(HTTP_TIMEOUT_S, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val originalRequest: Request = chain.request()
+                val newRequest: Request = updateRequestWithToken(originalRequest)
+                val response = chain.proceed(newRequest)
+                if (response.code() == 401) {
+                    Tasks.await(ApiTokenManager.updateToken()!!)
+                    chain.proceed(updateRequestWithToken(originalRequest))
+                } else {
+                    response
+                }
+            }.build()
 }
