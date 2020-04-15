@@ -32,6 +32,7 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="add_a_photo_info">Add a photo from:</string>
+
     <string name="empty_edit_text">empty!</string>
     <string name="different_password">different password</string>
     <string name="failed_to_sign_in">Failed to sign in: </string>
@@ -45,4 +46,22 @@
     <string name="badly_formated_email_message">The email address is badly formatted.</string>
     <string name="image_type">.png</string>
     <string name="different_password_message">different password</string>
+  
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="distance_placeholder">0.00 km</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="time_placeholder">00:00:00</string>
+    <string name="notification_channel_ongoing_name">Ongoing Trip</string>
+    <string name="notification_channel_ongoing_description">Notification about the ongoing trip.</string>
+    <string name="notification_ongoing_title">Trip in progress</string>
+    <string name="distance_format">%1$.2f km</string>
+    <string name="location_permission_message">In order to track your trips, BCycle requires access to your location.</string>
+    <string name="location_permission_title">Location permission required</string>
+    <string name="uploading_trip">Saving your trip, please wait...</string>
+    <string name="upload_try_again">Try again</string>
+    <string name="uploading_error_title">Failed to save trip</string>
+    <string name="uploading_error_generic">Could not upload your trip. Check your Internet connectivity and try again.</string>
+    <string name="token_update_failed">Cannot access your account. Check your Internet connectivity and try logging in again.</string>
+
 </resources>

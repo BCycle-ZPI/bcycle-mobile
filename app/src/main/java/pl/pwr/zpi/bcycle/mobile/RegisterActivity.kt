@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -24,8 +25,8 @@ import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 class RegisterActivity : AppCompatActivity() {
 
-
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private var allControls: List<View> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,8 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
+
+        allControls = listOf(namePT, emailPT, passwordPT, repeatPasswordPT, CameraBt, galleryBt, privacyCB, registerBt)
     }
 
     private fun loadPhotoFromCamera() {
@@ -169,6 +172,7 @@ class RegisterActivity : AppCompatActivity() {
                 && repeatPasswordPT.content().isNotEmpty()
     }
 
+
     private fun accountNotExists() :Boolean {
         return !auth.isSignInWithEmailLink(emailPT.content())
     }
@@ -187,11 +191,14 @@ class RegisterActivity : AppCompatActivity() {
 
         return passwordPT.content()== repeatPasswordPT.content()
     }
-    private fun register() = auth
+    private fun register() = 
+     showSpinnerAndDisableControls()
+      auth
         .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
         .addOnSuccessListener { updateUserDetails(it.user!!) }
         .addOnFailureListener {
-
+          
+            hideSpinnerAndEnableControls()
             if (it.message.equals(getString(R.string.emial_exists_message))) {
                 emailPT.error = getString(R.string.emial_exists_message)
             }
@@ -200,6 +207,7 @@ class RegisterActivity : AppCompatActivity() {
                 emailPT.error = getString(R.string.badly_formated_email_message)
             }
         }
+
 
     private fun updateUserDetails(user: FirebaseUser) {
         val avatar: Uri? = if(uploadImageToFirebase()) {
@@ -220,6 +228,7 @@ class RegisterActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 showToast("${getString(R.string.failed_to_register)} ${it.localizedMessage}")
                 user.delete()
+                hideSpinnerAndEnableControls()
             }
     }
 
@@ -230,6 +239,17 @@ class RegisterActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+
+    private fun showSpinnerAndDisableControls() {
+        progressBar.visibility = View.VISIBLE
+        allControls.forEach { v -> v.isEnabled = false }
+    }
+
+    private fun hideSpinnerAndEnableControls() {
+        progressBar.visibility = View.GONE
+        allControls.forEach { v -> v.isEnabled = true }
     }
 
 
