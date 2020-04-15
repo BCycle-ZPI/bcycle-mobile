@@ -2,6 +2,7 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -29,8 +30,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun isFormFilled(): Boolean =
-        isNotEmailEmpty() && isNotPasswordEmpty()
+    private fun isFormFilled(): Boolean {
+        isNotPasswordEmpty()
+        isNotEmailEmpty()
+
+        return isNotPasswordEmpty() && isNotEmailEmpty()
+
+    }
+
+
 
     private fun isNotEmailEmpty() : Boolean {
         if(email.content().isEmpty()) {
@@ -45,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
             password.error = getString(R.string.empty_edit_text)
         }
 
-        return  email.content().isNotEmpty()
+        return  password.content().isNotEmpty()
     }
 
     private fun signIn() {

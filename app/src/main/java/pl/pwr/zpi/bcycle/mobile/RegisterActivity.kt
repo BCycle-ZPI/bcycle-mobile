@@ -48,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
 
-        allControls = listOf(namePT, emailPT, passwordPT, repeatPasswordPT, CameraBt, galleryBt, privacyCB, registerBt)
+        allControls = listOf(namePT, emailPT, passwordPT, repeatPasswordPT, cameraBt, galleryBt, privacyCB, registerBt)
     }
 
     private fun loadPhotoFromCamera() {
@@ -191,22 +191,23 @@ class RegisterActivity : AppCompatActivity() {
 
         return passwordPT.content()== repeatPasswordPT.content()
     }
-    private fun register() = 
-     showSpinnerAndDisableControls()
-      auth
-        .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
-        .addOnSuccessListener { updateUserDetails(it.user!!) }
-        .addOnFailureListener {
-          
-            hideSpinnerAndEnableControls()
-            if (it.message.equals(getString(R.string.emial_exists_message))) {
-                emailPT.error = getString(R.string.emial_exists_message)
-            }
+    private fun register() {
+        showSpinnerAndDisableControls()
+        auth
+            .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
+            .addOnSuccessListener { updateUserDetails(it.user!!) }
+            .addOnFailureListener {
 
-            if (it.message.equals(getString(R.string.badly_formated_email_message))) {
-                emailPT.error = getString(R.string.badly_formated_email_message)
+                hideSpinnerAndEnableControls()
+                if (it.message.equals(getString(R.string.emial_exists_message))) {
+                    emailPT.error = getString(R.string.emial_exists_message)
+                }
+
+                if (it.message.equals(getString(R.string.badly_formated_email_message))) {
+                    emailPT.error = getString(R.string.badly_formated_email_message)
+                }
             }
-        }
+    }
 
 
     private fun updateUserDetails(user: FirebaseUser) {
