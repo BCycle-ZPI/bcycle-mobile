@@ -21,6 +21,10 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
         allControls = listOf(email, password, loginBt, registerBt)
 
+        foregtPasswordBt.setOnClickListener() {
+            startActivity(Intent(this,ForgotPasswordActivity::class.java))
+        }
+
         loginBt.setOnClickListener {
             if (isFormFilled()) signIn()
         }
