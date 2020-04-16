@@ -67,5 +67,6 @@
     <string name="forget_password">Forget Password ?</string>
     <string name="send_email">SEND EMAIL</string>
     <string name="resetPasswordMessage">Enter your email to get a mesage \n with link  to reset your password.</string>
+    <string name="email_sent_message">Please check your email account, if you want to reset your password!</string>
 
 </resources>
