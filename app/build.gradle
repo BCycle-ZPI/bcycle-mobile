@@ -23,6 +23,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
     }
 
     kotlinOptions {
@@ -55,4 +56,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'io.coil-kt:coil:0.9.5'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.3'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 }

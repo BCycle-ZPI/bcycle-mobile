@@ -34,12 +34,11 @@
     <string name="add_a_photo_info">Add a photo from:</string>
 
     <string name="next_button">Next</string>
-    <string name="begin_date">Begin date</string>
-    <string name="begin_time">Begin time</string>
-    <string name="end_date">End date</string>
-    <string name="end_time">End time</string>
-    <string name="name">Name</string>
+    <string name="trip_name">TRIP NAME</string>
     <string name="description">Description</string>
     <string name="draw_the_route_of_your_trip">Draw the route of your trip</string>
     <string name="form_not_filled_info">Fill all marked fields</string>
+    <string name="choose_start_datetime">Choose the \n start date</string>
+    <string name="choose_finish_datetime">Choose the \n finish date</string>
+    <string name="location_denied_prompt">Unable to show location - permission required</string>
 </resources>
