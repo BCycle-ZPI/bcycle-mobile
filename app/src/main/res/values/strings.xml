@@ -37,8 +37,12 @@
     <string name="trip_name">TRIP NAME</string>
     <string name="description">Description</string>
     <string name="draw_the_route_of_your_trip">Draw the route of your trip</string>
-    <string name="form_not_filled_info">Fill all marked fields</string>
+    <string name="form_not_filled_info">Text fields cannot be empty</string>
     <string name="choose_start_datetime">Choose the \n start date</string>
     <string name="choose_finish_datetime">Choose the \n finish date</string>
     <string name="location_denied_prompt">Unable to show location - permission required</string>
+    <string name="prompt_choose_dates">You need to choose both the start and the end date of your trip</string>
+    <string name="prompt_fill_field">Fill in the field</string>
+    <string name="prompt_invalid_dates">The start date cannot be earlier than the end date</string>
+    <string name="prompt_chosen_dates_from_past">Chosen dates cannot come from the past</string>
 </resources>

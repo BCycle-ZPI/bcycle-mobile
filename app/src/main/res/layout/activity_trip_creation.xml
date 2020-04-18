@@ -4,72 +4,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
     tools:context=".TripCreationActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="TRIP DESCRIPTION"
+        android:textAllCaps="true"
+        android:textColor="@color/picker_button_background"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_finish_date" />
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:hint="ENTER THE NAME FOR YOUR TRIP"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/buttonColor"
+        android:gravity="center_horizontal"
+        android:hint="TRIP NAME"
         android:inputType="textPersonName"
-        android:singleLine="false"
+        android:textColor="@color/picker_button_background"
+        android:textColorHint="@color/picker_button_background"
+        android:textColorLink="@color/colorAccent"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/bt_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/double_date_picker_button_text_selector_ios"
+        android:lineSpacingExtra="8sp"
         android:text="@string/choose_start_datetime"
+        android:textColor="@color/colorAccent"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_start_time"
-        app:layout_constraintStart_toEndOf="@+id/tv_start_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
     <Button
         android:id="@+id/bt_finish_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/picker_button_background"
+        android:lineSpacingExtra="8sp"
         android:text="@string/choose_finish_datetime"
-        app:layout_constraintEnd_toEndOf="@+id/bt_start_date"
-        app:layout_constraintStart_toStartOf="@+id/bt_start_date"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_start_date" />
 
     <TextView
         android:id="@+id/tv_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text=" "
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_start_date"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/picker_button_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bt_start_date" />
 
     <TextView
         android:id="@+id/tv_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:text=" "
-        android:textSize="18sp"
+        android:layout_marginBottom="7dp"
+        android:textColor="@color/picker_button_background"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/bt_start_date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_start_date" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_start_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_start_date" />
 
     <TextView
         android:id="@+id/tv_finish_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
-        android:textSize="18sp"
+        android:layout_marginTop="7dp"
 
-        app:layout_constraintBottom_toBottomOf="@+id/bt_finish_date"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_start_date"
         app:layout_constraintTop_toTopOf="@+id/bt_finish_date" />
 
@@ -77,27 +106,54 @@
         android:id="@+id/tv_finish_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" "
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_finish_date"
-        app:layout_constraintEnd_toEndOf="@+id/tv_start_time"
-        app:layout_constraintTop_toTopOf="@+id/tv_finish_date" />
+        android:layout_marginBottom="7dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_finish_date"
+        app:layout_constraintEnd_toEndOf="@+id/tv_finish_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_finish_date" />
 
-    <Button
+    <ImageView
         android:id="@+id/bt_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="7dp"
+        android:layout_margin="14dp"
+        android:background="@drawable/icon_right_arrow"
+        android:rotation="180"
         android:text="@string/next_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"/>
+        android:layout_marginTop="16dp"
+        android:text="CREATE YOUR TRIP"
+        android:textColor="@color/picker_button_background"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/et_desc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:alpha="0.3"
+        android:background="@color/picker_button_background"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:nestedScrollingEnabled="true"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

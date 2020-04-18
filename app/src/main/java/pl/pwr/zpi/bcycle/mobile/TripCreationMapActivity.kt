@@ -43,6 +43,8 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
             .findFragmentById(R.id.myMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        actionBar?.hide()
+
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -72,7 +74,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
 
     override fun onLocationChanged(location: Location) {
         val latLng = LatLng(location.latitude, location.longitude);
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f);
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13f);
         map?.animateCamera(cameraUpdate);
 
     }
@@ -116,8 +118,6 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleM
                 map?.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
             }
         }
-
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

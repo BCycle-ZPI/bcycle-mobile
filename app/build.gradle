@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "pl.pwr.zpi.bcycle.mobile"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -58,5 +58,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.github.florent37:singledateandtimepicker:2.2.3'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation 'com.google.maps.android:android-maps-utils:1.1.0'
+    implementation 'net.danlew:android.joda:2.10.3'
 }
