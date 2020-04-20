@@ -59,5 +59,6 @@ dependencies {
     implementation 'com.github.florent37:singledateandtimepicker:2.2.3'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.maps.android:android-maps-utils:1.1.0'
+    implementation 'com.yarolegovich:lovely-dialog:1.1.0'
     implementation 'net.danlew:android.joda:2.10.3'
 }

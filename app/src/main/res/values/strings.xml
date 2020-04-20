@@ -43,6 +43,15 @@
     <string name="location_denied_prompt">Unable to show location - permission required</string>
     <string name="prompt_choose_dates">You need to choose both the start and the end date of your trip</string>
     <string name="prompt_fill_field">Fill in the field</string>
-    <string name="prompt_invalid_dates">The start date cannot be earlier than the end date</string>
+    <string name="prompt_invalid_dates">The start date cannot be after the end date</string>
     <string name="prompt_chosen_dates_from_past">Chosen dates cannot come from the past</string>
+    <string name="start_point">start point</string>
+    <string name="end_point">end point</string>
+    <string name="prompt_marker_what_to_do">WHAT WOULD YOU LIKE TO DO WITH THAT MARKER?</string>
+    <string name="confirm">Confirm</string>
+
+    <string-array name="array_trip_points">
+        <item>START POINT</item>
+        <item>END POINT</item>
+    </string-array>
 </resources>

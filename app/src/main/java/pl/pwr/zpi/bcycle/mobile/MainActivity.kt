@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener{ Picasso.get().load(it).into(header.currentUserImage) }
         } ?: finish()
 
-        startActivity(Intent(this, TripCreationActivity::class.java))
+        startActivity(Intent(this, TripCreationMapActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

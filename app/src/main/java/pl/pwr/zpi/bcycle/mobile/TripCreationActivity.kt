@@ -37,7 +37,8 @@ class TripCreationActivity : AppCompatActivity() {
         bt_next.setOnClickListener {
             if(isFormCorrect()){
                 val intent = Intent(this, TripCreationMapActivity::class.java)
-                //val bundle = Bundle()
+                val bundle = Bundle()
+                //bundle.putSer
                 //intent.putExtras(bundle)
                 startActivity(intent)
             }
@@ -97,10 +98,9 @@ class TripCreationActivity : AppCompatActivity() {
             return false
         }
         if(!checkIfDatesValid()){
-            showToast(R.string.prompt_invalid_dates)
+            return false
         }
-
-        return false
+        return true
     }
 
     private fun checkIfDatesValid():Boolean{
@@ -115,8 +115,10 @@ class TripCreationActivity : AppCompatActivity() {
             return false
         }
 
-        if(parsedDateStart.isBefore(parsedDateEnd)) return false
-
+        if(parsedDateStart.isAfter(parsedDateEnd)){
+            showToast(R.string.prompt_invalid_dates)
+            return false
+        }
         return true
     }
 
