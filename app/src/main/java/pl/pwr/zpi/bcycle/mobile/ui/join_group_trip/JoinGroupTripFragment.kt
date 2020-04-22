@@ -1,4 +1,4 @@
-package pl.pwr.zpi.bcycle.mobile.ui.gallery
+package pl.pwr.zpi.bcycle.mobile.ui.join_group_trip
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import pl.pwr.zpi.bcycle.mobile.R
 
-class GalleryFragment : Fragment() {
+class JoinGroupTripFragment : Fragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
+    private lateinit var joinGroupTripViewModel: JoinGroupTripViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,10 +20,10 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        galleryViewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_gallery, container, false)
-        val textView: TextView = root.findViewById(R.id.text_gallery)
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
+        joinGroupTripViewModel = ViewModelProvider(this).get(JoinGroupTripViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_join_group_trip, container, false)
+        val textView: TextView = root.findViewById(R.id.text_join_group_trip)
+        joinGroupTripViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

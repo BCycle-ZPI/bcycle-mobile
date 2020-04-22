@@ -13,31 +13,25 @@
 
     <fragment
         android:id="@+id/nav_join_group_trip"
-        android:name="pl.pwr.zpi.bcycle.mobile.ui.gallery.GalleryFragment"
+        android:name="pl.pwr.zpi.bcycle.mobile.ui.join_group_trip.JoinGroupTripFragment"
         android:label="@string/menu_join_group_trip"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_join_group_trip" />
 
     <fragment
         android:id="@+id/nav_create_group_trip"
-        android:name="pl.pwr.zpi.bcycle.mobile.ui.slideshow.SlideshowFragment"
+        android:name="pl.pwr.zpi.bcycle.mobile.ui.create_group_trip.CreateGroupTripFragment"
         android:label="@string/menu_create_group_trip"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_create_group_trip" />
 
     <fragment
         android:id="@+id/nav_my_account"
-        android:name="pl.pwr.zpi.bcycle.mobile.ui.tools.ToolsFragment"
+        android:name="pl.pwr.zpi.bcycle.mobile.ui.my_account.MyAccountFragment"
         android:label="@string/menu_my_account"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_my_account" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="pl.pwr.zpi.bcycle.mobile.ui.share.ShareFragment"
+        android:name="pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="pl.pwr.zpi.bcycle.mobile.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_settings" />
 </navigation>
