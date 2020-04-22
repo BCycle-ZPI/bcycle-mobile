@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -47,8 +48,8 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send
+                R.id.nav_home, R.id.nav_join_group_trip, R.id.nav_create_group_trip,
+                R.id.nav_my_account, R.id.nav_settings
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -58,7 +59,10 @@ class MainActivity : AppCompatActivity() {
             if (it.itemId == R.id.nav_logout) {
                 auth.signOut()
                 finish()
+            } else {
+                navController.navigate(it.itemId)
             }
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
