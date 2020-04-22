@@ -69,4 +69,7 @@
     <string name="resetPasswordMessage">Enter your email to get a mesage \n with link  to reset your password.</string>
     <string name="email_sent_message">Please check your email account, if you want to reset your password!</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

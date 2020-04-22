@@ -1,7 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
-import android.R.attr
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -48,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
 
         privacyCB.setOnCheckedChangeListener { _, isChecked -> registerBt.isEnabled = isChecked }
 
-        allControls = listOf(namePT, emailPT, passwordPT, repeatPasswordPT, cameraBt, galleryBt, privacyCB, registerBt)
+        allControls = listOf(namePT, emailTV, passwordPT, repeatPasswordPT, cameraBt, galleryBt, privacyCB, registerBt)
     }
 
     private fun loadPhotoFromCamera() {
@@ -156,8 +155,8 @@ class RegisterActivity : AppCompatActivity() {
         if(namePT.content().isEmpty()) {
             namePT.error = getString(R.string.empty_edit_text)
         }
-        if(emailPT.content().isEmpty()) {
-            emailPT.error = getString(R.string.empty_edit_text)
+        if(emailTV.content().isEmpty()) {
+            emailTV.error = getString(R.string.empty_edit_text)
         }
         if(passwordPT.content().isEmpty()) {
             passwordPT.error = getString(R.string.empty_edit_text)
@@ -167,14 +166,14 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return namePT.content().isNotEmpty()
-                && emailPT.content().isNotEmpty()
+                && emailTV.content().isNotEmpty()
                 && passwordPT.content().isNotEmpty()
                 && repeatPasswordPT.content().isNotEmpty()
     }
 
 
     private fun accountNotExists() :Boolean {
-        return !auth.isSignInWithEmailLink(emailPT.content())
+        return !auth.isSignInWithEmailLink(emailTV.content())
     }
 
     private fun isPasswordOk() : Boolean {
@@ -194,17 +193,17 @@ class RegisterActivity : AppCompatActivity() {
     private fun register() {
         showSpinnerAndDisableControls()
         auth
-            .createUserWithEmailAndPassword(emailPT.content(), passwordPT.content())
+            .createUserWithEmailAndPassword(emailTV.content(), passwordPT.content())
             .addOnSuccessListener { updateUserDetails(it.user!!) }
             .addOnFailureListener {
 
                 hideSpinnerAndEnableControls()
                 if (it.message.equals(getString(R.string.emial_exists_message))) {
-                    emailPT.error = getString(R.string.emial_exists_message)
+                    emailTV.error = getString(R.string.emial_exists_message)
                 }
 
                 if (it.message.equals(getString(R.string.badly_formated_email_message))) {
-                    emailPT.error = getString(R.string.badly_formated_email_message)
+                    emailTV.error = getString(R.string.badly_formated_email_message)
                 }
             }
     }
