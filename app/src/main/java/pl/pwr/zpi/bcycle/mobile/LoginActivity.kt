@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.addOnFailureListener {
-                showToast("${getString(R.string.failed_to_sign_in)} + ${it.localizedMessage}")
+                showToast(getString(R.string.failed_to_sign_in, it.localizedMessage))
               hideSpinnerAndEnableControls()
 
             }
