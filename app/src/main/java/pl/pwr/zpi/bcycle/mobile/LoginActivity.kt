@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
@@ -32,6 +33,16 @@ class LoginActivity : AppCompatActivity() {
         registerBt.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+        password.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_GO && isFormFilled()) {
+                signIn()
+                true
+            } else {
+                false
+            }
+        }
+
     }
 
     private fun isFormFilled(): Boolean {
@@ -67,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.addOnFailureListener {
-                showToast("${getString(R.string.failed_to_sign_in)} + ${it.localizedMessage}")
+                showToast(getString(R.string.failed_to_sign_in, it.localizedMessage))
               hideSpinnerAndEnableControls()
 
             }

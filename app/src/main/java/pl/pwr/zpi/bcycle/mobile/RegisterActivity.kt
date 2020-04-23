@@ -226,7 +226,7 @@ class RegisterActivity : AppCompatActivity() {
                 showToast(getString(R.string.register_success_message))
                 finish()
             }.addOnFailureListener {
-                showToast("${getString(R.string.failed_to_register)} ${it.localizedMessage}")
+                showToast(getString(R.string.failed_to_register, it.localizedMessage))
                 user.delete()
                 hideSpinnerAndEnableControls()
             }

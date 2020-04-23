@@ -13,7 +13,6 @@ import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,7 +24,7 @@ import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.timeToString
 
 
-class RecordTripActivity : AppCompatActivity() {
+class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private lateinit var service: TripLocationTrackingService
     private var isBound: Boolean = false
     private var canStart: Boolean = false
@@ -69,6 +68,9 @@ class RecordTripActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_trip)
         TooltipCompat.setTooltipText(photoBt, getString(R.string.take_a_photo))
+
+        configureIndependentNavigationDrawer()
+        updateNavigationDrawerHeader()
 
         pauseFAB.setOnClickListener {
             if (isBound) {

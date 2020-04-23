@@ -44,7 +44,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 finish()
 
             }.addOnFailureListener(){
-                showToast("${getString(R.string.failed_to_sign_in)}  ${it.localizedMessage}")
+                showToast(getString(R.string.failed_to_request_new_password, it.localizedMessage))
                 hideSpinnerAndEnableControls()
             }
 
