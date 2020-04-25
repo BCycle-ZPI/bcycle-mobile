@@ -16,9 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TripCreationMapActivity"></activity>
-        <activity android:name=".TripCreationActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity>
+        <activity android:name=".TripCreationActivity"/>
+
         <activity android:name=".DashboardActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">

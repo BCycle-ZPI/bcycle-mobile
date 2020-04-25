@@ -14,20 +14,47 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
+    <Button
         android:id="@+id/bt_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
-        android:alpha="0.7"
-        android:background="@color/picker_button_background_innactive"
-        android:rotation="180"
+        android:alpha="0.8"
+        android:backgroundTint="@color/cardview_light_background"
+        android:text="NEXT"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/icon_right_arrow" />
+
+    <Button
+        android:id="@+id/bt_show_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:alpha="0.7"
+        android:backgroundTint="@color/cardview_light_background"
+        android:text="Zoom to \n start point"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bt_show_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:alpha="0.7"
+        android:backgroundTint="@color/cardview_light_background"
+        android:text="Zoom to \n end point"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/bt_show_start"
+        app:layout_constraintTop_toTopOf="@+id/bt_show_start" />
 
     <!--    <fragment-->
 <!--        android:id="@+id/mapView"-->

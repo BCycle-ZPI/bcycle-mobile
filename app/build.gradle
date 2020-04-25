@@ -61,4 +61,5 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:1.1.0'
     implementation 'com.yarolegovich:lovely-dialog:1.1.0'
     implementation 'net.danlew:android.joda:2.10.3'
+    implementation 'io.paperdb:paperdb:2.6'
 }

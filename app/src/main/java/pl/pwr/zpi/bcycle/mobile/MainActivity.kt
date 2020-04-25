@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener{ Picasso.get().load(it).into(header.currentUserImage) }
         } ?: finish()
 
-        startActivity(Intent(this, TripCreationMapActivity::class.java))
+        startActivity(Intent(this, TripCreationActivity::class.java))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -2,11 +2,12 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,8 +20,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.ui.IconGenerator
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
+import com.yarolegovich.lovelydialog.LovelyStandardDialog
 import kotlinx.android.synthetic.main.activity_trip_creation_map.*
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
@@ -32,13 +33,25 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var lastLocation: Location
     private var map: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val markers = mutableListOf<Marker>()
+    private var myMarkers = mutableListOf<MyMarker>()
     private var locationManager: LocationManager? = null
     private var markerStartPoint: Marker? = null
     private var markerFinishPoint: Marker? = null
+    // region intent.extra data
+    private lateinit var savedStartDate:String
+    private lateinit var  savedStartTime:String
+    private lateinit var savedEndTime:String
+    private lateinit var savedEndDate:String
+    private lateinit var savedName:String
+    private lateinit var savedDesc:String
+    // endregion intent.extra data
 
     companion object {
         private val LOCATION_REQUEST_CODE = 101
+        private val MARKERS_LIST_KEY = "MARKERSLIST"
+        private val START_POINT_KEY = "STARTPOINTKEY"
+        private val FINISH_POINT_KEY = "FINISHPOINTKEY"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,31 +62,62 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         mapFragment.getMapAsync(this)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         setListeners()
+        getSavedData()
+    }
+
+    private fun getSavedData(){
+        val extras = intent.extras;
+        savedStartDate=extras?.getString(TripCreationActivity.START_DATE_KEY)!!
+        savedStartTime = extras.getString(TripCreationActivity.START_TIME_KEY)!!
+        savedEndDate = extras.getString(TripCreationActivity.END_DATE_KEY)!!
+        savedEndTime = extras.getString(TripCreationActivity.END_TIME_KEY)!!
+        savedName = extras.getString(TripCreationActivity.NAME_KEY)!!
+        savedDesc = extras.getString(TripCreationActivity.DESCRIPTION_KEY)!!
     }
 
     private fun setListeners() {
         bt_next.setOnClickListener {
-            //todo
+            LovelyStandardDialog(this)
+                .setTopColorRes(R.color.violet)
+                .setTitle(resources.getString(R.string.prompt_is_trip_done))
+                .setIcon(R.drawable.bike_icon)
+                .setPositiveButton(R.string.yes) {
+                    showToast("aaaaa")
+                }
+                .setPositiveButtonColorRes(R.color.green)
+                .setNegativeButton(R.string.no,{})
+                .setNegativeButtonColorRes(R.color.red)
+                .show()
+        }
+        bt_show_start.setOnClickListener {
+            if(markerStartPoint!=null){
+                markerStartPoint?.showInfoWindow()
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(markerStartPoint?.position, 12f))
+            }
+        }
+
+        bt_show_end.setOnClickListener {
+            if(markerFinishPoint!=null){
+                markerFinishPoint?.showInfoWindow()
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(markerFinishPoint?.position, 12f))
+            }
         }
     }
-
 
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         map?.setOnMarkerClickListener(this)
 
         handleMapGestures()
-
-        //permission for getting location
         getCurrentLocation()
 
         map?.setOnMapLongClickListener {
-            val markerOpt = MarkerOptions().position(it)
+            val markerOpt = MarkerOptions().position(it).icon(BitmapDescriptorFactory.defaultMarker())
             val mark = map?.addMarker(markerOpt)
             mark?.isDraggable = true
-            markers.add(mark!!)
+
+            myMarkers.add(MyMarker(markerOpt.position.latitude, markerOpt.position.longitude))
         }
     }
 
@@ -83,61 +127,59 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         mapSettings?.isScrollGesturesEnabled = true
     }
 
-    override fun onLocationChanged(location: Location) {
-        val latLng = LatLng(location.latitude, location.longitude);
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13f);
-        map?.animateCamera(cameraUpdate);
-    }
 
-    override fun onMarkerClick(marker: Marker?): Boolean { //todo
-        val array = arrayListOf<String>("set as start point","set as end point", "remove it")
+    // region markerClickListener
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        val array = arrayListOf<String>(getString(R.string.set_as_start_point),getString(R.string.set_as_end_point), getString(
+                    R.string.remove_it))
         LovelyChoiceDialog(this)
             .setTopColorRes(R.color.violet)
             .setTitle(resources.getString(R.string.prompt_marker_what_to_do))
             .setIcon(R.drawable.bike_icon)
             .setItemsMultiChoice(
-                array,
-                LovelyChoiceDialog.OnItemsSelectedListener<String>() { positions: List<Int>, items: List<String> ->
-                    if(items.contains(array[0], array[2]) || items.contains(array[1], array[2])){
-                        showToast("You cannot set the point as start/end point of your trip and remove it.")
-                    }
-                    else if(items.contains(array[0]) && items.contains(array[1])){
-                        markerStartPoint?.setIcon(null)
-                        markerFinishPoint?.setIcon(null)
-
-                        markerStartPoint = marker
-                        markerFinishPoint = marker
-                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                        marker?.title = "start point & end point"
-                        marker?.showInfoWindow()
-                    }
-                    else if(items.contains(array[0])){
-                        markerStartPoint?.setIcon(null)
-                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                        markerStartPoint = marker
-                        marker?.title = "start point"
-                        marker?.showInfoWindow()
-                    }
-                    else if(items.contains(array[1])){
-                        markerFinishPoint?.setIcon(null)
-                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                        markerFinishPoint = marker
-                        marker?.title= "end point"
-                        marker?.showInfoWindow()
-                    }
-                    else if(items.contains(array[2])){
-                        marker?.remove()
-                    }
-                    updateStartAndFinishMarkers()
-                    Toast.makeText(this@TripCreationMapActivity, items.toString() + positions.toString(), Toast.LENGTH_LONG).show()
-                })
+                array
+            ) { _: List<Int>, items: List<String> ->
+                if(items.contains(array[0], array[2]) || items.contains(array[1], array[2])){
+                    showToast(getString(R.string.warning_cant_set_and_delete_marker))
+                } else if(items.contains(array[0]) && items.contains(array[1])){
+                    markerStartPoint?.setIcon(null)
+                    markerFinishPoint?.setIcon(null)
+                    markerStartPoint = marker
+                    markerFinishPoint = marker
+                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
+                    marker?.title = getString(R.string.start_and_end_point)
+                    marker?.showInfoWindow()
+                } else if(items.contains(array[0])){
+                    markerStartPoint?.setIcon(null)
+                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
+                    markerStartPoint = marker
+                    marker?.title = getString(R.string.start_point)
+                    marker?.showInfoWindow()
+                } else if(items.contains(array[1])){
+                    markerFinishPoint?.setIcon(null)
+                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
+                    markerFinishPoint = marker
+                    marker?.title= getString(R.string.end_point)
+                    marker?.showInfoWindow()
+                } else if(items.contains(array[2])){
+                    if(marker==markerStartPoint) markerStartPoint = null
+                    if(marker==markerFinishPoint) markerFinishPoint = null
+                    marker?.remove()
+                }
+            }
             .setConfirmButtonText(R.string.confirm)
             .show()
         return true
     }
 
-    private fun updateStartAndFinishMarkers(){
-        //todo
+    // endregion markerClickListener
+
+    // region requesting permission region
+
+    override fun onLocationChanged(location: Location) {
+        val latLng = LatLng(location.latitude, location.longitude)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12f)
+        map?.animateCamera(cameraUpdate)
     }
 
     private fun requestPermission(
@@ -201,6 +243,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
     }
+    // endregion requesting permission region
 }
 
 private fun <E> Collection<E>.contains(vararg ts: E): Boolean {

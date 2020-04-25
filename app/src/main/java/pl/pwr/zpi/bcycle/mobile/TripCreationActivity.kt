@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,25 +23,27 @@ class TripCreationActivity : AppCompatActivity() {
         val TIME_FORMAT = "HH:mm"
         val DATE_FORMAT = "dd-MM-yyyy"
         val DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm"
-    }
+        val START_DATE_KEY = "START_DATE_KEY"
+        val START_TIME_KEY = "START_TIME_KEY"
+        val END_DATE_KEY = "END_DATE_KEY"
+        val END_TIME_KEY = "END_TIME_KEY"
+        val NAME_KEY = "NAME_KEY"
+        val DESCRIPTION_KEY = "DESCRIPTION_KEY"
 
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_creation)
         setListeners()
         supportActionBar?.hide()
-        JodaTimeAndroid.init(this);
+        JodaTimeAndroid.init(this)
     }
-
-
+    
     private fun setListeners() {
         bt_next.setOnClickListener {
             if(isFormCorrect()){
-                val intent = Intent(this, TripCreationMapActivity::class.java)
-                val bundle = Bundle()
-                //bundle.putSer
-                //intent.putExtras(bundle)
-                startActivity(intent)
+                startActivity(createIntentAndSaveData())
             }
         }
         bt_start_date.setOnClickListener{chooseDateTime(tv_start_time, tv_start_date, true)
@@ -49,9 +52,18 @@ class TripCreationActivity : AppCompatActivity() {
         }
     }
 
+    private fun createIntentAndSaveData() : Intent{
+        val intent = Intent(this, TripCreationMapActivity::class.java)
+        intent.putExtra(NAME_KEY,  et_name.text.toString())
+        intent.putExtra(START_DATE_KEY, tv_start_date.text.toString())
+        intent.putExtra(START_TIME_KEY, tv_start_time.text.toString())
+        intent.putExtra(END_DATE_KEY, tv_finish_date.text.toString())
+        intent.putExtra(END_TIME_KEY, tv_finish_time.text.toString())
+        intent.putExtra(DESCRIPTION_KEY,  et_desc.text.toString())
+        return intent
+    }
+
     private fun chooseDateTime(timeTV:TextView, dateTV:TextView, startDate:Boolean) {
-
-
         val cal = Calendar.getInstance()
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hour)
@@ -85,7 +97,6 @@ class TripCreationActivity : AppCompatActivity() {
         else{
             bt_finish_date.setMargins(rightMarginDp = 80)
         }
-
     }
 
     private fun isFormCorrect(): Boolean {
