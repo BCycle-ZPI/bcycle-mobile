@@ -13,6 +13,7 @@ import net.danlew.android.joda.JodaTimeAndroid
 import org.joda.time.format.DateTimeFormat
 import pl.pwr.zpi.bcycle.mobile.utils.setMargins
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
+import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,7 +106,7 @@ class TripCreationActivity : AppCompatActivity() {
             return false
         }
         if(!checkIfDatesChosen()){
-            Toast.makeText(this, R.string.prompt_choose_dates, Toast.LENGTH_SHORT).show()
+            showToastWarning(R.string.prompt_choose_dates)
             return false
         }
         if(!checkIfDatesValid()){
@@ -122,12 +123,12 @@ class TripCreationActivity : AppCompatActivity() {
         val parsedDateEnd = formatterDateTime.parseDateTime(dateTimeEnd)
 
         if(parsedDateStart.isBeforeNow || parsedDateEnd.isBeforeNow){
-            showToast(R.string.prompt_chosen_dates_from_past)
+            showToastWarning(R.string.prompt_chosen_dates_from_past)
             return false
         }
 
         if(parsedDateStart.isAfter(parsedDateEnd)){
-            showToast(R.string.prompt_invalid_dates)
+            showToastWarning(R.string.prompt_invalid_dates)
             return false
         }
         return true

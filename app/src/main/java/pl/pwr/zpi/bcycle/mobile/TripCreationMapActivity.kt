@@ -2,13 +2,10 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,11 +16,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import com.yarolegovich.lovelydialog.LovelyStandardDialog
 import kotlinx.android.synthetic.main.activity_trip_creation_map.*
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
+import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 
 class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
@@ -82,6 +83,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 .setTitle(resources.getString(R.string.prompt_is_trip_done))
                 .setIcon(R.drawable.bike_icon)
                 .setPositiveButton(R.string.yes) {
+                    //todo
                     showToast("aaaaa")
                 }
                 .setPositiveButtonColorRes(R.color.green)
@@ -140,7 +142,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 array
             ) { _: List<Int>, items: List<String> ->
                 if(items.contains(array[0], array[2]) || items.contains(array[1], array[2])){
-                    showToast(getString(R.string.warning_cant_set_and_delete_marker))
+                    showToastError((R.string.warning_cant_set_and_delete_marker))
                 } else if(items.contains(array[0]) && items.contains(array[1])){
                     markerStartPoint?.setIcon(null)
                     markerFinishPoint?.setIcon(null)
@@ -218,7 +220,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f))
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
     }
@@ -234,11 +236,9 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 if (grantResults.isEmpty() || grantResults[0] !=
                     PackageManager.PERMISSION_GRANTED
                 ) {
-                    Toast.makeText(
-                        this,
-                        R.string.location_denied_prompt,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    showToastError(
+                        R.string.location_denied_prompt)
+
                 }
             }
         }
