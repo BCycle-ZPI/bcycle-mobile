@@ -10,4 +10,13 @@ class SettingsViewModel : ViewModel() {
         value = "This is settings Fragment"
     }
     val text: LiveData<String> = _text
+
+
+    public fun getImageFromCamera(){
+
+    }
+
+    public fun getImageFromGallery() {
+
+    }
 }
