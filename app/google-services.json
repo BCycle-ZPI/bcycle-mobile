@@ -8,41 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:735289696982:android:5507ff93ef22fdece95f77",
-        "android_client_info": {
-          "package_name": "pl.bcycle.firebasetest"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDEnptQvlMZ9f9w-zHJoey6EYGp26EvN8U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:735289696982:android:138f5f1459330ed0e95f77",
         "android_client_info": {
           "package_name": "pl.pwr.zpi.bcycle.mobile"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "735289696982-344tda3ovk5s115m8t4fik3el33emccf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.pwr.zpi.bcycle.mobile",
+            "certificate_hash": "b92221f61b4f9f2b38593aecb44bedb49d9ae595"
+          }
+        },
         {
           "client_id": "735289696982-7rh31vd7q8tfpreum3fma5kddqq3mrqs.apps.googleusercontent.com",
           "client_type": 3
