@@ -8,30 +8,39 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.fragment_settings.progressBar
-import pl.pwr.zpi.bcycle.mobile.MainActivity
 import pl.pwr.zpi.bcycle.mobile.R
-import pl.pwr.zpi.bcycle.mobile.RegisterActivity
-import pl.pwr.zpi.bcycle.mobile.utils.showToast
+import pl.pwr.zpi.bcycle.mobile.utils.content
+
 
 class SettingsFragment : Fragment() {
 
     private lateinit var settingsViewModel: SettingsViewModel
     private var allControls: List<View> = listOf()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    private lateinit var callback: OnDataChangedListener
 
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if(activity is OnDataChangedListener)
+            callback = activity as OnDataChangedListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +54,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         cancelBt.setOnClickListener() {
             cancel()
         }
@@ -55,8 +65,137 @@ class SettingsFragment : Fragment() {
             loadPhotoFromCamera()
         }
 
-        allControls = listOf(emialPT,cameraBt,passwordPT,repeatPasswordPT,saveBt,namePT,galleryBt,cameraBt)
+        saveBt.setOnClickListener(){
+            if(isDataEdited()) saveChanges()
+            else Toast.makeText(activity,getString(R.string.nothing_to_edit_prompt),Toast.LENGTH_SHORT).show()
+        }
+
+        allControls = listOf(cameraBt,passwordPT,repeatPasswordPT,saveBt,namePT,galleryBt,cameraBt,cancelBt)
     }
+
+    private fun saveChanges() {
+
+        showSpinnerAndDisableControls()
+
+        var newName : String? = null
+        var newPassword : String?  = null
+        var newAvatar : Uri? = null
+
+        if(isNameEdited()){
+            newName = namePT.content()
+        }
+
+        if(isPasswordEditedOk()){
+            newPassword = passwordPT.content()
+        }
+
+        if(isImageEdited()) {
+            newAvatar = mImageUri
+        }
+
+        val handler = Handler()
+        handler.postDelayed(Runnable {
+            changeData(newName,newPassword,newAvatar)
+            // Actions to do after 3 seconds
+        }, 3000)
+
+    }
+
+    fun changeData(name: String?, password: String?, imageUri : Uri?) {
+
+        val profileBuilder = UserProfileChangeRequest.Builder()
+
+        if(password!=null) {
+            currentUser!!.updatePassword(password)
+
+        }
+
+        if(name!=null){
+            profileBuilder.setDisplayName(name)
+        }
+
+        if(imageUri!=null) {
+            uploadImageToFirebase(imageUri)
+            val avatar: Uri? = if(uploadImageToFirebase(imageUri)) {
+                Uri.parse("${FirebaseStorage.getInstance().reference.root}/${currentUser!!.uid}.png")
+            } else {
+                defaultAvatarUri
+            }
+            profileBuilder.setPhotoUri(avatar)
+        }
+
+        if(name!=null || imageUri!=null){
+            val profile = profileBuilder.build()
+
+            currentUser!!.updateProfile(profile).addOnCompleteListener{
+                callback.onDataChanged()
+                hideSpinnerAndEnableControls()
+                activity?.onBackPressed()
+                Toast.makeText(activity,getString(R.string.data_changed_prompt),Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener{
+                onFailure()
+            }
+        } else {
+            hideSpinnerAndEnableControls()
+            activity?.onBackPressed()
+            Toast.makeText(activity,getString(R.string.data_changed_prompt),Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun onFailure(){
+
+        hideSpinnerAndEnableControls()
+        Toast.makeText(activity,getString(R.string.changed_data_error),Toast.LENGTH_SHORT).show()
+    }
+
+    private fun uploadImageToFirebase(mImageUri:Uri?) :Boolean {
+        if(mImageUri!=null) {
+            val imageRef = FirebaseStorage.getInstance().reference.child(currentUser!!.uid+".png")
+            imageRef.putFile(mImageUri)
+            return true
+        }
+        return false
+    }
+
+    private fun isDataEdited(): Boolean =
+                isNameEdited()  || isImageEdited() || isPasswordEditedOk()
+
+    private fun isNameEdited(): Boolean = namePT.content().isNotEmpty()
+
+    private fun isImageEdited(): Boolean = mImageUri!=null
+
+    private fun isPasswordEditedOk(): Boolean {
+
+        var correct = true
+
+        if(passwordPT.content().isEmpty() && repeatPasswordPT.content().isEmpty()){
+            correct=false
+        }
+        else if (passwordPT.content().isNotEmpty()){
+
+            if(repeatPasswordPT.content().isNotEmpty()){
+                if(passwordPT.content().length <6 ){
+                    passwordPT.error = getString(R.string.too_short_password_message)
+                    correct = false
+                }
+                else if(passwordPT.content()!= repeatPasswordPT.content()) {
+                    repeatPasswordPT.error = getString(R.string.different_password_message)
+                    correct=false
+                }
+            } else {
+                correct=false
+                repeatPasswordPT.error = getString(R.string.empty_edit_text)
+            }
+        } else {
+            correct=false
+            passwordPT.error = getString(R.string.empty_edit_text)
+        }
+
+        return correct
+    }
+
 
     private fun loadPhotoFromGallery() {
 
@@ -116,7 +255,7 @@ class SettingsFragment : Fragment() {
 
             mImageUri = data.data
 
-            Toast.makeText(activity,"picked",Toast.LENGTH_SHORT).show()
+
 
             context?.let {
                 CropImage.activity(mImageUri)
@@ -137,24 +276,18 @@ class SettingsFragment : Fragment() {
         }
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            Toast.makeText(activity,"in",Toast.LENGTH_SHORT).show()
+
 
             val result : CropImage.ActivityResult = CropImage.getActivityResult(data)
 
             if(resultCode == RESULT_OK) {
 
-                Toast.makeText(activity,"good",Toast.LENGTH_SHORT).show()
-
                 mImageUri = result.uri
 
                 Picasso.get().load(mImageUri).into(avatarImV)
 
-            } else {
-                Toast.makeText(activity,"bad",Toast.LENGTH_SHORT).show()
             }
 
-        }else {
-            Toast.makeText(activity,"notin",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -170,15 +303,19 @@ class SettingsFragment : Fragment() {
         }
     }
 
-
-
-
     private fun cancel() {
 
         showSpinnerAndDisableControls()
-        activity?.onBackPressed()
-        hideSpinnerAndEnableControls()
-        Toast.makeText(activity,getString(R.string.prompt_cancel_change),Toast.LENGTH_SHORT).show()
+
+        val handler = Handler()
+        handler.postDelayed(Runnable {
+            hideSpinnerAndEnableControls()
+            activity?.onBackPressed()
+            Toast.makeText(activity,getString(R.string.prompt_cancel_change),Toast.LENGTH_SHORT).show()
+            // Actions to do after 3 seconds
+        }, 3000)
+
+
     }
 
     private fun showSpinnerAndDisableControls() {
@@ -198,6 +335,14 @@ class SettingsFragment : Fragment() {
         private var mImageUri: Uri? = null
         private  val PICK_IMAGE_REQUEST = 1
         private  val MAKE_IMAGE_REQUEST = 2
+        private val defaultAvatarUri =
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
     }
+
+
+    interface OnDataChangedListener {
+        fun onDataChanged()
+    }
+
 
 }
