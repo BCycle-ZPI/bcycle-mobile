@@ -4,15 +4,12 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_trip_creation.*
-import net.danlew.android.joda.JodaTimeAndroid
-import org.joda.time.format.DateTimeFormat
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import pl.pwr.zpi.bcycle.mobile.utils.setMargins
-import pl.pwr.zpi.bcycle.mobile.utils.showToast
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,12 +22,10 @@ class TripCreationActivity : AppCompatActivity() {
         val DATE_FORMAT = "dd-MM-yyyy"
         val DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm"
         val START_DATE_KEY = "START_DATE_KEY"
-        val START_TIME_KEY = "START_TIME_KEY"
         val END_DATE_KEY = "END_DATE_KEY"
-        val END_TIME_KEY = "END_TIME_KEY"
         val NAME_KEY = "NAME_KEY"
         val DESCRIPTION_KEY = "DESCRIPTION_KEY"
-
+        val formatterDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +33,6 @@ class TripCreationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trip_creation)
         setListeners()
         supportActionBar?.hide()
-        JodaTimeAndroid.init(this)
     }
     
     private fun setListeners() {
@@ -55,12 +49,20 @@ class TripCreationActivity : AppCompatActivity() {
 
     private fun createIntentAndSaveData() : Intent{
         val intent = Intent(this, TripCreationMapActivity::class.java)
+        val bundle = Bundle()
         intent.putExtra(NAME_KEY,  et_name.text.toString())
-        intent.putExtra(START_DATE_KEY, tv_start_date.text.toString())
+
+
+        /*intent.putExtra(START_DATE_KEY, tv_start_date.text.toString())
         intent.putExtra(START_TIME_KEY, tv_start_time.text.toString())
         intent.putExtra(END_DATE_KEY, tv_finish_date.text.toString())
-        intent.putExtra(END_TIME_KEY, tv_finish_time.text.toString())
+        intent.putExtra(END_TIME_KEY, tv_finish_time.text.toString())*/
+
+        bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(tv_start_date.text.toString() + " " +  tv_start_time.text.toString(),formatterDateTime))
+        bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString(),formatterDateTime))
+
         intent.putExtra(DESCRIPTION_KEY,  et_desc.text.toString())
+        intent.putExtras(bundle)
         return intent
     }
 
@@ -118,11 +120,10 @@ class TripCreationActivity : AppCompatActivity() {
     private fun checkIfDatesValid():Boolean{
         val dateTimeStart = tv_start_date.text.toString() + " " +  tv_start_time.text.toString()
         val dateTimeEnd = tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString()
-        val formatterDateTime = DateTimeFormat.forPattern(DATE_TIME_FORMAT)
-        val parsedDateStart = formatterDateTime.parseDateTime(dateTimeStart)
-        val parsedDateEnd = formatterDateTime.parseDateTime(dateTimeEnd)
+        val parsedDateStart = ZonedDateTime.parse(dateTimeStart, formatterDateTime)
+        val parsedDateEnd = ZonedDateTime.parse(dateTimeEnd,  formatterDateTime)
 
-        if(parsedDateStart.isBeforeNow || parsedDateEnd.isBeforeNow){
+        if(parsedDateStart.isBefore(ZonedDateTime.now()) || parsedDateEnd.isBefore(ZonedDateTime.now())){
             showToastWarning(R.string.prompt_chosen_dates_from_past)
             return false
         }
