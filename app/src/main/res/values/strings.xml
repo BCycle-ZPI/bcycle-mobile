@@ -91,6 +91,7 @@
     <string name="prompt_is_trip_done">Have you finished planning your trip?</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="prompt_cannot_data">Cannot load your trip data</string>
 
     <string-array name="array_trip_points">
         <item>START POINT</item>

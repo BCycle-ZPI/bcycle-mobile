@@ -24,17 +24,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import com.yarolegovich.lovelydialog.LovelyStandardDialog
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_trip_creation_map.*
 import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.GroupTripPoint
-import pl.pwr.zpi.bcycle.mobile.models.TripPoint
 import pl.pwr.zpi.bcycle.mobile.models.UserInfo
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
-import java.security.acl.Group
 
 class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
@@ -58,10 +55,6 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     companion object {
         private val LOCATION_REQUEST_CODE = 101
-        private val MARKERS_LIST_KEY = "MARKERSLIST"
-        private val START_POINT_KEY = "STARTPOINTKEY"
-        private val FINISH_POINT_KEY = "FINISHPOINTKEY"
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,9 +97,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                                 photoUrl
                             ), null, savedStartDate, savedEndDate, route, null
                         )
-                    )
-                    //todo
-                    showToast("aaaaa")
+                    ).subscribe({showToast("Group trip was added successfully!")},{showToast("upsii")})
                 }
                 .setPositiveButtonColorRes(R.color.green)
                 .setNegativeButton(R.string.no, {})
