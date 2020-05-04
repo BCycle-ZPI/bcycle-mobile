@@ -21,8 +21,6 @@ class MyAccountFragment : Fragment() {
     ): View? {
         myAccountViewModel = ViewModelProvider(this).get(MyAccountViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_my_account, container, false)
-        val textView: TextView = root.findViewById(R.id.text_my_account)
-        myAccountViewModel.text.observe(viewLifecycleOwner, Observer { textView.text = it })
         return root
     }
 }
