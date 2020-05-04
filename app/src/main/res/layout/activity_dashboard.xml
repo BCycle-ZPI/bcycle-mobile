@@ -5,7 +5,7 @@
     android:id="@+id/dashboard_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="#DDD9F6"
     android:padding="5dp"
     tools:context=".DashboardActivity">
 
@@ -20,21 +20,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/bt_newtrip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="@drawable/button_frame"
             android:text="Start a new trip" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/bt_grouptrips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="@drawable/button_frame"
             android:text="GROUP TRIPS" />
     </LinearLayout>
 

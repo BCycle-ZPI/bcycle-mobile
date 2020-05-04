@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:alpha="0.8"
-    android:background="#FFFFFF"
-    android:padding="6dp">
+    android:alpha="0.9"
+    android:background="@drawable/button_frame"
+    android:padding="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="@+id/tv_road" />
 
@@ -32,8 +32,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
             android:text="TextView"
             android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
 
@@ -41,9 +43,9 @@
             android:id="@+id/tv_hours"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@+id/tv_date"
             app:layout_constraintStart_toStartOf="@+id/tv_date"
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -52,10 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="8dp"
             android:text="TextView"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +65,7 @@
             android:id="@+id/iv_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,7 +81,7 @@
             android:layout_height="wrap_content"
             android:text=", "
             android:textColor="#000000"
-            android:textSize="28sp"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_road"
             app:layout_constraintEnd_toStartOf="@+id/tv_road"
             app:layout_constraintTop_toTopOf="@+id/tv_road" />

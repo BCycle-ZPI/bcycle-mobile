@@ -17,7 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
-abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
+abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
     protected lateinit var appBarConfiguration: AppBarConfiguration
     protected lateinit var navController: NavController
 
@@ -39,7 +39,7 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
     protected fun configureIndependentNavigationDrawer() {
         configureIndependentNavigationDrawer(FirebaseAuth.getInstance())
     }
-    
+
     protected fun updateNavigationDrawerHeader(user: FirebaseUser, storage: FirebaseStorage) {
         val header = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
         header.currentUserName.text = user.displayName
@@ -60,6 +60,12 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
             if (it.itemId == R.id.nav_logout) {
                 auth.signOut()
                 finish()
+            } else if (it.itemId == R.id.nav_create_group_trip) {
+                startActivity(Intent(applicationContext, TripCreationActivity::class.java))
+                finish()
+            } else if (it.itemId == R.id.nav_home) {
+                startActivity(Intent(applicationContext, DashboardActivity::class.java))
+                finish()
             } else {
                 navController.navigate(it.itemId)
             }
@@ -76,6 +82,13 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             if (it.itemId == R.id.nav_logout) {
                 auth.signOut()
+                finishAndRemoveTask()
+            } else if (it.itemId == R.id.nav_create_group_trip) {
+                startActivity(Intent(applicationContext, TripCreationActivity::class.java))
+                finishAndRemoveTask()
+
+            } else if (it.itemId == R.id.nav_home) {
+                startActivity(Intent(applicationContext, DashboardActivity::class.java))
                 finishAndRemoveTask()
             } else {
                 // Start the main activity and run the item.

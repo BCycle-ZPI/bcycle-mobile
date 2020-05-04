@@ -2,6 +2,7 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -30,6 +31,7 @@ import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.GroupTripPoint
 import pl.pwr.zpi.bcycle.mobile.models.UserInfo
+import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 
@@ -84,20 +86,34 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 .setTitle(resources.getString(R.string.prompt_is_trip_done))
                 .setIcon(R.drawable.bike_icon)
                 .setPositiveButton(R.string.yes) {
-                    val photoUrl = FirebaseStorage.getInstance()
-                        .reference.child(auth.currentUser!!.uid + ".png").toString()
-                    val route = createMarkersList()
-                    ApiClient.groupTripApi.create(
-                        GroupTrip(
-                            auth.currentUser?.uid?.toInt(), savedName, savedDesc,
-                            UserInfo(
-                                auth.currentUser?.uid!!,
-                                auth.currentUser?.displayName!!,
-                                auth.currentUser?.email!!,
-                                photoUrl
-                            ), null, savedStartDate, savedEndDate, route, null
-                        )
-                    ).subscribe({showToast("Group trip was added successfully!")},{showToast("upsii")})
+                    if(isRequiredDataGiven()){
+                        val photoUrl = FirebaseStorage.getInstance()
+                            .reference.child(auth.currentUser!!.uid + ".png").toString()
+                        val route = createMarkersList()
+                        ApiClient.groupTripApi.create(
+                            GroupTrip(
+                                null, savedName, savedDesc,
+                                UserInfo(
+                                    auth.currentUser?.uid!!,
+                                    auth.currentUser?.displayName!!,
+                                    auth.currentUser?.email!!,
+                                    photoUrl
+                                ), null, savedStartDate, savedEndDate, route, null
+                            )
+                        ).background().subscribe({
+                            showToast(getString(R.string.prompt_trid_added_successfully))
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MainActivity::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            )
+                            finish()
+                        }, { showToast(it.message?:"mess null")})
+                    }
+                    else{
+                        showToastError(R.string.error_missing_start_or_end_marker)
+                    }
                 }
                 .setPositiveButtonColorRes(R.color.green)
                 .setNegativeButton(R.string.no, {})
@@ -127,6 +143,10 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 )
             }
         }
+    }
+
+    private fun isRequiredDataGiven(): Boolean {
+        return markerStartPoint!=null && markerFinishPoint!=null
     }
 
     private fun createMarkersList(): MutableList<GroupTripPoint> {

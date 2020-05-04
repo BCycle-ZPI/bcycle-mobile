@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_trip_creation.*
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import pl.pwr.zpi.bcycle.mobile.utils.setMargins
@@ -19,13 +20,13 @@ class TripCreationActivity : AppCompatActivity() {
 
     companion object{
         val TIME_FORMAT = "HH:mm"
-        val DATE_FORMAT = "dd-MM-yyyy"
-        val DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm"
+        val DATE_FORMAT = "yyyy-MM-dd"
+        val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm"
         val START_DATE_KEY = "START_DATE_KEY"
         val END_DATE_KEY = "END_DATE_KEY"
         val NAME_KEY = "NAME_KEY"
         val DESCRIPTION_KEY = "DESCRIPTION_KEY"
-        val formatterDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)
+        val formatterDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).withZone(ZoneId.systemDefault())
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class TripCreationActivity : AppCompatActivity() {
         setListeners()
         supportActionBar?.hide()
     }
-    
+
     private fun setListeners() {
         bt_next.setOnClickListener {
             if(isFormCorrect()){
@@ -58,8 +59,8 @@ class TripCreationActivity : AppCompatActivity() {
         intent.putExtra(END_DATE_KEY, tv_finish_date.text.toString())
         intent.putExtra(END_TIME_KEY, tv_finish_time.text.toString())*/
 
-        bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(tv_start_date.text.toString() + " " +  tv_start_time.text.toString(),formatterDateTime))
-        bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString(),formatterDateTime))
+        bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(tv_start_date.text.toString() + " " +  tv_start_time.text.toString(), formatterDateTime))
+        bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString(), formatterDateTime))
 
         intent.putExtra(DESCRIPTION_KEY,  et_desc.text.toString())
         intent.putExtras(bundle)
