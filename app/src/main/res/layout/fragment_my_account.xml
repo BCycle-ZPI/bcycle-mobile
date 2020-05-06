@@ -36,7 +36,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/avatarIV" />
 
             <TextView
-                android:id="@+id/mailTV"
+                android:id="@+id/nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -51,12 +51,12 @@
                 android:id="@+id/emailTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="email"
                 android:textColor="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/avatarIV"
-                app:layout_constraintTop_toBottomOf="@+id/mailTV" />
+                app:layout_constraintTop_toBottomOf="@+id/nameTV" />
 
             <TextView
                 android:id="@+id/resultsTV"
@@ -203,6 +203,17 @@
                 app:layout_constraintHorizontal_bias="0.22"
                 app:layout_constraintStart_toEndOf="@+id/totalTime"
                 app:layout_constraintTop_toBottomOf="@+id/totalDistanceKm"/>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/resultsTV"
+                app:layout_constraintTop_toBottomOf="@+id/lineTV"
+                app:srcCompat="@drawable/ic_trending_up" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
