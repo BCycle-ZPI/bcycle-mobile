@@ -1,9 +1,11 @@
 package pl.pwr.zpi.bcycle.mobile
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
+import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
     protected lateinit var appBarConfiguration: AppBarConfiguration
@@ -46,6 +50,9 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
         header.currentUserEmail.text = user.email
         storage.getReferenceFromUrl(user.photoUrl.toString()).downloadUrl
             .addOnSuccessListener { Picasso.get().load(it).into(header.currentUserImage) }
+            .addOnFailureListener {
+                Picasso.get().load(defaultAvatarUri).into(header.currentUserImage)
+            }
     }
 
     protected fun configureMainNavigationDrawer(auth: FirebaseAuth) {
@@ -62,11 +69,15 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
                 finish()
             } else {
                 navController.navigate(it.itemId)
+
+
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
+
+
 
     protected fun configureIndependentNavigationDrawer(auth: FirebaseAuth) {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -94,6 +105,8 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
+
     companion object {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -101,5 +114,9 @@ abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
             R.id.nav_home, R.id.nav_join_group_trip, R.id.nav_create_group_trip,
             R.id.nav_my_account, R.id.nav_settings
         )
+        private val defaultAvatarUri =
+            Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
     }
+
+
 }
