@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +13,10 @@ import pl.pwr.zpi.bcycle.mobile.utils.content
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 class LoginActivity : AppCompatActivity() {
+
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private var allControls: List<View> = listOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         allControls = listOf(email, password, loginBt, registerBt)
 
         foregtPasswordBt.setOnClickListener() {
-            startActivity(Intent(this,ForgotPasswordActivity::class.java))
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
         loginBt.setOnClickListener {
@@ -54,32 +57,32 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
-    private fun isNotEmailEmpty() : Boolean {
-        if(email.content().isEmpty()) {
+    private fun isNotEmailEmpty(): Boolean {
+        if (email.content().isEmpty()) {
             email.error = getString(R.string.empty_edit_text)
         }
 
-        return  email.content().isNotEmpty()
+        return email.content().isNotEmpty()
     }
 
-    private fun isNotPasswordEmpty() : Boolean {
-        if(password.content().isEmpty()) {
+    private fun isNotPasswordEmpty(): Boolean {
+        if (password.content().isEmpty()) {
             password.error = getString(R.string.empty_edit_text)
         }
 
-        return  password.content().isNotEmpty()
+        return password.content().isNotEmpty()
     }
 
     private fun signIn() {
         showSpinnerAndDisableControls()
         auth.signInWithEmailAndPassword(email.content(), password.content())
             .addOnSuccessListener {
+
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.addOnFailureListener {
                 showToast(getString(R.string.failed_to_sign_in, it.localizedMessage))
-              hideSpinnerAndEnableControls()
+                hideSpinnerAndEnableControls()
 
             }
     }
@@ -94,4 +97,5 @@ class LoginActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         allControls.forEach { v -> v.isEnabled = true }
     }
+
 }

@@ -1,9 +1,14 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -11,9 +16,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import pl.pwr.zpi.bcycle.mobile.api.ApiTokenManager
+import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
+import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsViewModel
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
-class MainActivity : BCycleNavigationDrawerActivity() {
+class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataChangedListener {
 
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
@@ -24,11 +31,6 @@ class MainActivity : BCycleNavigationDrawerActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         configureMainNavigationDrawer(auth)
 
         auth.currentUser?.run {
@@ -43,6 +45,7 @@ class MainActivity : BCycleNavigationDrawerActivity() {
             navController.navigate(intent.extras!!.getInt(INTENT_EXTRA_MAIN_NAV_ID))
         }
     }
+
 
     private fun openLoginScreen() {
         startActivity(Intent(this, LoginActivity::class.java))
@@ -71,5 +74,9 @@ class MainActivity : BCycleNavigationDrawerActivity() {
             ) { finish() }?.show()
 
         }
+    }
+
+    override fun onDataChanged() {
+        auth.currentUser?.let { updateNavigationDrawerHeader(it, storage) }
     }
 }

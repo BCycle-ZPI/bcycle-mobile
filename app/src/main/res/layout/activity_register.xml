@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_infoTv" />
 
     <EditText
-        android:id="@+id/emailPT"
+        android:id="@+id/emailTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -81,7 +81,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailPT" />
+        app:layout_constraintTop_toBottomOf="@+id/emailTV" />
 
     <EditText
         android:id="@+id/repeatPasswordPT"
