@@ -9,6 +9,9 @@ interface GroupTripApi {
     @POST("group-trips")
     fun create(@Body groupTrip: GroupTrip): Single<ApiResultContainer<Int>>
 
+    @GET("group-trips")
+    fun getAll(): Single<ApiResultContainer<List<GroupTrip>>>
+
     @GET("group-trips/{id}")
     fun get(@Path("id") id: Int): Single<ApiResultContainer<GroupTrip>>
 

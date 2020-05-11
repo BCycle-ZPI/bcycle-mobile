@@ -68,4 +68,16 @@
     <string name="menu_create_group_trip">Create group trip</string>
     <string name="menu_join_group_trip">Join group trip</string>
 
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="prompt_cancel_change">Changes canceled!</string>
+    <string name="nothing_to_edit_prompt">Nothing to edit!</string>
+    <string name="current_password_prompt">Current password</string>
+    <string name="current_password_message">To make changes enter your current password:</string>
+    <string name="CURRENT_PASSWORD">CURRENT_PASSWORD</string>
+    <string name="bad_password_prompt">Bad password!</string>
+    <string name="changed_data_error">Something went wrong!</string>
+    <string name="data_changed_prompt">Data changed!</string>
+
 </resources>

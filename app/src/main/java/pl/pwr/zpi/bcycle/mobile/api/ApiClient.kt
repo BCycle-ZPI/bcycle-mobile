@@ -37,6 +37,10 @@ object ApiClient {
         retrofit.create(GroupTripApi::class.java)
     }
 
+    val statsApi: StatsApi by lazy {
+        retrofit.create(StatsApi::class.java)
+    }
+
     private val gson = GsonBuilder().registerTypeAdapter(ZonedDateTime::class.java, object :
         TypeAdapter<ZonedDateTime>() {
         override fun read(reader: JsonReader): ZonedDateTime? {
