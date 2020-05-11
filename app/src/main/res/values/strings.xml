@@ -111,5 +111,8 @@
     <string name="bad_password_prompt">Bad password!</string>
     <string name="changed_data_error">Something went wrong!</string>
     <string name="data_changed_prompt">Data changed!</string>
+    <string name="create_new_trip">Create a new trip</string>
+    <string name="you_host">You host</string>
+    <string name="you_participate">You participate</string>
 
 </resources>

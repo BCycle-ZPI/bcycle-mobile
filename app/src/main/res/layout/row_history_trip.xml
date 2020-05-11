@@ -28,26 +28,13 @@
             app:layout_constraintTop_toTopOf="@+id/tv_road" />
 
         <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="0dp"
+            android:id="@+id/tv_start"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginLeft="4dp"
             android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
-
-        <TextView
-            android:id="@+id/tv_hours"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="TextView"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/tv_date"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
 
         <TextView
             android:id="@+id/tv_road"
@@ -71,7 +58,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_hours"
+            app:layout_constraintTop_toBottomOf="@+id/tv_end"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/bcycle_logo" />
 
@@ -85,6 +72,34 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_road"
             app:layout_constraintEnd_toStartOf="@+id/tv_road"
             app:layout_constraintTop_toTopOf="@+id/tv_road" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="2dp"
+            android:text="Start date:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="End date:"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/tv_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="@+id/tv_start"
+            app:layout_constraintTop_toBottomOf="@+id/tv_start" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
