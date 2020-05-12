@@ -13,3 +13,4 @@ class GroupTrip(
     val route: List<GroupTripPoint>,
     val participants: List<GroupTripParticipant>?
 )
+    : TripTemplate()
