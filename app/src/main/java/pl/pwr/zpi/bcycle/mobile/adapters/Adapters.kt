@@ -44,7 +44,6 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
             val item = trips[position] as GroupTrip
             view.tv_start_date.text =
                 item.startDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-
             view.tv_end_date.text =
                 item.endDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
             view.tv_tripname.text = item.name
@@ -59,10 +58,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 item.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
             view.tv_end.text =
                 item.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.tv_duration.text =
-                (item.time / 60000).div(60).toString() + "h " + (item.time / 60000).rem(60)
-                    .toString() + "min"
-            view.tv_road.text = item.distance.div(1000).round(2).toString() + "km"
+            view.tv_duration.text = context.getString(R.string.time_format, (item.time / 60000).div(60), (item.time / 60000).rem(60))
+            view.tv_road.text = context.getString(R.string.distance_format,item.distance.div(1000))
             if (item.photos.count() != 0) {
                 holder.itemView.iv_photo.load(item.photos[0])
             }
