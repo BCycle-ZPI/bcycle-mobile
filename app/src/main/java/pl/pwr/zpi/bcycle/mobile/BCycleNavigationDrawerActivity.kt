@@ -70,10 +70,12 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
             } else if (it.itemId == R.id.nav_create_group_trip) {
                 startActivity(Intent(applicationContext, TripCreationActivity::class.java))
                 finish()
-            } else if (it.itemId == R.id.nav_home) {
-                startActivity(Intent(applicationContext, DashboardActivity::class.java))
-                finish()
-            } else {
+            }
+            //else if (it.itemId == R.id.nav_home) {
+            // startActivity(Intent(applicationContext, DashboardActivity::class.java))
+            //finish()
+            //    }
+            else {
                 navController.navigate(it.itemId)
 
 
@@ -82,7 +84,6 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
             true
         }
     }
-
 
 
     protected fun configureIndependentNavigationDrawer(auth: FirebaseAuth) {
@@ -117,7 +118,6 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
 
     companion object {
