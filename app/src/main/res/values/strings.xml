@@ -80,4 +80,14 @@
     <string name="changed_data_error">Something went wrong!</string>
     <string name="data_changed_prompt">Data changed!</string>
 
+    <string name="name_info">Name</string>
+    <string name="email_info">email</string>
+    <string name="your_results_info">Your Results</string>
+    <string name="numb_private_trips_info">Number of private trips:</string>
+    <string name="default_0">0</string>
+    <string name="numb_group_trips_info">Number of group trips:</string>
+    <string name="numb_created_group_trips_info">Number of created group trips:</string>
+    <string name="total_kilometers_info">Total kilometers:</string>
+    <string name="total_time_info">Total time [min]:</string>
+
 </resources>
