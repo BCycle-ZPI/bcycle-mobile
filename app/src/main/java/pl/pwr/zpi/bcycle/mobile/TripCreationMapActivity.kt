@@ -78,7 +78,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     private fun setListeners() {
         bt_next.setOnClickListener {
             LovelyStandardDialog(this)
-                .setTopColorRes(R.color.violet)
+                .setTopColorRes(R.color.colorAccent)
                 .setTitle(resources.getString(R.string.prompt_is_trip_done))
                 .setIcon(R.drawable.bike_icon)
                 .setPositiveButton(R.string.yes) {
@@ -143,20 +143,20 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         val list = mutableListOf<GroupTripPoint>()
         list.add(
             GroupTripPoint(
-                markerStartPoint!!.position.latitude,
-                markerStartPoint!!.position.longitude,
+                markerStartPoint!!.getLat(),
+                markerStartPoint!!.getLon(),
                 null
             )
         )
         for (marker in myMarkers) {
             if (marker != markerStartPoint && marker != markerFinishPoint) {
-                list.add(GroupTripPoint(marker.position.latitude, marker.position.longitude, null))
+                list.add(GroupTripPoint(marker.getLat(), marker.getLon(), null))
             }
         }
         list.add(
             GroupTripPoint(
-                markerFinishPoint!!.position.latitude,
-                markerFinishPoint!!.position.longitude,
+                markerFinishPoint!!.getLat(),
+                markerFinishPoint!!.getLon(),
                 null
             )
         )
@@ -189,46 +189,50 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     // region markerClickListener
     override fun onMarkerClick(marker: Marker?): Boolean {
         val array = arrayListOf<String>(
-            getString(R.string.set_as_start_point), getString(R.string.set_as_end_point), getString(
+            getString(R.string.set_as_start_point), getString(R.string.set_as_end_point),getString(
+                R.string.set_as_start_and_end_point
+            ), getString(
                 R.string.remove_it
             )
         )
         LovelyChoiceDialog(this)
-            .setTopColorRes(R.color.violet)
+            .setTopColorRes(R.color.colorAccent)
             .setTitle(resources.getString(R.string.prompt_marker_what_to_do))
             .setIcon(R.drawable.bike_icon)
-            .setItemsMultiChoice(
+            .setItems(
                 array
-            ) { _: List<Int>, items: List<String> ->
-                if (items.contains(array[0], array[2]) || items.contains(array[1], array[2])) {
-                    showToastError((R.string.warning_cant_set_and_delete_marker))
-                } else if (items.contains(array[0]) && items.contains(array[1])) {
-                    markerStartPoint?.setIcon(null)
-                    markerFinishPoint?.setIcon(null)
-                    markerStartPoint = marker
-                    markerFinishPoint = marker
-                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                    marker?.title = getString(R.string.start_and_end_point)
-                    marker?.showInfoWindow()
-                } else if (items.contains(array[0])) {
-                    markerStartPoint?.setIcon(null)
-                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                    markerStartPoint = marker
-                    marker?.title = getString(R.string.start_point)
-                    marker?.showInfoWindow()
-                } else if (items.contains(array[1])) {
-                    markerFinishPoint?.setIcon(null)
-                    marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
-                    markerFinishPoint = marker
-                    marker?.title = getString(R.string.end_point)
-                    marker?.showInfoWindow()
-                } else if (items.contains(array[2])) {
-                    if (marker == markerStartPoint) markerStartPoint = null
-                    if (marker == markerFinishPoint) markerFinishPoint = null
-                    marker?.remove()
+            ) { pos: Int, _: String ->
+                when (pos) {
+                    0 -> {
+                        markerStartPoint?.setIcon(null)
+                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_upward))
+                        markerStartPoint = marker
+                        marker?.title = getString(R.string.start_point)
+                        marker?.showInfoWindow()
+                    }
+                    1 -> {
+                        markerFinishPoint?.setIcon(null)
+                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_downward))
+                        markerFinishPoint = marker
+                        marker?.title = getString(R.string.end_point)
+                        marker?.showInfoWindow()
+                    }
+                    2 -> {
+                        markerStartPoint?.setIcon(null)
+                        markerFinishPoint?.setIcon(null)
+                        markerStartPoint = marker
+                        markerFinishPoint = marker
+                        marker?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
+                        marker?.title = getString(R.string.start_and_end_point)
+                        marker?.showInfoWindow()
+                    }
+                    3 -> {
+                        if (marker == markerStartPoint) markerStartPoint = null
+                        if (marker == markerFinishPoint) markerFinishPoint = null
+                        marker?.remove()
+                    }
                 }
             }
-            .setConfirmButtonText(R.string.confirm)
             .show()
         return true
     }
@@ -297,6 +301,9 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
     // endregion requesting permission region
 }
+
+private fun Marker.getLat(): Double = position.latitude
+private fun Marker.getLon(): Double = position.longitude
 
 fun <E> Collection<E>.contains(vararg ts: E): Boolean {
     for (single in ts) {
