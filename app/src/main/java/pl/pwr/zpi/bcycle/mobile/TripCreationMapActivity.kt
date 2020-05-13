@@ -21,8 +21,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import com.yarolegovich.lovelydialog.LovelyStandardDialog
 import kotlinx.android.synthetic.main.activity_trip_creation_map.*
@@ -30,7 +28,6 @@ import org.threeten.bp.ZonedDateTime
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.GroupTripPoint
-import pl.pwr.zpi.bcycle.mobile.models.UserInfo
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
@@ -41,10 +38,10 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var lastLocation: Location
-    private var map: GoogleMap? = null
+    private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var myMarkers = mutableListOf<Marker>()
-    private var locationManager: LocationManager? = null
+    private lateinit var locationManager: LocationManager
     private var markerStartPoint: Marker? = null
     private var markerFinishPoint: Marker? = null
     // region intent.extra data
@@ -53,10 +50,9 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var savedName: String
     private lateinit var savedDesc: String
     // endregion intent.extra data
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     companion object {
-        private val LOCATION_REQUEST_CODE = 101
+        private const val LOCATION_REQUEST_CODE = 101
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,12 +67,12 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun getSavedData() {
-        val extras = intent.extras;
-        savedDesc = extras.getString(TripCreationActivity.DESCRIPTION_KEY)!!
-        savedName = extras.getString(TripCreationActivity.NAME_KEY)!!
-        savedEndDate = extras.getSerializable(TripCreationActivity.END_DATE_KEY)!! as ZonedDateTime
+        val extras = intent.extras!!
+        savedDesc = extras.getString(DESCRIPTION_KEY)!!
+        savedName = extras.getString(NAME_KEY)!!
+        savedEndDate = extras.getSerializable(END_DATE_KEY)!! as ZonedDateTime
         savedStartDate =
-            extras.getSerializable(TripCreationActivity.START_DATE_KEY)!! as ZonedDateTime
+            extras.getSerializable(START_DATE_KEY)!! as ZonedDateTime
     }
 
     private fun setListeners() {
@@ -87,18 +83,12 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 .setIcon(R.drawable.bike_icon)
                 .setPositiveButton(R.string.yes) {
                     if(isRequiredDataGiven()){
-                        val photoUrl = FirebaseStorage.getInstance()
-                            .reference.child(auth.currentUser!!.uid + ".png").toString()
                         val route = createMarkersList()
                         ApiClient.groupTripApi.create(
                             GroupTrip(
                                 null, savedName, savedDesc,
-                                UserInfo(
-                                    auth.currentUser?.uid!!,
-                                    auth.currentUser?.displayName!!,
-                                    auth.currentUser?.email!!,
-                                    photoUrl
-                                ), null, savedStartDate, savedEndDate, route, null
+                               null,
+                                null, savedStartDate, savedEndDate, route, null
                             )
                         ).background().subscribe({
                             showToast(getString(R.string.prompt_trid_added_successfully))
@@ -109,21 +99,21 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                                 ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             )
                             finish()
-                        }, { showToast(it.message?:"mess null")})
+                        }, { })
                     }
                     else{
                         showToastError(R.string.error_missing_start_or_end_marker)
                     }
                 }
                 .setPositiveButtonColorRes(R.color.green)
-                .setNegativeButton(R.string.no, {})
+                .setNegativeButton(R.string.no,{})
                 .setNegativeButtonColorRes(R.color.red)
                 .show()
         }
         bt_show_start.setOnClickListener {
             if (markerStartPoint != null) {
                 markerStartPoint?.showInfoWindow()
-                map?.animateCamera(
+                map.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         markerStartPoint?.position,
                         12f
@@ -135,7 +125,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         bt_show_end.setOnClickListener {
             if (markerFinishPoint != null) {
                 markerFinishPoint?.showInfoWindow()
-                map?.animateCamera(
+                map.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         markerFinishPoint?.position,
                         12f
@@ -174,26 +164,24 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-        map = googleMap
+        map = googleMap!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        map?.setOnMarkerClickListener(this)
+        map.setOnMarkerClickListener(this)
 
         handleMapGestures()
         getCurrentLocation()
 
-        map?.setOnMapLongClickListener {
+        map.setOnMapLongClickListener {
             val markerOpt =
                 MarkerOptions().position(it).icon(BitmapDescriptorFactory.defaultMarker())
-            val mark = map?.addMarker(markerOpt)
+            val mark = map.addMarker(markerOpt)
             mark?.isDraggable = true
-
-            // myMarkers.add(GroupTripPoint(markerOpt.position.latitude, markerOpt.position.longitude, null))
             myMarkers.add(mark!!)
         }
     }
 
     private fun handleMapGestures() {
-        val mapSettings = map?.uiSettings
+        val mapSettings = map.uiSettings
         mapSettings?.isZoomGesturesEnabled = true
         mapSettings?.isScrollGesturesEnabled = true
     }
@@ -252,7 +240,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onLocationChanged(location: Location) {
         val latLng = LatLng(location.latitude, location.longitude)
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12f)
-        map?.animateCamera(cameraUpdate)
+        map.animateCamera(cameraUpdate)
     }
 
     private fun requestPermission(
@@ -267,23 +255,16 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun getCurrentLocation() {
-        if (map != null) {
-            val permission = ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
+        val permission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
-            if (permission == PackageManager.PERMISSION_GRANTED) {
-                map?.isMyLocationEnabled = true
-                zoomToCurrentLocation()
-            }
-
-        } else {
-            requestPermission(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                LOCATION_REQUEST_CODE
-            )
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
+            zoomToCurrentLocation()
         }
+
     }
 
     private fun zoomToCurrentLocation() {
@@ -291,7 +272,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
     }
@@ -303,7 +284,6 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
-
                 if (grantResults.isEmpty() || grantResults[0] !=
                     PackageManager.PERMISSION_GRANTED
                 ) {
@@ -318,7 +298,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     // endregion requesting permission region
 }
 
-private fun <E> Collection<E>.contains(vararg ts: E): Boolean {
+fun <E> Collection<E>.contains(vararg ts: E): Boolean {
     for (single in ts) {
         if (!contains(single)) return false
     }

@@ -5,12 +5,15 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import es.dmoral.toasty.Toasty
 
 fun EditText.content() = text.toString()
+fun TextView.content() = text.toString()
+
 
 fun AppCompatActivity.showToast(message: String) =
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -26,6 +29,7 @@ fun AppCompatActivity.showToastWarning(stringId: Int) =
 
 fun Fragment.showToast(stringId: Int) =
     Toasty.info(activity!!.applicationContext, resources.getText(stringId), Toast.LENGTH_SHORT).show()
+
 
 //extensions methods
 fun View.setMargins(

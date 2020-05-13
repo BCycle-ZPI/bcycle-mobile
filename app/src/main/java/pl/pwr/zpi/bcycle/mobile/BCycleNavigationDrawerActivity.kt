@@ -99,9 +99,6 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, TripCreationActivity::class.java))
                 finishAndRemoveTask()
 
-            } else if (it.itemId == R.id.nav_home) {
-                startActivity(Intent(applicationContext, DashboardActivity::class.java))
-                finishAndRemoveTask()
             } else {
                 // Start the main activity and run the item.
                 val intent = Intent(applicationContext, MainActivity::class.java)

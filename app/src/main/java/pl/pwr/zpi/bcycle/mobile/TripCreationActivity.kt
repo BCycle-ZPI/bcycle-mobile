@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_trip_creation.*
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import pl.pwr.zpi.bcycle.mobile.utils.content
 import pl.pwr.zpi.bcycle.mobile.utils.setMargins
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 import java.text.SimpleDateFormat
@@ -19,13 +20,6 @@ import java.util.*
 class TripCreationActivity : AppCompatActivity() {
 
     companion object{
-        val TIME_FORMAT = "HH:mm"
-        val DATE_FORMAT = "yyyy-MM-dd"
-        val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm"
-        val START_DATE_KEY = "START_DATE_KEY"
-        val END_DATE_KEY = "END_DATE_KEY"
-        val NAME_KEY = "NAME_KEY"
-        val DESCRIPTION_KEY = "DESCRIPTION_KEY"
         val formatterDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).withZone(ZoneId.systemDefault())
     }
     
@@ -33,7 +27,7 @@ class TripCreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_creation)
         setListeners()
-        supportActionBar?.hide()
+        supportActionBar?.title = getString(R.string.create_new_trip)
     }
 
     private fun setListeners() {
@@ -53,15 +47,8 @@ class TripCreationActivity : AppCompatActivity() {
         val bundle = Bundle()
         intent.putExtra(NAME_KEY,  et_name.text.toString())
 
-
-        /*intent.putExtra(START_DATE_KEY, tv_start_date.text.toString())
-        intent.putExtra(START_TIME_KEY, tv_start_time.text.toString())
-        intent.putExtra(END_DATE_KEY, tv_finish_date.text.toString())
-        intent.putExtra(END_TIME_KEY, tv_finish_time.text.toString())*/
-
         bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(tv_start_date.text.toString() + " " +  tv_start_time.text.toString(), formatterDateTime))
         bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString(), formatterDateTime))
-
         intent.putExtra(DESCRIPTION_KEY,  et_desc.text.toString())
         intent.putExtras(bundle)
         return intent
@@ -94,13 +81,6 @@ class TripCreationActivity : AppCompatActivity() {
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
-
-        if(startDate){
-            bt_start_date.setMargins(rightMarginDp = 80)
-        }
-        else{
-            bt_finish_date.setMargins(rightMarginDp = 80)
-        }
     }
 
     private fun isFormCorrect(): Boolean {
@@ -146,16 +126,16 @@ class TripCreationActivity : AppCompatActivity() {
     }
 
     private fun checkIfFieldsFilled() : Boolean {
-        val nameStr = et_name.text.toString()
-        val descStr = et_desc.text.toString()
+        val nameStr = et_name.content()
+        val descStr = et_desc.content()
         return nameStr.isNotEmpty() && descStr.isNotEmpty()
     }
 
     private fun checkIfDatesChosen():Boolean{
-        val startDateStr = tv_start_date.text.toString()
-        val startTimeStr = tv_start_time.text.toString()
-        val endDateStr = tv_finish_date.text.toString()
-        val endTimeStr = tv_finish_time.text.toString()
+        val startDateStr = tv_start_date.content()
+        val startTimeStr = tv_start_time.content()
+        val endDateStr = tv_finish_date.content()
+        val endTimeStr = tv_finish_time.content()
         return startDateStr.isNotEmpty() && startTimeStr.isNotEmpty() && endDateStr.isNotEmpty() && endTimeStr.isNotEmpty()
     }
 }
