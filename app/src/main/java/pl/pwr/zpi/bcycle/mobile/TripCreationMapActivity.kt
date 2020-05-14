@@ -77,38 +77,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private fun setListeners() {
         nextBT.setOnClickListener {
-            LovelyStandardDialog(this)
-                .setTopColorRes(R.color.colorAccent)
-                .setTitle(resources.getString(R.string.prompt_is_trip_done))
-                .setIcon(R.drawable.bike_icon)
-                .setPositiveButton(R.string.yes) {
-                    if(isRequiredDataGiven()){
-                        val route = createMarkersList()
-                        ApiClient.groupTripApi.create(
-                            GroupTrip(
-                                null, savedName, savedDesc,
-                               null,
-                                null, savedStartDate, savedEndDate, route, null
-                            )
-                        ).background().subscribe({
-                            showToast(getString(R.string.prompt_trid_added_successfully))
-                            startActivity(
-                                Intent(
-                                    this,
-                                    MainActivity::class.java
-                                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            )
-                            finish()
-                        }, { })
-                    }
-                    else{
-                        showToastError(R.string.error_missing_start_or_end_marker)
-                    }
-                }
-                .setPositiveButtonColorRes(R.color.green)
-                .setNegativeButton(R.string.no,{})
-                .setNegativeButtonColorRes(R.color.red)
-                .show()
+            showDialog()
         }
         zoomToStartBT.setOnClickListener {
             animateToMarker(MarkerType.START)
@@ -117,6 +86,41 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         zoomToEndBT.setOnClickListener {
             animateToMarker(MarkerType.END)
         }
+    }
+
+    private fun showDialog(){
+        LovelyStandardDialog(this)
+            .setTopColorRes(R.color.colorAccent)
+            .setTitle(resources.getString(R.string.prompt_is_trip_done))
+            .setIcon(R.drawable.bike_icon)
+            .setPositiveButton(R.string.yes) {
+                if(isRequiredDataGiven()){
+                    val route = createMarkersList()
+                    ApiClient.groupTripApi.create(
+                        GroupTrip(
+                            null, savedName, savedDesc,
+                            null,
+                            null, savedStartDate, savedEndDate, route, null
+                        )
+                    ).background().subscribe({
+                        showToast(getString(R.string.prompt_trid_added_successfully))
+                        startActivity(
+                            Intent(
+                                this,
+                                MainActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        )
+                        finish()
+                    }, { })
+                }
+                else{
+                    showToastError(R.string.error_missing_start_or_end_marker)
+                }
+            }
+            .setPositiveButtonColorRes(R.color.green)
+            .setNegativeButton(R.string.no,{})
+            .setNegativeButtonColorRes(R.color.red)
+            .show()
     }
 
     enum class MarkerType{START, END}

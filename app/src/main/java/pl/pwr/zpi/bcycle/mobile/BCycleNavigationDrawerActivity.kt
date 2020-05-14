@@ -71,14 +71,8 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, TripCreationActivity::class.java))
                 finish()
             }
-            //else if (it.itemId == R.id.nav_home) {
-            // startActivity(Intent(applicationContext, DashboardActivity::class.java))
-            //finish()
-            //    }
             else {
                 navController.navigate(it.itemId)
-
-
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
@@ -97,7 +91,6 @@ abstract class BCycleNavigationDrawerActivity : AppCompatActivity() {
                 finishAndRemoveTask()
             } else if (it.itemId == R.id.nav_create_group_trip) {
                 startActivity(Intent(applicationContext, TripCreationActivity::class.java))
-                finishAndRemoveTask()
 
             } else {
                 // Start the main activity and run the item.
