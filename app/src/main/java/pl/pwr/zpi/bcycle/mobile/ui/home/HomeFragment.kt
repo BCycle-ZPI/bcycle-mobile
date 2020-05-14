@@ -1,6 +1,8 @@
 package pl.pwr.zpi.bcycle.mobile.ui.home
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.popup_window_trip.view.*
 import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.RecordTripActivity
 import pl.pwr.zpi.bcycle.mobile.TripCreationActivity

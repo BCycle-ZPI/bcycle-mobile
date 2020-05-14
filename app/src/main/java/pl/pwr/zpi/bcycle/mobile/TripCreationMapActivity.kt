@@ -76,7 +76,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun setListeners() {
-        bt_next.setOnClickListener {
+        nextBT.setOnClickListener {
             LovelyStandardDialog(this)
                 .setTopColorRes(R.color.colorAccent)
                 .setTitle(resources.getString(R.string.prompt_is_trip_done))
@@ -110,28 +110,26 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 .setNegativeButtonColorRes(R.color.red)
                 .show()
         }
-        bt_show_start.setOnClickListener {
-            if (markerStartPoint != null) {
-                markerStartPoint?.showInfoWindow()
-                map.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        markerStartPoint?.position,
-                        12f
-                    )
-                )
-            }
+        zoomToStartBT.setOnClickListener {
+            animateToMarker(MarkerType.START)
         }
 
-        bt_show_end.setOnClickListener {
-            if (markerFinishPoint != null) {
-                markerFinishPoint?.showInfoWindow()
-                map.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        markerFinishPoint?.position,
-                        12f
-                    )
+        zoomToEndBT.setOnClickListener {
+            animateToMarker(MarkerType.END)
+        }
+    }
+
+    enum class MarkerType{START, END}
+    private fun animateToMarker(markerType:MarkerType) {
+        val marker = if (markerType == MarkerType.START) markerStartPoint else markerFinishPoint
+        if (marker != null) {
+            marker.showInfoWindow()
+            map.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    marker.position,
+                    12f
                 )
-            }
+            )
         }
     }
 

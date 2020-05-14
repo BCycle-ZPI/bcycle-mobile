@@ -9,7 +9,6 @@
     <fragment
         android:id="@+id/myMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +19,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/bt_next"
+        android:id="@+id/nextBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
@@ -33,7 +32,7 @@
         app:srcCompat="@drawable/icon_right_arrow" />
 
     <Button
-        android:id="@+id/bt_show_start"
+        android:id="@+id/zoomToStartBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -45,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bt_show_end"
+        android:id="@+id/zoomToEndBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -53,8 +52,8 @@
         android:backgroundTint="@color/cardview_light_background"
         android:text="Zoom to \n end point"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/bt_show_start"
-        app:layout_constraintTop_toTopOf="@+id/bt_show_start" />
+        app:layout_constraintStart_toEndOf="@+id/zoomToStartBT"
+        app:layout_constraintTop_toTopOf="@+id/zoomToStartBT" />
 
     <!--    <fragment-->
 <!--        android:id="@+id/mapView"-->

@@ -11,7 +11,6 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import pl.pwr.zpi.bcycle.mobile.utils.content
-import pl.pwr.zpi.bcycle.mobile.utils.setMargins
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,25 +30,25 @@ class TripCreationActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        bt_next.setOnClickListener {
+        nextBT.setOnClickListener {
             if(isFormCorrect()){
                 startActivity(createIntentAndSaveData())
             }
         }
-        bt_start_date.setOnClickListener{chooseDateTime(tv_start_time, tv_start_date, true)
+        startdateBT.setOnClickListener{chooseDateTime(starttimeTV, startdateTV, true)
         }
-        bt_finish_date.setOnClickListener{chooseDateTime(tv_finish_time, tv_finish_date, false)
+        finishdateBT.setOnClickListener{chooseDateTime(finishtimeTV, finishdateTV, false)
         }
     }
 
     private fun createIntentAndSaveData() : Intent{
         val intent = Intent(this, TripCreationMapActivity::class.java)
         val bundle = Bundle()
-        intent.putExtra(NAME_KEY,  et_name.text.toString())
+        intent.putExtra(NAME_KEY,  nameET.text.toString())
 
-        bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(tv_start_date.text.toString() + " " +  tv_start_time.text.toString(), formatterDateTime))
-        bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString(), formatterDateTime))
-        intent.putExtra(DESCRIPTION_KEY,  et_desc.text.toString())
+        bundle.putSerializable(START_DATE_KEY,ZonedDateTime.parse(startdateTV.text.toString() + " " +  starttimeTV.text.toString(), formatterDateTime))
+        bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( finishdateTV.text.toString() + " " +  finishtimeTV.text.toString(), formatterDateTime))
+        intent.putExtra(DESCRIPTION_KEY,  descET.text.toString())
         intent.putExtras(bundle)
         return intent
     }
@@ -99,8 +98,8 @@ class TripCreationActivity : AppCompatActivity() {
     }
 
     private fun checkIfDatesValid():Boolean{
-        val dateTimeStart = tv_start_date.text.toString() + " " +  tv_start_time.text.toString()
-        val dateTimeEnd = tv_finish_date.text.toString() + " " +  tv_finish_time.text.toString()
+        val dateTimeStart = startdateTV.text.toString() + " " +  starttimeTV.text.toString()
+        val dateTimeEnd = finishdateTV.text.toString() + " " +  finishtimeTV.text.toString()
         val parsedDateStart = ZonedDateTime.parse(dateTimeStart, formatterDateTime)
         val parsedDateEnd = ZonedDateTime.parse(dateTimeEnd,  formatterDateTime)
 
@@ -117,25 +116,25 @@ class TripCreationActivity : AppCompatActivity() {
     }
 
     private fun setErrors(){
-        if(et_name.text.toString().isEmpty()){
-            et_name.error = resources.getString(R.string.prompt_fill_field)
+        if(nameET.text.toString().isEmpty()){
+            nameET.error = resources.getString(R.string.prompt_fill_field)
         }
-        if(et_desc.text.toString().isEmpty()){
-            et_desc.error = resources.getString(R.string.prompt_fill_field)
+        if(descET.text.toString().isEmpty()){
+            descET.error = resources.getString(R.string.prompt_fill_field)
         }
     }
 
     private fun checkIfFieldsFilled() : Boolean {
-        val nameStr = et_name.content()
-        val descStr = et_desc.content()
+        val nameStr = nameET.content()
+        val descStr = descET.content()
         return nameStr.isNotEmpty() && descStr.isNotEmpty()
     }
 
     private fun checkIfDatesChosen():Boolean{
-        val startDateStr = tv_start_date.content()
-        val startTimeStr = tv_start_time.content()
-        val endDateStr = tv_finish_date.content()
-        val endTimeStr = tv_finish_time.content()
+        val startDateStr = startdateTV.content()
+        val startTimeStr = starttimeTV.content()
+        val endDateStr = finishdateTV.content()
+        val endTimeStr = finishtimeTV.content()
         return startDateStr.isNotEmpty() && startTimeStr.isNotEmpty() && endDateStr.isNotEmpty() && endTimeStr.isNotEmpty()
     }
 }

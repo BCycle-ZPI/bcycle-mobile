@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView4" />
 
         <TextView
-            android:id="@+id/tv_start_date"
+            android:id="@+id/startdateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -72,8 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="TextView"
-            app:layout_constraintStart_toStartOf="@+id/tv_start_date"
-            app:layout_constraintTop_toBottomOf="@+id/tv_start_date" />
+            app:layout_constraintStart_toStartOf="@+id/startdateTV"
+            app:layout_constraintTop_toBottomOf="@+id/startdateTV" />
 
         <TextView
             android:id="@+id/textView4"

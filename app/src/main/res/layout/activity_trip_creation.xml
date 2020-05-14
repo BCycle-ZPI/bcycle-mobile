@@ -8,7 +8,7 @@
     tools:context=".TripCreationActivity">
 
     <EditText
-        android:id="@+id/et_name"
+        android:id="@+id/nameET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bt_start_date"
+        android:id="@+id/startdateBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -37,10 +37,10 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+        app:layout_constraintTop_toBottomOf="@+id/nameET" />
 
     <Button
-        android:id="@+id/bt_finish_date"
+        android:id="@+id/finishdateBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -50,22 +50,22 @@
         android:text="@string/choose_finish_datetime"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+        app:layout_constraintTop_toBottomOf="@+id/nameET" />
 
     <TextView
-        android:id="@+id/tv_start_date"
+        android:id="@+id/startdateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="START DATE"
         android:textColor="@color/picker_button_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/bt_start_date"
-        app:layout_constraintStart_toStartOf="@+id/bt_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/bt_start_date" />
+        app:layout_constraintEnd_toEndOf="@+id/startdateBT"
+        app:layout_constraintStart_toStartOf="@+id/startdateBT"
+        app:layout_constraintTop_toBottomOf="@+id/startdateBT" />
 
     <TextView
-        android:id="@+id/tv_start_time"
+        android:id="@+id/starttimeTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
@@ -73,24 +73,24 @@
         android:text="START TIME"
         android:textColor="@color/cardview_light_background"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_start_date"
-        app:layout_constraintStart_toStartOf="@+id/tv_start_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_start_date" />
+        app:layout_constraintEnd_toEndOf="@+id/startdateTV"
+        app:layout_constraintStart_toStartOf="@+id/startdateTV"
+        app:layout_constraintTop_toBottomOf="@+id/startdateTV" />
 
     <TextView
-        android:id="@+id/tv_finish_date"
+        android:id="@+id/finishdateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="FINISH DATE"
         android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/bt_finish_date"
-        app:layout_constraintStart_toStartOf="@+id/bt_finish_date"
-        app:layout_constraintTop_toBottomOf="@+id/bt_finish_date" />
+        app:layout_constraintEnd_toEndOf="@+id/finishdateBT"
+        app:layout_constraintStart_toStartOf="@+id/finishdateBT"
+        app:layout_constraintTop_toBottomOf="@+id/finishdateBT" />
 
     <TextView
-        android:id="@+id/tv_finish_time"
+        android:id="@+id/finishtimeTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
@@ -99,12 +99,12 @@
         android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_finish_date"
-        app:layout_constraintStart_toStartOf="@+id/tv_finish_date"
-        app:layout_constraintTop_toBottomOf="@+id/tv_finish_date" />
+        app:layout_constraintEnd_toEndOf="@+id/finishdateTV"
+        app:layout_constraintStart_toStartOf="@+id/finishdateTV"
+        app:layout_constraintTop_toBottomOf="@+id/finishdateTV" />
 
     <Button
-        android:id="@+id/bt_next"
+        android:id="@+id/nextBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
@@ -117,7 +117,7 @@
 
 
     <EditText
-        android:id="@+id/et_desc"
+        android:id="@+id/descET"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -133,10 +133,10 @@
         android:padding="8dp"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_next"
+        app:layout_constraintBottom_toTopOf="@+id/nextBT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_start_time" />
+        app:layout_constraintTop_toBottomOf="@+id/starttimeTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
