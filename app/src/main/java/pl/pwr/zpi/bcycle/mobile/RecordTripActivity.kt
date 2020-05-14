@@ -18,6 +18,8 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.content_record_trip.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
@@ -155,7 +157,11 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
             for  (photo in madeImages){
                 val bytePhoto = readBytes(photo)
 
-                bytePhoto?.let { ApiClient.tripApi.putPhoto(tripId, it).background().subscribe() }
+
+                val imageBody = RequestBody.create(
+                    MediaType.parse("image/jpeg"), bytePhoto)
+                ApiClient.tripApi.putPhoto(tripId, imageBody).background().subscribe()
+
             }
         }
     }
