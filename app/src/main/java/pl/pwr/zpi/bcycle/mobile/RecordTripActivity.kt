@@ -2,16 +2,17 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
@@ -23,6 +24,8 @@ import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.timeToString
 
+import java.io.ByteArrayOutputStream
+
 
 class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private lateinit var service: TripLocationTrackingService
@@ -31,6 +34,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private var time: Double = 0.0
     private var lastClockUpdate: Long = -1
     private val timerHandler = Handler()
+    private var madeImages: List<Uri> =  listOf<Uri>()
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
@@ -85,6 +89,10 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
             }
         }
 
+        photoBt.setOnClickListener {
+            makePhoto()
+        }
+
         stopFAB.setOnClickListener {
             if (isBound) {
                 stopTimer()
@@ -92,6 +100,34 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
             }
         }
     }
+
+    private fun makePhoto() {
+
+        val values  = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "camera_photo")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "camera photo during trip")
+        mPhotoUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values)
+
+        val takenPictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        takenPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri)
+
+
+
+
+        if(takenPictureIntent.resolveActivity(this.packageManager)!=null)
+            startActivityForResult(takenPictureIntent,MAKE_IMAGE_REQUEST )
+        else
+            Toast.makeText(this,"Unable to open camera",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) =
+        if(requestCode == MAKE_IMAGE_REQUEST && mPhotoUri !=null) {
+            madeImages+= listOf(mPhotoUri!!)
+
+            mPhotoUri = null
+        }
+        else
+            super.onActivityResult(requestCode, resultCode, data)
 
     private fun uploadTripData() {
         stopFAB.isEnabled = false
@@ -102,11 +138,39 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         val trip = service.getTrip()
         val sub = ApiClient.tripApi.post(trip)
             .background().subscribe(
-                { result -> handleTripUploadSuccess(result.result) },
+                { result ->
+                    savePhotos(result.result)
+                    handleTripUploadSuccess(result.result) },
                 { error ->
                     showTripUploadError(error.message)
                 }
             )
+    }
+
+    private  fun savePhotos(tripId: Int) {
+
+        val emptyList  = emptyList<Uri>()
+
+        if(madeImages !=emptyList) {
+            for  (photo in madeImages){
+                val bytePhoto = readBytes(photo)
+
+                bytePhoto?.let { ApiClient.tripApi.putPhoto(tripId, it).background().subscribe() }
+            }
+        }
+    }
+
+    private fun readBytes(uri:Uri): ByteArray? {
+        val stream = contentResolver.openInputStream(uri)
+        val byteArrayStream = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        var i = Int.MAX_VALUE
+        while (stream.read(buffer, 0, buffer.size).also { i = it } > 0) {
+
+            byteArrayStream.write(buffer, 0, i)
+        }
+
+        return byteArrayStream.toByteArray()
     }
 
     private fun handleTripUploadSuccess(tripId: Int) {
@@ -261,5 +325,6 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
 
     companion object {
         private val LOG_TAG = "BCycle-Rec"
+        private var mPhotoUri: Uri? = null
     }
 }
