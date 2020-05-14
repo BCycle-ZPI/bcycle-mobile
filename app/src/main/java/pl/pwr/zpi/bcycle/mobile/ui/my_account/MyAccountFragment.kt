@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_my_account.*
 import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.utils.background
+import kotlin.math.round
+import kotlin.math.roundToLong
 
 class MyAccountFragment : Fragment() {
 
@@ -47,11 +49,17 @@ class MyAccountFragment : Fragment() {
 
         ApiClient.statsApi.getUserStats().background().subscribe({
             stats ->
+
+
+
+
+
+
             numberOfAllTripsCountTV.text = stats.result.tripCount.toString()
             numberOfGroupTripsCountTV.text = stats.result.groupTripTotalCount.toString()
             numberOfCreatedGroupTripsCountTV.text  = stats.result.groupTripHostingCount.toString()
-            totalDistanceKmCountTV.text = stats.result.totalKilometers.toString()
-            totalTimeCountTV.text = stats.result.totalTimeMinutes.toString()
+            totalDistanceKmCountTV.text = (round( stats.result.totalKilometers * 100) / 100).toString().replace('.',',')
+            totalTimeCountTV.text = (round(stats.result.totalTimeMinutes * 100) / 100).toString().replace('.',',')
 
             progressBar.visibility = View.GONE
         },
