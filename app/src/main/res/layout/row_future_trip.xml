@@ -14,7 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        card_view:cardBackgroundColor="@color/buttonColor"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">
@@ -104,9 +103,10 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="End date:"
+                app:layout_constraintEnd_toStartOf="@+id/startdateTV"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 

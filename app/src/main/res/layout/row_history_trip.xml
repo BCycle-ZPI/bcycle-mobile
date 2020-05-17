@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        card_view:cardBackgroundColor="@color/buttonColor"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">

@@ -179,7 +179,11 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         getCurrentLocation()
 
         map.setOnMapLongClickListener {
-            Snackbar.make(layout, getString(R.string.prompt_guide_map_marker_options), Snackbar.LENGTH_LONG).show()
+            if(markerOptionsGuideShowed)
+            {
+                Snackbar.make(layout, getString(R.string.prompt_guide_map_marker_options), Snackbar.LENGTH_LONG).show()
+                markerOptionsGuideShowed = true
+            }
             val markerOpt =
                 MarkerOptions().position(it).icon(BitmapDescriptorFactory.defaultMarker())
             val mark = map.addMarker(markerOpt)

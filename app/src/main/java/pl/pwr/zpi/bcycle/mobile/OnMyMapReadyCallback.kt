@@ -3,40 +3,53 @@ package pl.pwr.zpi.bcycle.mobile
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import pl.pwr.zpi.bcycle.mobile.models.GroupTripPoint
 import pl.pwr.zpi.bcycle.mobile.models.TripPoint
 import pl.pwr.zpi.bcycle.mobile.models.TripPointTemplate
+import kotlin.math.ln
 
-interface OnMyMapReadyCallback : OnMapReadyCallback{
+interface OnMyMapReadyCallback : OnMapReadyCallback {
 
-    fun showMarkersAndAnimateThere(markers:List<TripPointTemplate>, map:GoogleMap){
-        var firstIter = true
-        markers.forEach{
-            if(it is GroupTripPoint){
+    private fun showMarkers(markers: List<TripPointTemplate>, map: GoogleMap) {
+        markers.forEach {
+            if (it is GroupTripPoint) {
                 map.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
-                if(firstIter){
-                    animateTo(it.latitude, it.longitude, map)
-                    firstIter = false
-                }
-            }
-            else if(it is TripPoint){
+            } else if (it is TripPoint) {
                 map.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
-                if(firstIter){
-                    animateTo(it.latitude, it.longitude, map)
-                    firstIter = false
-                }
             }
         }
-
     }
 
-//    fun showPoint(, startPoint:bool){}
+    fun displayTripMarkers(markers: List<TripPointTemplate>, map: GoogleMap){
+        showMarkers(markers.subList(1, markers.size-1), map)
+        val startPoint = markers[0]
+        val endPoint = markers[markers.size-1]
+        if (startPoint is GroupTripPoint && endPoint is GroupTripPoint) {
+            showPoint(startPoint.latitude, startPoint.longitude, true, map)
+            showPoint(endPoint.latitude, endPoint.longitude, false, map)
+        } else if (startPoint is TripPoint && endPoint is TripPoint) {
+            showPoint(startPoint.latitude, startPoint.longitude, true, map)
+            showPoint(endPoint.latitude, endPoint.longitude, false, map)
+        }
+    }
+
+    private fun showPoint(
+        lat: Double,
+        lng: Double,
+        startPoint: Boolean,
+        map: GoogleMap
+    ) {
+        val res = if (startPoint) R.drawable.ic_arrow_upward else R.drawable.ic_arrow_downward
+        map.addMarker(MarkerOptions().position(LatLng(lat, lng)))
+            .setIcon(BitmapDescriptorFactory.fromResource(res))
+    }
 
 
-    private fun animateTo(lat:Double, lng:Double, map:GoogleMap){
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 7f)
+    fun animateTo(lat: Double, lng: Double, map: GoogleMap) {
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 6f)
         map.animateCamera(cameraUpdate)
     }
 }

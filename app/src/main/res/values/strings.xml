@@ -121,5 +121,8 @@
     <string name="prompt_guide_map_marker_options">Click on the marker to remove it or set as start/finish point of your trip</string>
     <string name="prompt_guide_map_start">Click longer on the map to add new point of your trip</string>
     <string name="prompt_unable_to_load_tripinfo">Cannot load trip info!</string>
+    <string name="trip_description">Trip description</string>
+    <string name="who_goes_wtih_you">Who participates with you?:</string>
+    <string name="prompt_see_desc">See trip description</string>
 
 </resources>
