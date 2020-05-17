@@ -29,3 +29,6 @@ val NAME_KEY = "NAME_KEY"
 val DESCRIPTION_KEY = "DESCRIPTION_KEY"
 
 const val PERMISSIONS_REQUEST_LOCAITON = 102
+
+var mapCreationGuideShowed = false
+var markerOptionsGuideShowed = false

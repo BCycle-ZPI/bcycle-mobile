@@ -118,5 +118,7 @@
     <string name="start_new_trip">Start new trip</string>
     <string name="set_as_start_and_end_point">Set as start and end point</string>
     <string name="join_trip">Join a trip</string>
+    <string name="prompt_guide_map_marker_options">Click on the marker to remove it or set as start/finish point of your trip</string>
+    <string name="prompt_guide_map_start">Click longer on the map to add new point of your trip</string>
 
 </resources>

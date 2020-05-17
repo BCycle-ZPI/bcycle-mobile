@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import com.yarolegovich.lovelydialog.LovelyStandardDialog
 import kotlinx.android.synthetic.main.activity_trip_creation_map.*
@@ -64,6 +65,10 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         setListeners()
         getSavedData()
+        if(!mapCreationGuideShowed){
+            Snackbar.make(layout, getString(R.string.prompt_guide_map_start), Snackbar.LENGTH_LONG).show()
+            mapCreationGuideShowed = true
+        }
     }
 
     private fun getSavedData() {
@@ -174,6 +179,14 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         getCurrentLocation()
 
         map.setOnMapLongClickListener {
+            if(!markerOptionsGuideShowed) {
+                Snackbar.make(
+                    layout,
+                    getString(R.string.prompt_guide_map_marker_options),
+                    Snackbar.LENGTH_LONG
+                ).show()
+                markerOptionsGuideShowed = true
+            }
             val markerOpt =
                 MarkerOptions().position(it).icon(BitmapDescriptorFactory.defaultMarker())
             val mark = map.addMarker(markerOpt)
