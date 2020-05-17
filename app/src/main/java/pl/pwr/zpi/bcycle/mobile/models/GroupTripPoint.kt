@@ -4,4 +4,4 @@ data class GroupTripPoint(
     val latitude: Double,
     val longitude: Double,
     val ordinal: Int?
-)
+) :TripPointTemplate(latitude, longitude)

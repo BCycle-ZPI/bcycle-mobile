@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.row_future_trip.view.*
 import kotlinx.android.synthetic.main.row_history_trip.view.*
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
+import pl.pwr.zpi.bcycle.mobile.KEY_TRIP_ID
 import pl.pwr.zpi.bcycle.mobile.R
+import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
@@ -22,16 +24,20 @@ private const val TYPE_HISTORY = 2
 
 class TripAdapter<T>(private val trips: MutableList<T>, private val context: Context) :
     RecyclerView.Adapter<TripAdapter.ViewHolder>() where T : TripTemplate {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        if (viewType == TYPE_FUTURE) return ViewHolder(
+
+        val view = if (viewType == TYPE_FUTURE) {
             LayoutInflater.from(parent.context).inflate(R.layout.row_future_trip, parent, false)
-        )
-        return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.row_history_trip, parent, false)
-        )
+        } else {
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.row_history_trip, parent, false)
+
+        }
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -42,6 +48,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         val view = holder.itemView
         if (getItemViewType(position) == TYPE_FUTURE) {
             val item = trips[position] as GroupTrip
+            setListener(view, item.id!!)
+
             view.startdateTV.text =
                 item.startDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
             view.tv_end_date.text =
@@ -54,6 +62,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 )
         } else {
             val item = trips[position] as Trip
+            setListener(view, item.id!!)//todo wtf
+
             view.tv_start.text =
                 item.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
             view.tv_end.text =
@@ -68,19 +78,33 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 holder.itemView.iv_photo.load(item.photos[0])
             }
         }
-        setListener(view)
     }
 
-    private fun setListener(v: View) {
-        v.setOnClickListener { openTripInfo() }
+    private fun setListener(v: View, id:Int) {
+        v.setOnClickListener { openTripInfo(id, id) }
     }
 
-    private fun openTripInfo() {
-        context.startActivity(
-            Intent(
+    private fun openTripInfo(type:Int, id:Int) {
+        var intent:Intent?=null
+        if(type== TYPE_FUTURE) {
+            intent = Intent(
                 context,
-                TripInfoActivity::class.java
-            ))
+                FutureTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        else{
+            intent = Intent(
+                context,
+                FutureTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        context.startActivity(
+           intent
+        )
     }
 
 
