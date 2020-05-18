@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -17,9 +18,11 @@ import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.HistoryTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.KEY_TRIP_ID
 import pl.pwr.zpi.bcycle.mobile.R
+import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
+import pl.pwr.zpi.bcycle.mobile.utils.background
 
 private const val TYPE_FUTURE = 1
 private const val TYPE_HISTORY = 2
@@ -46,38 +49,37 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         return trips.size
     }
 
+    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val view = holder.itemView
         if (getItemViewType(position) == TYPE_FUTURE) {
             val item = trips[position] as GroupTrip
             setListener(view, item.id!!,TYPE_FUTURE)
-
             view.startdateTV.text =
                 item.startDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.tv_end_date.text =
+            view.enddateTV.text =
                 item.endDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.tv_tripname.text = item.name
-            view.tv_participantsNum.text = item.participants?.size.toString()
-            view.tv_role.text =
+            view.tripnameTV.text = item.name
+            view.participNumTV.text = item.participants?.size.toString()
+            view.roleTV.text =
                 if (item.host?.id == FirebaseAuth.getInstance().uid) context.resources.getString(R.string.you_host) else context.resources.getString(
                     R.string.you_participate
                 )
         } else {
             val item = trips[position] as Trip
             setListener(view, item.id!!, TYPE_HISTORY)//todo wtf
-
-            view.tv_start.text =
+            view.startTV.text =
                 item.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.tv_end.text =
+            view.endTV.text =
                 item.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.tv_duration.text = context.getString(
+            view.durationTV.text = context.getString(
                 R.string.time_format,
                 (item.time / 60000).div(60),
                 (item.time / 60000).rem(60)
             )
-            view.tv_road.text = context.getString(R.string.distance_format, item.distance.div(1000))
+            view.roadTV.text = context.getString(R.string.distance_format, item.distance.div(1000))
             if (item.photos.count() != 0) {
-                Picasso.get().load(item.photos[0]).transform(RoundedCornersTransformation(5,5)).into(holder.itemView.iv_photo)
+                Picasso.get().load(item.photos[0]).transform(RoundedCornersTransformation(5,5)).into(holder.itemView.photoIV)
             }
         }
     }
@@ -109,7 +111,6 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         )
 
     }
-
 
     override fun getItemViewType(position: Int): Int {
         return if (trips[position] is Trip) TYPE_HISTORY else TYPE_FUTURE

@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
     android:alpha="0.9">
 
     <androidx.cardview.widget.CardView
@@ -15,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="7dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">
 
@@ -28,17 +27,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_duration"
+                android:id="@+id/durationTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
-                app:layout_constraintTop_toTopOf="@+id/tv_road" />
+                app:layout_constraintTop_toTopOf="@+id/roadTV" />
 
             <TextView
-                android:id="@+id/tv_start"
+                android:id="@+id/startTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -47,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView8" />
 
             <TextView
-                android:id="@+id/tv_road"
+                android:id="@+id/roadTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -59,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/iv_photo"
+                android:id="@+id/photoIV"
                 android:padding="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -68,7 +67,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                app:layout_constraintTop_toBottomOf="@+id/tv_end"
+                app:layout_constraintTop_toBottomOf="@+id/endTV"
                 android:adjustViewBounds="true"
                 android:cropToPadding="false"
                 android:scaleType="fitXY"
@@ -81,19 +80,18 @@
                 android:text=", "
                 android:textColor="#000000"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_road"
-                app:layout_constraintEnd_toStartOf="@+id/tv_road"
-                app:layout_constraintTop_toTopOf="@+id/tv_road" />
+                app:layout_constraintBottom_toBottomOf="@+id/roadTV"
+                app:layout_constraintEnd_toStartOf="@+id/roadTV"
+                app:layout_constraintTop_toTopOf="@+id/roadTV" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
                 android:text="Start date:"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
+                app:layout_constraintTop_toBottomOf="@+id/durationTV" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -104,12 +102,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <TextView
-                android:id="@+id/tv_end"
+                android:id="@+id/endTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                app:layout_constraintStart_toStartOf="@+id/tv_start"
-                app:layout_constraintTop_toBottomOf="@+id/tv_start" />
+                app:layout_constraintStart_toStartOf="@+id/startTV"
+                app:layout_constraintTop_toBottomOf="@+id/startTV" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
