@@ -6,15 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.row_future_trip.view.*
 import kotlinx.android.synthetic.main.row_history_trip.view.*
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
+import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
+import pl.pwr.zpi.bcycle.mobile.HistoryTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.KEY_TRIP_ID
 import pl.pwr.zpi.bcycle.mobile.R
-import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
@@ -48,7 +50,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         val view = holder.itemView
         if (getItemViewType(position) == TYPE_FUTURE) {
             val item = trips[position] as GroupTrip
-            setListener(view, item.id!!)
+            setListener(view, item.id!!,TYPE_FUTURE)
 
             view.startdateTV.text =
                 item.startDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
@@ -62,7 +64,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 )
         } else {
             val item = trips[position] as Trip
-            setListener(view, item.id!!)//todo wtf
+            setListener(view, item.id!!, TYPE_HISTORY)//todo wtf
 
             view.tv_start.text =
                 item.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
@@ -75,17 +77,17 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
             )
             view.tv_road.text = context.getString(R.string.distance_format, item.distance.div(1000))
             if (item.photos.count() != 0) {
-                holder.itemView.iv_photo.load(item.photos[0])
+                Picasso.get().load(item.photos[0]).transform(RoundedCornersTransformation(5,5)).into(holder.itemView.iv_photo)
             }
         }
     }
 
-    private fun setListener(v: View, id:Int) {
-        v.setOnClickListener { openTripInfo(id, id) }
+    private fun setListener(v: View, id:Int, viewType:Int) {
+        v.setOnClickListener { openTripInfo(viewType, id) }
     }
 
     private fun openTripInfo(type:Int, id:Int) {
-        var intent:Intent?=null
+        val intent:Intent?
         if(type== TYPE_FUTURE) {
             intent = Intent(
                 context,
@@ -97,7 +99,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         else{
             intent = Intent(
                 context,
-                FutureTripInfoActivity::class.java
+                HistoryTripInfoActivity::class.java
             )
             intent.putExtra(KEY_TRIP_ID, id)
 
@@ -105,6 +107,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         context.startActivity(
            intent
         )
+
     }
 
 
@@ -118,3 +121,4 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
+

@@ -3,9 +3,7 @@ package pl.pwr.zpi.bcycle.mobile
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import pl.pwr.zpi.bcycle.mobile.models.GroupTripPoint
 import pl.pwr.zpi.bcycle.mobile.models.TripPoint
 import pl.pwr.zpi.bcycle.mobile.models.TripPointTemplate
@@ -23,10 +21,10 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
         }
     }
 
-    fun displayTripMarkers(markers: List<TripPointTemplate>, map: GoogleMap){
-        showMarkers(markers.subList(1, markers.size-1), map)
+    fun displayTripMarkers(markers: List<TripPointTemplate>, map: GoogleMap) {
+        showMarkers(markers.subList(1, markers.size - 1), map)
         val startPoint = markers[0]
-        val endPoint = markers[markers.size-1]
+        val endPoint = markers[markers.size - 1]
         if (startPoint is GroupTripPoint && endPoint is GroupTripPoint) {
             showPoint(startPoint.latitude, startPoint.longitude, true, map)
             showPoint(endPoint.latitude, endPoint.longitude, false, map)
@@ -48,8 +46,19 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
     }
 
 
-    fun animateTo(lat: Double, lng: Double, map: GoogleMap) {
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), 6f)
+    fun animateTo(lat: Double, lng: Double, map: GoogleMap, zoom: Float = 9f) {
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), zoom)
         map.animateCamera(cameraUpdate)
+    }
+
+    fun showRoute(route: List<TripPoint>, googleMap: GoogleMap) {
+        val listOfLatLng = mutableListOf<LatLng>()
+        route.forEach { x -> listOfLatLng.add(LatLng(x.latitude, x.longitude)) }
+        val polyline1: Polyline = googleMap.addPolyline(
+            PolylineOptions()
+                .clickable(true)
+                .addAll(listOfLatLng)
+        )
+
     }
 }

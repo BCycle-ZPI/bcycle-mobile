@@ -20,10 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FutureTripInfoActivity"></activity>
+        <activity android:name=".HistoryTripInfoActivity"></activity>
+        <activity android:name=".FutureTripInfoActivity" />
         <activity android:name=".TripCreationMapActivity" />
         <activity android:name=".TripCreationActivity" />
-        <activity android:name=".DashboardActivity" />
         <activity android:name=".ForgotPasswordActivity" />
         <activity
             android:name=".RecordTripActivity"
