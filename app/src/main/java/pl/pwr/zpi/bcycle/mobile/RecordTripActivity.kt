@@ -276,41 +276,14 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         }
     }
 
-    private fun showPermissionExplanationDialog(andThen: () -> Unit) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        val dialog = builder
-            .setMessage(R.string.location_permission_message)
-            .setTitle(R.string.location_permission_title)
-            .setPositiveButton(android.R.string.ok) { _, _ -> andThen() }
-            .create()
-        dialog.show()
-    }
-
-
     private fun ensureLocationPermissionAndStartTrip() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                showPermissionExplanationDialog(this::ensureLocationPermissionAndStartTrip)
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSIONS_REQUEST_LOCAITON
-                )
-            }
-        } else {
-            startOrContinueTripWithWait()
-        }
+        ensurePermissions(
+            this::startOrContinueTripWithWait,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            R.string.location_permission_title,
+            R.string.location_permission_message,
+            PERMISSIONS_REQUEST_LOCAITON
+        )
     }
 
     override fun onStart() {

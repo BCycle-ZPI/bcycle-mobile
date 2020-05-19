@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
-abstract class BCycleNavigationDrawerActivity: AppCompatActivity() {
+abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
     protected lateinit var appBarConfiguration: AppBarConfiguration
     protected lateinit var navController: NavController
 
