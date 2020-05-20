@@ -71,7 +71,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 (item.time / 60000).div(60),
                 (item.time / 60000).rem(60)
             )
-            view.roadTV.text = context.getString(R.string.distance_format, item.distance.div(1000))
+            view.roadTV.text = context.getString(R.string.distance_format, item.distance)
             if (item.photos.count() != 0) {
                 Picasso.get().load(item.photos[0]).transform(RoundedCornersTransformation(5,5)).into(holder.itemView.photoIV)
             }

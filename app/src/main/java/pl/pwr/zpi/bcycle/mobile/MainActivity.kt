@@ -47,30 +47,6 @@ class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataCha
         }
     }
 
-    fun openTripInfo(type:Int, id:Int) {
-        val intent:Intent?
-        if(type== TYPE_FUTURE) {
-            intent = Intent(
-                this,
-                FutureTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
-        }
-        else{
-            intent = Intent(
-                this,
-                HistoryTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
-        }
-        startActivity(
-            intent
-        )
-
-    }
-
     private fun openLoginScreen() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()

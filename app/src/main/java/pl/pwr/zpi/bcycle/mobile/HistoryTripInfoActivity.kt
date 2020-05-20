@@ -14,7 +14,6 @@ import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 
-
 class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -68,10 +67,6 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
 
     @SuppressLint("CheckResult")
     private fun showInfo(trip: Trip) {
-//        ApiClient.groupTripApi.get(trip.groupTripId!!).background().subscribe({
-//            titleTV.text = it.result.name
-//            participantLV.adapter = ArrayAdapter(this, R.layout.listview_row, it.result.participants)
-//        },{})
         startTV.text = trip.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
         endTV.text = trip.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
         durationTV.text = getString(
@@ -79,7 +74,7 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
             (trip.time / 60000).div(60),
             (trip.time / 60000).rem(60)
         )
-        distanceTV.text = getString(R.string.distance_format, trip.distance.div(1000))
+        distanceTV.text = getString(R.string.distance_format, trip.distance)
 
     }
 
