@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import pl.pwr.zpi.bcycle.mobile.adapters.TYPE_FUTURE
 import pl.pwr.zpi.bcycle.mobile.api.ApiTokenManager
 import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
 import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsViewModel
@@ -46,6 +47,29 @@ class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataCha
         }
     }
 
+    fun openTripInfo(type:Int, id:Int) {
+        val intent:Intent?
+        if(type== TYPE_FUTURE) {
+            intent = Intent(
+                this,
+                FutureTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        else{
+            intent = Intent(
+                this,
+                HistoryTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        startActivity(
+            intent
+        )
+
+    }
 
     private fun openLoginScreen() {
         startActivity(Intent(this, LoginActivity::class.java))

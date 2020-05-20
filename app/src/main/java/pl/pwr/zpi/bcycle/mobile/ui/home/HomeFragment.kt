@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
-import pl.pwr.zpi.bcycle.mobile.R
-import pl.pwr.zpi.bcycle.mobile.RecordTripActivity
-import pl.pwr.zpi.bcycle.mobile.TripCreationActivity
+import pl.pwr.zpi.bcycle.mobile.*
+import pl.pwr.zpi.bcycle.mobile.adapters.TYPE_FUTURE
 import pl.pwr.zpi.bcycle.mobile.adapters.TripAdapter
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
@@ -47,7 +46,7 @@ class HomeFragment : Fragment() {
 
     @SuppressLint("CheckResult")
     private fun arrangeRecyclerViews() {
-        val adapter = TripAdapter(mutableListOf<TripTemplate>(), activity!!.applicationContext)
+        val adapter = TripAdapter(mutableListOf<TripTemplate>(), activity!!.applicationContext, this::openTripInfo)
         tripsRV.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         tripsRV.adapter = adapter
         ApiClient.groupTripApi.getAll().background().subscribe({
@@ -62,6 +61,30 @@ class HomeFragment : Fragment() {
         }, {
             showToast(R.string.prompt_cannot_data)
         })
+    }
+
+    fun openTripInfo(type:Int, id:Int) {
+        val intent:Intent?
+        if(type== TYPE_FUTURE) {
+            intent = Intent(
+                context,
+                FutureTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        else{
+            intent = Intent(
+                context,
+                HistoryTripInfoActivity::class.java
+            )
+            intent.putExtra(KEY_TRIP_ID, id)
+
+        }
+        startActivity(
+            intent
+        )
+
     }
 
     private fun setListeners() {

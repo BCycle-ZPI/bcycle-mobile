@@ -2,7 +2,6 @@ package pl.pwr.zpi.bcycle.mobile.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +13,15 @@ import kotlinx.android.synthetic.main.row_future_trip.view.*
 import kotlinx.android.synthetic.main.row_history_trip.view.*
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
-import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
-import pl.pwr.zpi.bcycle.mobile.HistoryTripInfoActivity
-import pl.pwr.zpi.bcycle.mobile.KEY_TRIP_ID
 import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
 
-private const val TYPE_FUTURE = 1
-private const val TYPE_HISTORY = 2
+const val TYPE_FUTURE = 1
+const val TYPE_HISTORY = 2
 
-class TripAdapter<T>(private val trips: MutableList<T>, private val context: Context) :
+class TripAdapter<T>(private val trips: MutableList<T>, private val context: Context, val func:(p1:Int, p2:Int)->Unit) :
     RecyclerView.Adapter<TripAdapter.ViewHolder>() where T : TripTemplate {
 
     override fun onCreateViewHolder(
@@ -83,32 +79,9 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
     }
 
     private fun setListener(v: View, id:Int, viewType:Int) {
-        v.setOnClickListener { openTripInfo(viewType, id) }
+        v.setOnClickListener {func(viewType,id) }
     }
 
-    private fun openTripInfo(type:Int, id:Int) {
-        val intent:Intent?
-        if(type== TYPE_FUTURE) {
-            intent = Intent(
-                context,
-                FutureTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
-        }
-        else{
-            intent = Intent(
-                context,
-                HistoryTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
-        }
-        context.startActivity(
-           intent
-        )
-
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (trips[position] is Trip) TYPE_HISTORY else TYPE_FUTURE
