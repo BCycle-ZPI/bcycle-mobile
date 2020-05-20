@@ -71,8 +71,8 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
         endTV.text = trip.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
         durationTV.text = getString(
             R.string.time_format,
-            (trip.time / 60000).div(60),
-            (trip.time / 60000).rem(60)
+            (trip.time / 60).div(60),
+            (trip.time / 60).rem(60)
         )
         distanceTV.text = getString(R.string.distance_format, trip.distance)
 

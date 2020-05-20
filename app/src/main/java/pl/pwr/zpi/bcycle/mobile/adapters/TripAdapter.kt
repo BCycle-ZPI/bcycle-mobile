@@ -68,8 +68,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
                 item.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
             view.durationTV.text = context.getString(
                 R.string.time_format,
-                (item.time / 60000).div(60),
-                (item.time / 60000).rem(60)
+                (item.time / 60).div(60),
+                (item.time / 60).rem(60)
             )
             view.roadTV.text = context.getString(R.string.distance_format, item.distance)
             if (item.photos.count() != 0) {
