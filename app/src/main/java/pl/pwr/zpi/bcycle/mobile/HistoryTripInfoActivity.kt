@@ -12,6 +12,7 @@ import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
+import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 
 
 class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
@@ -54,7 +55,7 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
                     )
                 ).commit()
             } else {
-                showToastError(R.string.no_photos)
+                showToastWarning(R.string.no_photos)
             }
         }
     }

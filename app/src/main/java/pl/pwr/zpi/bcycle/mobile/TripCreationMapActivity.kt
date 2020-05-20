@@ -205,7 +205,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                 R.string.set_as_start_and_end_point
             ), getString(
                 R.string.remove_it
-            )
+            ), getString(R.string.cancel_option)
         )
         LovelyChoiceDialog(this)
             .setTopColorRes(R.color.colorAccent)
@@ -243,6 +243,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                         if (marker == markerFinishPoint) markerFinishPoint = null
                         marker?.remove()
                     }
+                    4->{ }
                 }
             }
             .show()

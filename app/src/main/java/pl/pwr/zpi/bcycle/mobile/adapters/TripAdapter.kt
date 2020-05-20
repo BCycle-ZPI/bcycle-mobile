@@ -18,11 +18,9 @@ import pl.pwr.zpi.bcycle.mobile.FutureTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.HistoryTripInfoActivity
 import pl.pwr.zpi.bcycle.mobile.KEY_TRIP_ID
 import pl.pwr.zpi.bcycle.mobile.R
-import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
-import pl.pwr.zpi.bcycle.mobile.utils.background
 
 private const val TYPE_FUTURE = 1
 private const val TYPE_HISTORY = 2

@@ -124,6 +124,7 @@
     <string name="trip_description">Trip description</string>
     <string name="who_goes_wtih_you">Who participates with you?</string>
     <string name="prompt_see_desc">See trip description</string>
-    <string name="no_photos">\"There are no saved photos for this trip\"</string>
+    <string name="no_photos">\There are no saved photos for this trip"</string>
+    <string name="cancel_option">Cancel</string>
 
 </resources>
