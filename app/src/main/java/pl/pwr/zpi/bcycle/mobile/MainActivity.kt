@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import pl.pwr.zpi.bcycle.mobile.adapters.TYPE_FUTURE
 import pl.pwr.zpi.bcycle.mobile.api.ApiTokenManager
 import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
 import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsViewModel
@@ -45,7 +46,6 @@ class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataCha
             navController.navigate(intent.extras!!.getInt(INTENT_EXTRA_MAIN_NAV_ID))
         }
     }
-
 
     private fun openLoginScreen() {
         startActivity(Intent(this, LoginActivity::class.java))

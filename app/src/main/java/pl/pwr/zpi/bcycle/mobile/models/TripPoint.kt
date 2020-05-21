@@ -7,4 +7,4 @@ data class TripPoint(
     val longitude: Double,
     val altitude: Double?,
     val timeReached: ZonedDateTime
-)
+) :TripPointTemplate(latitude,longitude)
