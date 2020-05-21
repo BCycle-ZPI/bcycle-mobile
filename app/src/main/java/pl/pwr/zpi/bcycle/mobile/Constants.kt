@@ -17,6 +17,7 @@ const val INTENT_EXTRA_MAIN_NAV_ID = "navID"
 // startActivityForResult request codes
 const val REQUEST_CODE_AFTER_GOOGLE_PLAY = 101
 
+
 //formats
 val TIME_FORMAT = "HH:mm"
 val DATE_FORMAT = "yyyy-MM-dd"
@@ -33,3 +34,6 @@ const val PERMISSIONS_REQUEST_LOCAITON = 102
 
 var mapCreationGuideShowed = false
 var markerOptionsGuideShowed = false
+
+const  val PICK_IMAGE_REQUEST = 1
+const  val MAKE_IMAGE_REQUEST = 2

@@ -257,8 +257,6 @@ class RegisterActivity : AppCompatActivity() {
         private val PERMISSION_CODE_CAMERA: Int = 1000;
         private val PERMISSION_CODE_GALLERY: Int = 1001;
         private var mImageUri: Uri? = null
-        private  val PICK_IMAGE_REQUEST = 1
-        private  val MAKE_IMAGE_REQUEST = 2
         private val defaultAvatarUri =
             Uri.parse("${FirebaseStorage.getInstance().reference.root}/default_avatar.png")
     }
