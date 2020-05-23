@@ -3,6 +3,7 @@ package pl.pwr.zpi.bcycle.mobile.api
 import io.reactivex.Completable
 import io.reactivex.Single
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
+import pl.pwr.zpi.bcycle.mobile.models.Trip
 import retrofit2.http.*
 
 interface GroupTripApi {
@@ -14,6 +15,9 @@ interface GroupTripApi {
 
     @GET("group-trips/{id}")
     fun get(@Path("id") id: Int): Single<ApiResultContainer<GroupTrip>>
+
+    @GET("group-trips")
+    fun getAll(): Single<ApiResultContainer<List<GroupTrip>>>
 
     @PUT("group-trips/{id}")
     fun update(@Path("id") id: Int, @Body groupTrip: GroupTrip): Completable

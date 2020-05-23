@@ -70,6 +70,39 @@
     <string name="menu_my_account">My Account</string>
     <string name="menu_create_group_trip">Create group trip</string>
     <string name="menu_join_group_trip">Join group trip</string>
+    <string name="next_button">Next</string>
+    <string name="trip_name">Trip name</string>
+    <string name="description">Description</string>
+    <string name="draw_the_route_of_your_trip">Draw the route of your trip</string>
+    <string name="form_not_filled_info">Text fields cannot be empty</string>
+    <string name="choose_start_datetime">Choose the \n start date</string>
+    <string name="choose_finish_datetime">Choose the \n finish date</string>
+    <string name="location_denied_prompt">Unable to show location - permission required</string>
+    <string name="prompt_choose_dates">You need to choose both the start and the end date of your trip</string>
+    <string name="prompt_fill_field">Fill in the field</string>
+    <string name="prompt_invalid_dates">The start date cannot be after the end date</string>
+    <string name="prompt_chosen_dates_from_past">Chosen dates cannot come from the past</string>
+    <string name="start_point">START POINT</string>
+    <string name="end_point">END POINT</string>
+    <string name="prompt_marker_what_to_do">What would you like to do with that marker?</string>
+    <string name="confirm">Confirm</string>
+    <string name="set_as_start_point">Set as start point</string>
+    <string name="set_as_end_point">Set as end point</string>
+    <string name="remove_it">Remove it from the map</string>
+    <string name="warning_cant_set_and_delete_marker">You cannot set the point as start/end point of your trip and remove it.</string>
+    <string name="start_and_end_point"><![CDATA[START & END POINT]]></string>
+    <string name="prompt_is_trip_done">Have you finished planning your trip?</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="prompt_cannot_data">Cannot load your trip data</string>
+    <string name="error_missing_start_or_end_marker">You need to provide both start and finish point of your trip!</string>
+    <string name="prompt_trid_added_successfully">Group trip was added successfully!</string>
+    <string name="time_format">%1$dh %2$dmin</string>
+
+    <string-array name="array_trip_points">
+        <item>START POINT</item>
+        <item>END POINT</item>
+    </string-array>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -82,6 +115,20 @@
     <string name="bad_password_prompt">Bad password!</string>
     <string name="changed_data_error">Something went wrong!</string>
     <string name="data_changed_prompt">Data changed!</string>
+    <string name="create_new_trip">Create new trip</string>
+    <string name="you_host">You host</string>
+    <string name="you_participate">You participate</string>
+    <string name="start_new_trip">Start new trip</string>
+    <string name="set_as_start_and_end_point">Set as start and end point</string>
+    <string name="join_trip">Join trip</string>
+    <string name="prompt_guide_map_marker_options">Click on the marker to remove it or set as start/finish point of your trip</string>
+    <string name="prompt_guide_map_start">Click longer on the map to add new point of your trip</string>
+    <string name="prompt_unable_to_load_tripinfo">Cannot load trip info!</string>
+    <string name="trip_description">Trip description</string>
+    <string name="who_goes_wtih_you">Who participates with you?</string>
+    <string name="prompt_see_desc">See trip description</string>
+    <string name="no_photos">\There are no saved photos for this trip"</string>
+    <string name="cancel_option">Cancel</string>
 
     <string name="name_info">Name</string>
     <string name="email_info">email</string>

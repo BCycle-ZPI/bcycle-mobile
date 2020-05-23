@@ -6,10 +6,11 @@ class GroupTrip(
     val id: Int?,
     val name: String,
     val description: String,
-    val host: UserInfo,
+    val host: UserInfo?,
     val tripCode: String?,
     val startDate: ZonedDateTime,
     val endDate: ZonedDateTime,
     val route: List<GroupTripPoint>,
-    val participants: List<GroupTripParticipant>
+    val participants: List<GroupTripParticipant>?
 )
+    : TripTemplate()

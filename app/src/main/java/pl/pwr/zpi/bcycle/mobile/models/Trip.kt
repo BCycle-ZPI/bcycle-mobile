@@ -11,7 +11,7 @@ class Trip(
     val groupTripId: Int?,
     val route: List<TripPoint>,
     val photos: List<String>
-) {
+) : TripTemplate() {
     constructor(
         distance: Double,
         time: Int,

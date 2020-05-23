@@ -43,7 +43,7 @@ abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
     protected fun configureIndependentNavigationDrawer() {
         configureIndependentNavigationDrawer(FirebaseAuth.getInstance())
     }
-    
+
     protected fun updateNavigationDrawerHeader(user: FirebaseUser, storage: FirebaseStorage) {
         val header = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
         header.currentUserName.text = user.displayName
@@ -67,16 +67,17 @@ abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
             if (it.itemId == R.id.nav_logout) {
                 auth.signOut()
                 finish()
-            } else {
+            } else if (it.itemId == R.id.nav_create_group_trip) {
+                startActivity(Intent(applicationContext, TripCreationActivity::class.java))
+                finish()
+            }
+            else {
                 navController.navigate(it.itemId)
-
-
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
-
 
 
     protected fun configureIndependentNavigationDrawer(auth: FirebaseAuth) {
@@ -88,6 +89,9 @@ abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
             if (it.itemId == R.id.nav_logout) {
                 auth.signOut()
                 finishAndRemoveTask()
+            } else if (it.itemId == R.id.nav_create_group_trip) {
+                startActivity(Intent(applicationContext, TripCreationActivity::class.java))
+
             } else {
                 // Start the main activity and run the item.
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -104,7 +108,6 @@ abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
 
 
     companion object {

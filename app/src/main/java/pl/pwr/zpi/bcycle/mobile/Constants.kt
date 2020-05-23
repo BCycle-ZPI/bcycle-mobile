@@ -17,9 +17,24 @@ const val INTENT_EXTRA_MAIN_NAV_ID = "navID"
 // startActivityForResult request codes
 const val REQUEST_CODE_AFTER_GOOGLE_PLAY = 101
 
+
+//formats
+val TIME_FORMAT = "HH:mm"
+val DATE_FORMAT = "yyyy-MM-dd"
+val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm"
+
+//keys for bundle between trip creation activities
+val START_DATE_KEY = "START_DATE_KEY"
+val END_DATE_KEY = "END_DATE_KEY"
+val NAME_KEY = "NAME_KEY"
+val DESCRIPTION_KEY = "DESCRIPTION_KEY"
+val KEY_TRIP_ID = "KEY_TRIP_ID"
+
 const val PERMISSIONS_REQUEST_LOCAITON = 102
 const val PERMISSIONS_REQUEST_CAMERA_STORAGE = 103
 
+var mapCreationGuideShowed = false
+var markerOptionsGuideShowed = false
 
 const  val PICK_IMAGE_REQUEST = 1
 const  val MAKE_IMAGE_REQUEST = 2
