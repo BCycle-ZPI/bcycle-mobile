@@ -2,9 +2,9 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -15,8 +15,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.content_record_trip.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -25,8 +23,9 @@ import pl.pwr.zpi.bcycle.mobile.models.OngoingTripEvent
 import pl.pwr.zpi.bcycle.mobile.services.TripLocationTrackingService
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.timeToString
-
 import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 
 class RecordTripActivity : BCycleNavigationDrawerActivity() {
@@ -36,7 +35,10 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private var time: Double = 0.0
     private var lastClockUpdate: Long = -1
     private val timerHandler = Handler()
-    private var madeImages: List<Uri> =  listOf<Uri>()
+    private var madeImages: MutableList<Uri> = mutableListOf()
+    private var uploadedImageCount = 0
+    private val madeAnyImages: Boolean
+        get() = madeImages.isNotEmpty()
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
@@ -92,7 +94,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         }
 
         photoBt.setOnClickListener {
-            makePhoto()
+            makePhotoWithPermissions()
         }
 
         stopFAB.setOnClickListener {
@@ -103,76 +105,108 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         }
     }
 
-    private fun makePhoto() {
+    private fun makePhotoWithPermissions() {
+        ensurePermissions(
+            this::makePhoto,
+            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            R.string.camera_storage_permission_title,
+            R.string.camera_storage_permission_message,
+            PERMISSIONS_REQUEST_CAMERA_STORAGE
+        )
+    }
 
-        val values  = ContentValues()
+    private fun makePhoto() {
+        val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "camera_photo")
         values.put(MediaStore.Images.Media.DESCRIPTION, "camera photo during trip")
-        mPhotoUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values)
+        mPhotoUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
         val takenPictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         takenPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri)
 
-
-
-
-        if(takenPictureIntent.resolveActivity(this.packageManager)!=null)
-            startActivityForResult(takenPictureIntent,MAKE_IMAGE_REQUEST )
+        if (takenPictureIntent.resolveActivity(this.packageManager) != null)
+            startActivityForResult(takenPictureIntent, MAKE_IMAGE_REQUEST)
         else
-            Toast.makeText(this,"Unable to open camera",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) =
-        if(requestCode == MAKE_IMAGE_REQUEST && mPhotoUri !=null) {
-            madeImages+= listOf(mPhotoUri!!)
-
-            mPhotoUri = null
-        }
-        else
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MAKE_IMAGE_REQUEST && mPhotoUri != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                madeImages.add(mPhotoUri!!)
+                mPhotoUri = null
+            }
+        } else {
             super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
 
+    @SuppressLint("CheckResult")
     private fun uploadTripData() {
         stopFAB.isEnabled = false
         pauseFAB.isEnabled = false
         photoBt.isEnabled = false
         uploadingCard.visibility = View.VISIBLE
+        if (madeAnyImages) {
+            uploadingPB.visibility = View.VISIBLE
+            uploadingPB.max = madeImages.size + 1
+        } else {
+            uploadingPB.visibility = View.GONE
+        }
         service.endTrip()
         val trip = service.getTrip()
-        val sub = ApiClient.tripApi.post(trip)
+        ApiClient.tripApi.post(trip)
             .background().subscribe(
                 { result ->
-                    savePhotos(result.result)
-                    handleTripUploadSuccess(result.result) },
-                { error ->
+                    if (madeAnyImages) {
+                        savePhotos(result.result)
+                        // also calls handleTripUploadSuccess
+                    } else {
+                        handleTripUploadSuccess(result.result)
+                    }
+                }, { error ->
                     showTripUploadError(error.message)
                 }
             )
     }
 
-    private  fun savePhotos(tripId: Int) {
-
-        val emptyList  = emptyList<Uri>()
-
-        if(madeImages !=emptyList) {
-            for  (photo in madeImages){
+    @SuppressLint("CheckResult")
+    private fun savePhotos(tripId: Int) {
+        if (madeAnyImages) {
+            uploadingPB.progress = 1
+            uploadingText.text = resources.getQuantityString(
+                R.plurals.uploading_photos, madeImages.size, madeImages.size
+            )
+            for (photo in madeImages) {
                 val bytePhoto = readBytes(photo)
-
-
-                val imageBody = RequestBody.create(
-                    MediaType.parse("image/jpeg"), bytePhoto)
-                ApiClient.tripApi.putPhoto(tripId, imageBody).background().subscribe()
-
+                if (bytePhoto == null) {
+                    Log.e(LOG_TAG, "Failed to read photo $photo, skipping")
+                    handlePhotoUploadSuccess(tripId, null)
+                } else {
+                    val imageBody = RequestBody.create(
+                        MediaType.parse("image/jpeg"), bytePhoto
+                    )
+                    ApiClient.tripApi.putPhoto(tripId, imageBody).background().subscribe(
+                        { result -> handlePhotoUploadSuccess(tripId, result.result) },
+                        { error -> showTripUploadError(error.message, true) }
+                    )
+                }
             }
         }
     }
 
-    private fun readBytes(uri:Uri): ByteArray? {
-        val stream = contentResolver.openInputStream(uri)
+    private fun readBytes(uri: Uri): ByteArray? {
+        val stream: InputStream?
+        try {
+            stream = contentResolver.openInputStream(uri)
+        } catch (e: FileNotFoundException) {
+            return null
+        }
+        if (stream == null) return null
         val byteArrayStream = ByteArrayOutputStream()
         val buffer = ByteArray(1024)
         var i = Int.MAX_VALUE
         while (stream.read(buffer, 0, buffer.size).also { i = it } > 0) {
-
             byteArrayStream.write(buffer, 0, i)
         }
 
@@ -185,7 +219,20 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         finish()
     }
 
-    private fun showTripUploadError(description: String?) {
+    private fun handlePhotoUploadSuccess(tripId: Int, photoUrl: String?) {
+        if (photoUrl == null) {
+            Log.e(LOG_TAG, "A photo was skipped")
+        } else {
+            Log.d(LOG_TAG, "Photo upload URL: $photoUrl")
+        }
+        uploadedImageCount += 1
+        uploadingPB.progress = uploadedImageCount + 1
+        if (uploadedImageCount == madeImages.size) {
+            handleTripUploadSuccess(tripId)
+        }
+    }
+
+    private fun showTripUploadError(description: String?, isPhotosError: Boolean = false) {
         stopFAB.isEnabled = true
         pauseFAB.isEnabled = true
         photoBt.isEnabled = true
@@ -194,7 +241,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
 
         val builder = AlertDialog.Builder(this)
         builder.setMessage(descriptionAuto)
-            .setTitle(R.string.uploading_error_title)
+            .setTitle(if (isPhotosError) R.string.uploading_error_title_photos else R.string.uploading_error_title)
             .setPositiveButton(
                 R.string.upload_try_again
             ) { _, _ -> uploadTripData() }
@@ -265,7 +312,25 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     startOrContinueTripWithWait()
                 } else {
-                    showPermissionExplanationDialog(this::finish)
+                    showPermissionExplanationDialog(
+                        this::finish,
+                        R.string.location_permission_title,
+                        R.string.location_permission_message
+                    )
+                }
+                return
+            }
+
+            PERMISSIONS_REQUEST_CAMERA_STORAGE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    makePhoto()
+                } else {
+                    showPermissionExplanationDialog(
+                        { },
+                        R.string.camera_storage_permission_title,
+                        R.string.camera_storage_permission_message
+                    )
                 }
                 return
             }
@@ -276,41 +341,14 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         }
     }
 
-    private fun showPermissionExplanationDialog(andThen: () -> Unit) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        val dialog = builder
-            .setMessage(R.string.location_permission_message)
-            .setTitle(R.string.location_permission_title)
-            .setPositiveButton(android.R.string.ok) { _, _ -> andThen() }
-            .create()
-        dialog.show()
-    }
-
-
     private fun ensureLocationPermissionAndStartTrip() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                showPermissionExplanationDialog(this::ensureLocationPermissionAndStartTrip)
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSIONS_REQUEST_LOCAITON
-                )
-            }
-        } else {
-            startOrContinueTripWithWait()
-        }
+        ensurePermissions(
+            this::startOrContinueTripWithWait,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            R.string.location_permission_title,
+            R.string.location_permission_message,
+            PERMISSIONS_REQUEST_LOCAITON
+        )
     }
 
     override fun onStart() {

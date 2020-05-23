@@ -31,6 +31,7 @@ val DESCRIPTION_KEY = "DESCRIPTION_KEY"
 val KEY_TRIP_ID = "KEY_TRIP_ID"
 
 const val PERMISSIONS_REQUEST_LOCAITON = 102
+const val PERMISSIONS_REQUEST_CAMERA_STORAGE = 103
 
 var mapCreationGuideShowed = false
 var markerOptionsGuideShowed = false
