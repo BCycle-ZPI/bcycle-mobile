@@ -13,10 +13,17 @@ const val ONGOING_NOTIFICATION_ID = 1
 const val INTENT_LOCATION_UPDATE = "pl.pwr.zpi.bcycle.mobile.LOCATION_UPDATE"
 const val INTENT_START_TRIP = "pl.pwr.zpi.bcycle.mobile.START_TRIP"
 const val INTENT_EXTRA_MAIN_NAV_ID = "navID"
+const val INTENT_EXTRA_SHARE_ISGROUP = "tripIsGroupTrip"
+const val INTENT_EXTRA_SHARE_ID = "tripID"
+const val INTENT_EXTRA_SHARE_PHOTO_COUNT = "tripPhotoCount"
+const val INTENT_EXTRA_SHARE_URL = "tripShareURL"
+const val INTENT_EXTRA_INVITE_TRIP_NAME = "tripName"
+const val INTENT_EXTRA_INVITE_CODE = "tripCode"
+const val DIALOG_SHARE = "ShareDialog"
+const val DIALOG_INVITE = "InviteDialog"
 
 // startActivityForResult request codes
 const val REQUEST_CODE_AFTER_GOOGLE_PLAY = 101
-
 
 //formats
 val TIME_FORMAT = "HH:mm"

@@ -10,11 +10,12 @@ import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.Trip
+import pl.pwr.zpi.bcycle.mobile.ui.dialogs.ShareDialogFragment
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 
-class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
+class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, ShareDialogFragment.ShareDialogListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var trip: Trip
@@ -57,6 +58,12 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
                 showToastWarning(R.string.no_photos)
             }
         }
+        shareFAB.setOnClickListener {
+            val fragment =
+                ShareDialogFragment()
+            fragment.arguments = ShareDialogFragment.prepareShareDialog(trip)
+            fragment.show(supportFragmentManager, DIALOG_SHARE)
+        }
     }
 
     private fun getMaps() {
@@ -80,5 +87,9 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+    }
+
+    override fun setSharingUrlFromDialog(url: String?) {
+        trip.sharingUrl = url
     }
 }

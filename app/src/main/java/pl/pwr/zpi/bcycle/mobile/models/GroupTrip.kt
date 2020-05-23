@@ -11,6 +11,16 @@ class GroupTrip(
     val startDate: ZonedDateTime,
     val endDate: ZonedDateTime,
     val route: List<GroupTripPoint>,
-    val participants: List<GroupTripParticipant>?
+    val participants: List<GroupTripParticipant>?,
+    var sharingUrl: String?,
+    val photos: List<String>
 )
-    : TripTemplate()
+    : TripTemplate() {
+    constructor(
+        name: String,
+        description: String,
+        startDate: ZonedDateTime,
+        endDate: ZonedDateTime,
+        route: List<GroupTripPoint>
+    ) : this(null, name, description, null, null, startDate, endDate, route, null, null, listOf())
+}

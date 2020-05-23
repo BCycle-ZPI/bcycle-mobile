@@ -103,9 +103,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                     val route = createMarkersList()
                     ApiClient.groupTripApi.create(
                         GroupTrip(
-                            null, savedName, savedDesc,
-                            null,
-                            null, savedStartDate, savedEndDate, route, null
+                            savedName, savedDesc, savedStartDate, savedEndDate, route
                         )
                     ).background().subscribe({
                         showToast(getString(R.string.prompt_trid_added_successfully))
