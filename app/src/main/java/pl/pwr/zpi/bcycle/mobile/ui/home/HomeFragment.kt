@@ -51,13 +51,11 @@ class HomeFragment : Fragment() {
         tripsRV.adapter = adapter
         ApiClient.groupTripApi.getAll().background().subscribe({
             adapter.addAll(it.result)
-            adapter.notifyDataSetChanged()
         }, {
             showToast(R.string.prompt_cannot_data)
         })
         ApiClient.tripApi.getAll().background().subscribe({
             adapter.addAll(it.result)
-            adapter.notifyDataSetChanged()
         }, {
             showToast(R.string.prompt_cannot_data)
         })

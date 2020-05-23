@@ -31,4 +31,7 @@ class Trip(
         route: List<TripPoint>
     ) :
             this(null, distance, time, started, finished, null, groupTripId, route, listOf())
+
+    override val sortKey: ZonedDateTime
+        get() = started
 }

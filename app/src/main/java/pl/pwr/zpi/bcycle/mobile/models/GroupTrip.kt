@@ -23,4 +23,8 @@ class GroupTrip(
         endDate: ZonedDateTime,
         route: List<GroupTripPoint>
     ) : this(null, name, description, null, null, startDate, endDate, route, null, null, listOf())
+
+
+    override val sortKey: ZonedDateTime
+        get() = startDate
 }
