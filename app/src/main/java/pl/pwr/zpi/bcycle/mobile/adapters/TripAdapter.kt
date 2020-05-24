@@ -89,7 +89,12 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
 
     fun addAll(list: List<T>) {
         trips.addAll(list)
-        trips.sortBy { it.sortKey }
+        trips.sortByDescending { it.sortKey }
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        trips.clear()
         notifyDataSetChanged()
     }
 

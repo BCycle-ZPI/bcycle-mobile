@@ -22,6 +22,7 @@ import pl.pwr.zpi.bcycle.mobile.utils.showToast
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var adapter: TripAdapter<TripTemplate>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,20 +45,43 @@ class HomeFragment : Fragment() {
         arrangeRecyclerViews()
     }
 
-    @SuppressLint("CheckResult")
+    override fun onResume() {
+        super.onResume()
+        if (this::adapter.isInitialized) refreshTripList()
+    }
+
     private fun arrangeRecyclerViews() {
-        val adapter = TripAdapter(mutableListOf<TripTemplate>(), activity!!.applicationContext, this::openTripInfo)
+        adapter = TripAdapter(
+            mutableListOf<TripTemplate>(),
+            activity!!.applicationContext,
+            this::openTripInfo
+        )
         tripsRV.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         tripsRV.adapter = adapter
+        refreshTripList()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun refreshTripList() {
+        adapter.clear()
+        homeRefreshLayout.isRefreshing = true
+        var finishedRefreshes = 0
         ApiClient.groupTripApi.getAll().background().subscribe({
+            allGroupTrips = it.result
             adapter.addAll(it.result)
+            finishedRefreshes += 1
+            if (finishedRefreshes == 2) homeRefreshLayout.isRefreshing = false
         }, {
             showToast(R.string.prompt_cannot_data)
+            homeRefreshLayout.isRefreshing = false
         })
         ApiClient.tripApi.getAll().background().subscribe({
             adapter.addAll(it.result)
+            finishedRefreshes += 1
+            if (finishedRefreshes == 2) homeRefreshLayout.isRefreshing = false
         }, {
             showToast(R.string.prompt_cannot_data)
+            homeRefreshLayout.isRefreshing = false
         })
     }
 
@@ -79,5 +103,6 @@ class HomeFragment : Fragment() {
         jointripBT.setOnClickListener {
             //todo
         }
+        homeRefreshLayout.setOnRefreshListener { refreshTripList() }
     }
 }
