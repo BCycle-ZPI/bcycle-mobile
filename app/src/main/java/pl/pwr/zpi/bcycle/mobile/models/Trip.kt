@@ -8,6 +8,7 @@ class Trip(
     val time: Int,
     val started: ZonedDateTime,
     val finished: ZonedDateTime,
+    var sharingUrl: String?,
     val groupTripId: Int?,
     val route: List<TripPoint>,
     val photos: List<String>
@@ -19,5 +20,18 @@ class Trip(
         finished: ZonedDateTime,
         route: List<TripPoint>
     ) :
-            this(null, distance, time, started, finished, null, route, listOf())
+            this(null, distance, time, started, finished, null, null, route, listOf())
+
+    constructor(
+        distance: Double,
+        time: Int,
+        started: ZonedDateTime,
+        finished: ZonedDateTime,
+        groupTripId: Int,
+        route: List<TripPoint>
+    ) :
+            this(null, distance, time, started, finished, null, groupTripId, route, listOf())
+
+    override val sortKey: ZonedDateTime
+        get() = started
 }

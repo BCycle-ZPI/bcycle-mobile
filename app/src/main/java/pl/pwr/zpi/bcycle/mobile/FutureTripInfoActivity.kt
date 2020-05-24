@@ -10,6 +10,7 @@ import com.yarolegovich.lovelydialog.LovelyInfoDialog
 import kotlinx.android.synthetic.main.activity_future_trip_info.*
 import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
+import pl.pwr.zpi.bcycle.mobile.ui.dialogs.InviteDialogFragment
 import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 
@@ -44,6 +45,12 @@ class FutureTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback {
         }
         starttripBT.setOnClickListener {
             //todo
+        }
+        inviteFAB.setOnClickListener {
+            val fragment =
+                InviteDialogFragment()
+            fragment.arguments = InviteDialogFragment.prepareInviteDialog(trip)
+            fragment.show(supportFragmentManager, DIALOG_INVITE)
         }
     }
 

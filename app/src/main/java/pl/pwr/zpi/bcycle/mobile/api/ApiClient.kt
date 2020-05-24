@@ -37,6 +37,10 @@ object ApiClient {
         retrofit.create(GroupTripApi::class.java)
     }
 
+    val shareApi: ShareApi by lazy {
+        retrofit.create(ShareApi::class.java)
+    }
+
     val statsApi: StatsApi by lazy {
         retrofit.create(StatsApi::class.java)
     }

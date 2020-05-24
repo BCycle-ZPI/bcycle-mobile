@@ -1,4 +1,7 @@
 package pl.pwr.zpi.bcycle.mobile.models
 
-open class TripTemplate {
+import org.threeten.bp.ZonedDateTime
+
+abstract class TripTemplate {
+    abstract val sortKey: ZonedDateTime
 }

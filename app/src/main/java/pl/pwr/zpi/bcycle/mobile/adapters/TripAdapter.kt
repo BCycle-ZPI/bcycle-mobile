@@ -89,6 +89,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
 
     fun addAll(list: List<T>) {
         trips.addAll(list)
+        trips.sortBy { it.sortKey }
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

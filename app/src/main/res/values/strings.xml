@@ -104,8 +104,6 @@
         <item>END POINT</item>
     </string-array>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="prompt_cancel_change">Changes canceled!</string>
     <string name="nothing_to_edit_prompt">Nothing to edit!</string>
@@ -127,7 +125,7 @@
     <string name="trip_description">Trip description</string>
     <string name="who_goes_wtih_you">Who participates with you?</string>
     <string name="prompt_see_desc">See trip description</string>
-    <string name="no_photos">\There are no saved photos for this trip"</string>
+    <string name="no_photos">There are no saved photos for this trip</string>
     <string name="cancel_option">Cancel</string>
 
     <string name="name_info">Name</string>
@@ -140,9 +138,35 @@
     <string name="total_kilometers_info">Total kilometers:</string>
     <string name="total_time_info">Total time [min]:</string>
 
+    <string name="not_sharing">Not sharing.</string>
+    <string name="clipboard_invite_description">BCycle Trip Code</string>
+    <string name="clipboard_share_description">BCycle Trip Sharing URL</string>
+    <string name="share_intent_title">Share Trip URL</string>
+    <string name="share_invite_intent_title">Share Trip Invite</string>
+    <string name="share_this_trip">Share this trip</string>
+    <string name="sharing_explanation_without_photos">If sharing is enabled, the route and details will be visible on a web page. You can share the link to this webpage with your friends.</string>
+    <string name="sharing_explanation_without_photos_group">If sharing is enabled, the route and details, and any photos by other participants, will be visible on a web page. You can share the link to this webpage with your friends.</string>
+    <string name="share_link_btn">Share</string>
+    <string name="copy_link_btn">Copy Link</string>
+    <string name="done">Done</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="invite_dialog_title">Invite participants</string>
+    <string name="invite_dialog_explanation">To invite someone to participate in this trip, give them this code. They can join this trip by selecting “Join group trip” from the main menu and typing the code. Participants must be approved by the trip host.</string>
+    <string name="share_code_btn">Share</string>
+    <string name="copy_code_btn">Copy Code</string>
+    <string name="share_invite_text">Join my group trip %1$s on BCycle! Use this code to join: %2$s</string>
+    <string name="copied_to_clipboard">Copied to clipboard.</string>
+
+    <plurals name="sharing_explanation_with_photos">
+        <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>
+        <item quantity="other">If sharing is enabled, the route, details, and %1$d photos will be visible on a web page. You can share the link to this webpage with your friends.</item>
+    </plurals>
+    <plurals name="sharing_explanation_with_photos_group">
+        <item quantity="one">If sharing is enabled, the route, details, your %1$d photo, and any photos by other participants, will be visible on a web page. You can share the link to this webpage with your friends.</item>
+        <item quantity="other">If sharing is enabled, the route, details, your %1$d photos, and any photos by other participants, will be visible on a web page. You can share the link to this webpage with your friends.</item>
+    </plurals>
     <plurals name="uploading_photos">
         <item quantity="one">Uploading %1$d photo…</item>
         <item quantity="other">Uploading %1$d photos…</item>
     </plurals>
-
 </resources>
