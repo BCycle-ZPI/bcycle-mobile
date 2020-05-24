@@ -45,6 +45,10 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var locationManager: LocationManager
     private var markerStartPoint: Marker? = null
     private var markerFinishPoint: Marker? = null
+
+    var mapCreationGuideShowed = false
+    var markerOptionsGuideShowed = false
+
     // region intent.extra data
     private lateinit var savedStartDate: ZonedDateTime
     private lateinit var savedEndDate: ZonedDateTime

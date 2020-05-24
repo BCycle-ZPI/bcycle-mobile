@@ -40,8 +40,7 @@ val KEY_TRIP_ID = "KEY_TRIP_ID"
 const val PERMISSIONS_REQUEST_LOCAITON = 102
 const val PERMISSIONS_REQUEST_CAMERA_STORAGE = 103
 
-var mapCreationGuideShowed = false
-var markerOptionsGuideShowed = false
+const val PICK_IMAGE_REQUEST = 1
+const val MAKE_IMAGE_REQUEST = 2
 
-const  val PICK_IMAGE_REQUEST = 1
-const  val MAKE_IMAGE_REQUEST = 2
+const val MAP_POLYLINE_WIDTH = 25f

@@ -49,7 +49,8 @@ class TripLocationTrackingService : Service() {
     fun startOrContinueTrip(
         distanceUpdateCallback: ((Double) -> Unit)?,
         timeUpdateCallback: ((Double) -> Unit)?,
-        newLocationCallback: ((OngoingTripEvent) -> Unit)?
+        newLocationCallback: ((OngoingTripEvent) -> Unit)?,
+        redrawMapCallback: (() -> Unit)?
     ) {
         if (hasOngoingTrip) {
             if (pendingIntent == null) startListeningForLocation()
@@ -62,6 +63,7 @@ class TripLocationTrackingService : Service() {
         // restore data in activity
         distanceUpdateCallback?.invoke(currentDistance)
         timeUpdateCallback?.invoke(currentTime)
+        redrawMapCallback?.invoke()
         if (newLocationCallback != null) {
             ongoingTrip.events.filter { it.isMidPoint }
                 .forEach(newLocationCallback)

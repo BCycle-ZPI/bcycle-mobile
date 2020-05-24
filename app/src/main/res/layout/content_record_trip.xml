@@ -6,15 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".RecordTripActivity">
 
-    <TextView
-        android:id="@+id/mapPlaceholder"
-        android:layout_width="0dp"
+
+    <fragment
+        android:id="@+id/myMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/record_trip_margin_main"
-        android:background="#FFAB91"
-        android:fontFamily="monospace"
-        android:text="Map Placeholder\nCurrent locations:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toTopOf="@+id/timeDescTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -111,7 +109,7 @@
         android:layout_marginBottom="@dimen/record_trip_margin_main"
         android:visibility="gone"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="@+id/mapPlaceholder"
+        app:layout_constraintBottom_toBottomOf="@+id/myMap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
