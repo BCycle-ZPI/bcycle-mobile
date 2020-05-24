@@ -156,6 +156,8 @@
     <string name="copy_code_btn">Copy Code</string>
     <string name="share_invite_text">Join my group trip %1$s on BCycle! Use this code to join: %2$s</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
+    <string name="select_group_trip_to_join">You have group trips that are starting soon. Do you want your trip to be counted as part of a group trip, or are you riding on your own?</string>
+    <string name="private_trip_option">This is a private trip</string>
 
     <plurals name="sharing_explanation_with_photos">
         <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>

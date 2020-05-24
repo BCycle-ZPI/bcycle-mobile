@@ -4,6 +4,7 @@ const val API_BASE_URL = "https://bcycle.azurewebsites.net/api/"
 const val HTTP_TIMEOUT_S: Long = 20
 const val M_TO_KM: Double = 1000.0
 const val MS_TO_S: Double = 1000.0
+const val UPCOMING_GROUP_TRIP_OFFSET_MINUTES: Long = 30
 const val LOCATION_UPDATE_INTERVAL_MS: Long = 5000
 // notifications
 const val NOTIFICATION_CHANNEL_ONGOING_ID = "ongoing"

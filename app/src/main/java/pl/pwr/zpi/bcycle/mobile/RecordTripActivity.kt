@@ -158,7 +158,11 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         }
         service.endTrip()
         val trip = service.getTrip(groupTripId)
-        ApiClient.tripApi.post(trip)
+        if (trip == null) {
+            handleEmptyTrip()
+            return
+        }
+        ApiClient.tripApi.post(trip!!)
             .background().subscribe(
                 { result ->
                     if (madeAnyImages) {
@@ -218,6 +222,12 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
 
     private fun handleTripUploadSuccess(tripId: Int) {
         openPrivateTrip(tripId)
+        service.stopSelf()
+        finish()
+    }
+
+    /** Handle finishing an empty trip (for which zero points were recorded, and that was not uploaded). */
+    private fun handleEmptyTrip() {
         service.stopSelf()
         finish()
     }

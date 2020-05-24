@@ -11,7 +11,7 @@ data class OngoingTrip(
     val events: MutableList<OngoingTripEvent>
 ) {
 
-    fun asTrip(groupTripId: Int?): Trip {
+    fun asTrip(groupTripId: Int?): Trip? {
         if (finished == null) {
             throw IllegalStateException("Only finished trips can be converted")
         }
@@ -40,6 +40,10 @@ data class OngoingTrip(
             } else if (e.eventType == OngoingTripEventType.MIDPOINT) {
                 currentGroup.add(e.asTripPoint())
             }
+        }
+        if (currentGroup.isEmpty() && allPoints.isEmpty()) {
+            // Empty trip.
+            return null
         }
         // Take care of the last group.
         distance += getDistance(currentGroup)

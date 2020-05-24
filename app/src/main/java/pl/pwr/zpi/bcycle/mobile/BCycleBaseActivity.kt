@@ -66,4 +66,12 @@ abstract class BCycleBaseActivity: AppCompatActivity() {
         intent.putExtra(KEY_TRIP_ID, id)
         startActivity(intent)
     }
+
+    fun startTrip(groupTripId: Int? = null) {
+        val intent = Intent(applicationContext, RecordTripActivity::class.java)
+        if (groupTripId != null) {
+            intent.putExtra(INTENT_EXTRA_RECORD_GROUP_TRIP_ID, groupTripId)
+        }
+        startActivity(intent)
+    }
 }
