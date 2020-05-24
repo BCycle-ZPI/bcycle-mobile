@@ -166,11 +166,11 @@ class TripLocationTrackingService : Service() {
         stopForeground(true)
     }
 
-    fun getTrip(): Trip {
+    fun getTrip(groupTripId: Int?): Trip {
         if (tripState != OngoingTripState.FINISHED) {
             throw IllegalStateException("Can only get finished trip, call endTrip first")
         }
-        return ongoingTrip.asTrip()
+        return ongoingTrip.asTrip(groupTripId)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

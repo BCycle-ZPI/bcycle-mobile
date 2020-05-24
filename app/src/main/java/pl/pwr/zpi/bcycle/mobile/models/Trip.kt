@@ -27,7 +27,7 @@ class Trip(
         time: Int,
         started: ZonedDateTime,
         finished: ZonedDateTime,
-        groupTripId: Int,
+        groupTripId: Int?,
         route: List<TripPoint>
     ) :
             this(null, distance, time, started, finished, null, groupTripId, route, listOf())

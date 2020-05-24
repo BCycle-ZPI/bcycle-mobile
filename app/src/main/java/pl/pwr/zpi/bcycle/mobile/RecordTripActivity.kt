@@ -30,6 +30,7 @@ import java.io.InputStream
 
 class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private lateinit var service: TripLocationTrackingService
+    private var groupTripId: Int? = null
     private var isBound: Boolean = false
     private var canStart: Boolean = false
     private var time: Double = 0.0
@@ -74,6 +75,8 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        groupTripId = intent.getIntExtra(INTENT_EXTRA_RECORD_GROUP_TRIP_ID, -1)
+        if (groupTripId == -1) groupTripId = null
         setContentView(R.layout.activity_record_trip)
         TooltipCompat.setTooltipText(photoBt, getString(R.string.take_a_photo))
 
@@ -154,7 +157,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
             uploadingPB.visibility = View.GONE
         }
         service.endTrip()
-        val trip = service.getTrip()
+        val trip = service.getTrip(groupTripId)
         ApiClient.tripApi.post(trip)
             .background().subscribe(
                 { result ->
@@ -214,7 +217,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
     }
 
     private fun handleTripUploadSuccess(tripId: Int) {
-        // TODO go to the trip page
+        openPrivateTrip(tripId)
         service.stopSelf()
         finish()
     }

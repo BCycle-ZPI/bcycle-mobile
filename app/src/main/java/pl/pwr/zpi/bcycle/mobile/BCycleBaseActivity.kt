@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -52,5 +53,17 @@ abstract class BCycleBaseActivity: AppCompatActivity() {
                 permissions,
                 permissionsRequestCode
             )
+    }
+
+    fun openGroupTrip(id: Int) {
+        val intent = Intent(applicationContext, FutureTripInfoActivity::class.java)
+        intent.putExtra(KEY_TRIP_ID, id)
+        startActivity(intent)
+    }
+
+    fun openPrivateTrip(id: Int) {
+        val intent = Intent(applicationContext, HistoryTripInfoActivity::class.java)
+        intent.putExtra(KEY_TRIP_ID, id)
+        startActivity(intent)
     }
 }

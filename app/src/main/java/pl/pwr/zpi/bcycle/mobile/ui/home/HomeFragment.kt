@@ -61,28 +61,13 @@ class HomeFragment : Fragment() {
         })
     }
 
-    fun openTripInfo(type:Int, id:Int) {
-        val intent:Intent?
-        if(type== TYPE_FUTURE) {
-            intent = Intent(
-                context,
-                FutureTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
+    private fun openTripInfo(type:Int, id:Int) {
+        val baseActivity = activity as BCycleBaseActivity
+        if (type == TYPE_FUTURE) {
+            baseActivity.openGroupTrip(id)
+        } else {
+            baseActivity.openPrivateTrip(id)
         }
-        else{
-            intent = Intent(
-                context,
-                HistoryTripInfoActivity::class.java
-            )
-            intent.putExtra(KEY_TRIP_ID, id)
-
-        }
-        startActivity(
-            intent
-        )
-
     }
 
     private fun setListeners() {

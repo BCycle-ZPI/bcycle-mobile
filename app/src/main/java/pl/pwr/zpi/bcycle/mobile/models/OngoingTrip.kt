@@ -11,7 +11,7 @@ data class OngoingTrip(
     val events: MutableList<OngoingTripEvent>
 ) {
 
-    fun asTrip(): Trip {
+    fun asTrip(groupTripId: Int?): Trip {
         if (finished == null) {
             throw IllegalStateException("Only finished trips can be converted")
         }
@@ -46,7 +46,7 @@ data class OngoingTrip(
         time += getTime(currentGroup)
         allPoints.addAll(currentGroup)
 
-        return Trip(distance, time, started, finished!!, allPoints)
+        return Trip(distance, time, started, finished!!, groupTripId, allPoints)
     }
 
     constructor() : this(ZonedDateTime.now(), null, mutableListOf())

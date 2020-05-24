@@ -19,6 +19,7 @@ const val INTENT_EXTRA_SHARE_PHOTO_COUNT = "tripPhotoCount"
 const val INTENT_EXTRA_SHARE_URL = "tripShareURL"
 const val INTENT_EXTRA_INVITE_TRIP_NAME = "tripName"
 const val INTENT_EXTRA_INVITE_CODE = "tripCode"
+const val INTENT_EXTRA_RECORD_GROUP_TRIP_ID = "groupTripId"
 const val DIALOG_SHARE = "ShareDialog"
 const val DIALOG_INVITE = "InviteDialog"
 
