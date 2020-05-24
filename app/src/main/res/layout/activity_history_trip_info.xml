@@ -33,12 +33,11 @@
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="3dp"
             android:text="Trip started at:"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/startTV"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toBottomOf="@+id/shareFAB" />
 
         <TextView
             android:id="@+id/textView10"
