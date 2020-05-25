@@ -397,7 +397,8 @@ class RecordTripActivity : BCycleNavigationDrawerActivity(), OnMapReadyCallback 
         mapSettings.isScrollGesturesEnabled = true
         mapSettings.isMyLocationButtonEnabled = true
         mapSettings.isMapToolbarEnabled = true
-        polyline = map!!.addPolyline(PolylineOptions().width(MAP_POLYLINE_WIDTH).addAll(polylineList))
+        polyline = map!!.addPolyline(PolylineOptions().width(MAP_POLYLINE_WIDTH_MIN).addAll(polylineList))
+        map!!.setOnCameraMoveListener(PolylineResizeListener(map!!, polyline!!, applicationContext))
         if (polylineList.isNotEmpty()) {
             animateCameraToPoint(polylineList.last())
         }

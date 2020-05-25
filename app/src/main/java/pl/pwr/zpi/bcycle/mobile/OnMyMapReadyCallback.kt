@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Context
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -42,15 +43,15 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
         map.animateCamera(cameraUpdate)
     }
 
-    fun showRoute(route: List<TripPoint>, googleMap: GoogleMap) {
+    fun showRoute(route: List<TripPoint>, googleMap: GoogleMap, context: Context) {
         val listOfLatLng = mutableListOf<LatLng>()
         route.forEach { x -> listOfLatLng.add(LatLng(x.latitude, x.longitude)) }
-        val polyline1: Polyline = googleMap.addPolyline(
+        val polyline: Polyline = googleMap.addPolyline(
             PolylineOptions()
                 .clickable(true)
-                .width(MAP_POLYLINE_WIDTH)
+                .width(MAP_POLYLINE_WIDTH_MIN)
                 .addAll(listOfLatLng)
         )
-
+        googleMap.setOnCameraMoveListener(PolylineResizeListener(googleMap, polyline, context))
     }
 }

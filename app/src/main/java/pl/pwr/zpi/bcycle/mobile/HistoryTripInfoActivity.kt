@@ -33,7 +33,7 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, Share
             trip = it.result
             photos = trip.photos
             showInfo(trip)
-            showRoute(trip.route, mMap)
+            showRoute(trip.route, mMap, applicationContext)
             animateTo(
                 trip.route[trip.route.size / 2].latitude,
                 trip.route[trip.route.size / 2].longitude,
