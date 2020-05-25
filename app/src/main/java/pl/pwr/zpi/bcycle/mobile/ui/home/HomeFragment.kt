@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (this::adapter.isInitialized) refreshTripList()
+        if (this::adapter.isInitialized && !homeRefreshLayout.isRefreshing) refreshTripList()
     }
 
     private fun arrangeRecyclerViews() {
@@ -62,27 +62,34 @@ class HomeFragment : Fragment() {
         )
         tripsRV.layoutManager = LinearLayoutManager(activity!!.applicationContext)
         tripsRV.adapter = adapter
-        refreshTripList()
+        if (!homeRefreshLayout.isRefreshing) refreshTripList()
     }
 
     @SuppressLint("CheckResult")
     private fun refreshTripList() {
         adapter.clear()
         homeRefreshLayout.isRefreshing = true
+        val output = mutableListOf<TripTemplate>()
         var finishedRefreshes = 0
         ApiClient.groupTripApi.getAll().background().subscribe({
             allGroupTrips = it.result
-            adapter.addAll(it.result)
-            finishedRefreshes += 1
-            if (finishedRefreshes == 2) finishRefresh()
+            synchronized(output) {
+                output.addAll(it.result)
+                adapter.setWithListContents(output)
+                finishedRefreshes += 1
+                if (finishedRefreshes == 2) finishRefresh()
+            }
         }, {
             showToast(R.string.prompt_cannot_data)
             homeRefreshLayout.isRefreshing = false
         })
         ApiClient.tripApi.getAll().background().subscribe({
-            adapter.addAll(it.result)
-            finishedRefreshes += 1
-            if (finishedRefreshes == 2) finishRefresh()
+            synchronized(output) {
+                output.addAll(it.result)
+                adapter.setWithListContents(output)
+                finishedRefreshes += 1
+                if (finishedRefreshes == 2) finishRefresh()
+            }
         }, {
             showToast(R.string.prompt_cannot_data)
             homeRefreshLayout.isRefreshing = false

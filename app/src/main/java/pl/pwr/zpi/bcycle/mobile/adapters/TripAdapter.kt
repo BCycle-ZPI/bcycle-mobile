@@ -87,7 +87,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         return if (trips[position] is Trip) TYPE_HISTORY else TYPE_FUTURE
     }
 
-    fun addAll(list: List<T>) {
+    fun setWithListContents(list: List<T>) {
+        trips.clear()
         trips.addAll(list)
         trips.sortByDescending { it.sortKey }
         notifyDataSetChanged()
