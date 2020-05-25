@@ -33,7 +33,7 @@ import pl.pwr.zpi.bcycle.mobile.utils.background
 import pl.pwr.zpi.bcycle.mobile.utils.showToast
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 
-class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
+class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
     LocationListener {
 
@@ -76,8 +76,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
         savedDesc = extras.getString(DESCRIPTION_KEY)!!
         savedName = extras.getString(NAME_KEY)!!
         savedEndDate = extras.getSerializable(END_DATE_KEY)!! as ZonedDateTime
-        savedStartDate =
-            extras.getSerializable(START_DATE_KEY)!! as ZonedDateTime
+        savedStartDate = extras.getSerializable(START_DATE_KEY)!! as ZonedDateTime
     }
 
     private fun setListeners() {
@@ -107,12 +106,7 @@ class TripCreationMapActivity : AppCompatActivity(), OnMapReadyCallback,
                         )
                     ).background().subscribe({
                         showToast(getString(R.string.prompt_trid_added_successfully))
-                        startActivity(
-                            Intent(
-                                this,
-                                MainActivity::class.java
-                            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        )
+                        openGroupTrip(it.result)
                         finish()
                     }, { })
                 }

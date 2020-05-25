@@ -11,12 +11,11 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.row_future_trip.view.*
 import kotlinx.android.synthetic.main.row_history_trip.view.*
-import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
 import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.models.TripTemplate
+import pl.pwr.zpi.bcycle.mobile.utils.dateToFriendlyString
 
 const val TYPE_FUTURE = 1
 const val TYPE_HISTORY = 2
@@ -50,9 +49,9 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
             val item = trips[position] as GroupTrip
             setListener(view, item.id!!,TYPE_FUTURE)
             view.startdateTV.text =
-                item.startDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
+                dateToFriendlyString(item.startDate)
             view.enddateTV.text =
-                item.endDate.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
+                dateToFriendlyString(item.endDate)
             view.tripnameTV.text = item.name
             view.participNumTV.text = item.participants?.size.toString()
             view.roleTV.text =
@@ -62,10 +61,8 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         } else {
             val item = trips[position] as Trip
             setListener(view, item.id!!, TYPE_HISTORY)//todo wtf
-            view.startTV.text =
-                item.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-            view.endTV.text =
-                item.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
+            view.startTV.text = dateToFriendlyString(item.started)
+            view.endTV.text = dateToFriendlyString(item.finished)
             view.durationTV.text = context.getString(
                 R.string.time_format,
                 (item.time / 60).div(60),
@@ -87,9 +84,15 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
         return if (trips[position] is Trip) TYPE_HISTORY else TYPE_FUTURE
     }
 
-    fun addAll(list: List<T>) {
+    fun setWithListContents(list: List<T>) {
+        trips.clear()
         trips.addAll(list)
-        trips.sortBy { it.sortKey }
+        trips.sortByDescending { it.sortKey }
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        trips.clear()
         notifyDataSetChanged()
     }
 

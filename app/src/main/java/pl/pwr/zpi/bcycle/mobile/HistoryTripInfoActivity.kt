@@ -12,6 +12,7 @@ import pl.pwr.zpi.bcycle.mobile.api.ApiClient
 import pl.pwr.zpi.bcycle.mobile.models.Trip
 import pl.pwr.zpi.bcycle.mobile.ui.dialogs.ShareDialogFragment
 import pl.pwr.zpi.bcycle.mobile.utils.background
+import pl.pwr.zpi.bcycle.mobile.utils.dateToFriendlyString
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 
@@ -74,8 +75,8 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, Share
 
     @SuppressLint("CheckResult")
     private fun showInfo(trip: Trip) {
-        startTV.text = trip.started.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-        endTV.text = trip.finished.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
+        startTV.text = dateToFriendlyString(trip.started)
+        endTV.text = dateToFriendlyString(trip.finished)
         durationTV.text = getString(
             R.string.time_format,
             (trip.time / 60).div(60),
