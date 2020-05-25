@@ -6,13 +6,17 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.chrono.IsoChronology
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.DateTimeFormatterBuilder
+import org.threeten.bp.format.FormatStyle
 import pl.pwr.zpi.bcycle.mobile.MS_TO_S
 
-private var isoUtcFormatter =
+private val isoUtcFormatter =
     DateTimeFormatterBuilder().parseCaseInsensitive()
         .append(DateTimeFormatter.ISO_LOCAL_DATE_TIME).appendOffset("+HH:MM:ss", "Z")
         .toFormatter()
         .withChronology(IsoChronology.INSTANCE)
+
+private val friendlyFormatter =
+    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
 fun dateToIso(date: ZonedDateTime): String =
     date.withZoneSameInstant(ZoneId.of("UTC")).format(
@@ -24,6 +28,9 @@ fun dateFromIso(date: String): ZonedDateTime =
         date,
         isoUtcFormatter
     )
+
+fun dateToFriendlyString(date: ZonedDateTime): String =
+    date.withZoneSameInstant(ZoneId.systemDefault()).format(friendlyFormatter)
 
 fun localDateFromIso(date: String): ZonedDateTime =
     ZonedDateTime.parse(
