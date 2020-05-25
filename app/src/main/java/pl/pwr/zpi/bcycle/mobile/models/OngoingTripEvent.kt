@@ -1,6 +1,7 @@
 package pl.pwr.zpi.bcycle.mobile.models
 
 import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -11,7 +12,12 @@ data class OngoingTripEvent(
     val altitude: Double?,
     val timeReached: ZonedDateTime,
     val eventType: OngoingTripEventType
-) {
+): TripPointTemplate() {
+    override val lat: Double
+        get() = latitude ?: 0.0
+
+    override val lng: Double
+        get() = longitude ?: 0.0
 
     val isMidPoint: Boolean
         get() = eventType == OngoingTripEventType.MIDPOINT
@@ -22,6 +28,8 @@ data class OngoingTripEvent(
         }
         return TripPoint(latitude!!, longitude!!, altitude, timeReached)
     }
+
+    fun asLatLng(): LatLng = LatLng(lat, lng)
 
     companion object {
         fun pause() = OngoingTripEvent(

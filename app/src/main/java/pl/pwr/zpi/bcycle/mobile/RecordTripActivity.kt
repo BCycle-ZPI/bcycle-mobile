@@ -12,9 +12,17 @@ import android.os.IBinder
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.android.synthetic.main.content_record_trip.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -28,7 +36,7 @@ import java.io.FileNotFoundException
 import java.io.InputStream
 
 
-class RecordTripActivity : BCycleNavigationDrawerActivity() {
+class RecordTripActivity : BCycleNavigationDrawerActivity(), OnMapReadyCallback {
     private lateinit var service: TripLocationTrackingService
     private var groupTripId: Int? = null
     private var isBound: Boolean = false
@@ -40,6 +48,12 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
     private var uploadedImageCount = 0
     private val madeAnyImages: Boolean
         get() = madeImages.isNotEmpty()
+
+    private lateinit var mapFragment: SupportMapFragment
+    private var map: GoogleMap? = null
+    private var polyline: Polyline? = null
+    private var polylineList: MutableList<LatLng> = mutableListOf()
+    private var anyPointsShown = false
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
@@ -80,6 +94,7 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         setContentView(R.layout.activity_record_trip)
         TooltipCompat.setTooltipText(photoBt, getString(R.string.take_a_photo))
 
+        getMaps()
         configureIndependentNavigationDrawer()
         updateNavigationDrawerHeader()
 
@@ -263,11 +278,22 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun newLocation(location: OngoingTripEvent) {
-        // TODO placeholder
-        val newText = "\n(${location.latitude}, ${location.longitude})"
-        mapPlaceholder.text = mapPlaceholder.text.toString() + newText
+        val latLng = location.asLatLng()
+        polylineList.add(latLng)
+        if (map != null) {
+            animateCameraToPoint(latLng)
+        }
+        polyline?.points = polylineList
+    }
+
+    private fun animateCameraToPoint(latLng: LatLng) {
+        if (anyPointsShown) {
+            map!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+        } else {
+            map!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+            anyPointsShown = true
+        }
     }
 
     private fun updateDistance(distance: Double) {
@@ -296,9 +322,9 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
 
     private fun startOrContinueTripWithWait() {
         synchronized(this) {
+            canStart = true
             if (!isBound) {
                 Log.i(LOG_TAG, "Allowing to start trip after binding")
-                canStart = true
             } else {
                 Log.i(LOG_TAG, "Starting trip (after binding)")
                 startOrContinueTrip()
@@ -310,8 +336,12 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
         service.startOrContinueTrip(
             this::updateDistance,
             this::updateTimeFromService,
-            this::newLocation
+            this::newLocation,
+            polylineList::clear
         )
+        // IsMyLocationEnabled requires the permission.
+        // We try to do this in two cases due to both permissions and maps being asynchronous.
+        map?.isMyLocationEnabled = true
     }
 
     override fun onRequestPermissionsResult(
@@ -362,6 +392,40 @@ class RecordTripActivity : BCycleNavigationDrawerActivity() {
             R.string.location_permission_message,
             PERMISSIONS_REQUEST_LOCAITON
         )
+    }
+
+    private fun getMaps() {
+        mapFragment = supportFragmentManager
+            .findFragmentById(R.id.myMap) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        synchronized (this) {
+            if (isBound && canStart) map?.isMyLocationEnabled = true
+        }
+        val mapSettings = map!!.uiSettings
+        mapSettings.isZoomGesturesEnabled = true
+        mapSettings.isScrollGesturesEnabled = true
+        mapSettings.isMyLocationButtonEnabled = true
+        mapSettings.isMapToolbarEnabled = true
+        polyline = map!!.addPolyline(PolylineOptions().width(MAP_POLYLINE_WIDTH_MIN).addAll(polylineList))
+        map!!.setOnCameraMoveListener(PolylineResizeListener(map!!, polyline!!, applicationContext))
+        if (polylineList.isNotEmpty()) {
+            animateCameraToPoint(polylineList.last())
+        }
+        // https://stackoverflow.com/a/49247322
+        val mapView = mapFragment.view ?: return
+        val locationButton =
+            (mapView.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(
+                Integer.parseInt("2")
+            )
+        val rlp = locationButton.layoutParams as (RelativeLayout.LayoutParams)
+        // position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+        rlp.setMargins(0, 0, 30, 30)
     }
 
     override fun onStart() {

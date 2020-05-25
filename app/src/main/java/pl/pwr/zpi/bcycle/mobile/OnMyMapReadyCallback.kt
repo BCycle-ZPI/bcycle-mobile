@@ -1,5 +1,6 @@
 package pl.pwr.zpi.bcycle.mobile
 
+import android.content.Context
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,11 +14,7 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
 
     private fun showMarkers(markers: List<TripPointTemplate>, map: GoogleMap) {
         markers.forEach {
-            if (it is GroupTripPoint) {
-                map.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
-            } else if (it is TripPoint) {
-                map.addMarker(MarkerOptions().position(LatLng(it.latitude, it.longitude)))
-            }
+            map.addMarker(MarkerOptions().position(LatLng(it.lat, it.lng)))
         }
     }
 
@@ -25,13 +22,8 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
         showMarkers(markers.subList(1, markers.size - 1), map)
         val startPoint = markers[0]
         val endPoint = markers[markers.size - 1]
-        if (startPoint is GroupTripPoint && endPoint is GroupTripPoint) {
-            showPoint(startPoint.latitude, startPoint.longitude, true, map)
-            showPoint(endPoint.latitude, endPoint.longitude, false, map)
-        } else if (startPoint is TripPoint && endPoint is TripPoint) {
-            showPoint(startPoint.latitude, startPoint.longitude, true, map)
-            showPoint(endPoint.latitude, endPoint.longitude, false, map)
-        }
+        showPoint(startPoint.lat, startPoint.lng, true, map)
+        showPoint(endPoint.lat, endPoint.lng, false, map)
     }
 
     private fun showPoint(
@@ -46,19 +38,20 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
     }
 
 
-    fun animateTo(lat: Double, lng: Double, map: GoogleMap, zoom: Float = 9f) {
+    fun animateTo(lat: Double, lng: Double, map: GoogleMap, zoom: Float = 11f) {
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), zoom)
         map.animateCamera(cameraUpdate)
     }
 
-    fun showRoute(route: List<TripPoint>, googleMap: GoogleMap) {
+    fun showRoute(route: List<TripPoint>, googleMap: GoogleMap, context: Context) {
         val listOfLatLng = mutableListOf<LatLng>()
         route.forEach { x -> listOfLatLng.add(LatLng(x.latitude, x.longitude)) }
-        val polyline1: Polyline = googleMap.addPolyline(
+        val polyline: Polyline = googleMap.addPolyline(
             PolylineOptions()
                 .clickable(true)
+                .width(MAP_POLYLINE_WIDTH_MIN)
                 .addAll(listOfLatLng)
         )
-
+        googleMap.setOnCameraMoveListener(PolylineResizeListener(googleMap, polyline, context))
     }
 }
