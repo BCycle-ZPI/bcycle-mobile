@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import kotlinx.android.synthetic.main.fragment_home.*
-import pl.pwr.zpi.bcycle.mobile.BCycleBaseActivity
+import pl.pwr.zpi.bcycle.mobile.BCycleNavigationDrawerActivity
 import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.TripCreationActivity
 import pl.pwr.zpi.bcycle.mobile.adapters.TYPE_FUTURE
@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
     private val waitingToStart = AtomicBoolean(false)
 
     private val baseActivity
-        get() = activity as BCycleBaseActivity
+        get() = activity as BCycleNavigationDrawerActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,6 +97,7 @@ class HomeFragment : Fragment() {
     }
 
     fun finishRefresh() {
+        if (homeRefreshLayout == null) return
         homeRefreshLayout.isRefreshing = false
         if (waitingToStart.compareAndSet(true, false)) {
             startTripWithGroupSelection()
@@ -157,9 +158,7 @@ class HomeFragment : Fragment() {
             startActivity(Intent(activity!!.applicationContext, TripCreationActivity::class.java))
         }
         startTripBT.setOnClickListener { handleStartTripButton() }
-        jointripBT.setOnClickListener {
-            //todo
-        }
+        jointripBT.setOnClickListener { baseActivity.navigateTo(R.id.nav_join_group_trip) }
         homeRefreshLayout.setOnRefreshListener { refreshTripList() }
     }
 }

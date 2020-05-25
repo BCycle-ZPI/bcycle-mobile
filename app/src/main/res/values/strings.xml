@@ -113,6 +113,7 @@
     <string name="bad_password_prompt">Bad password!</string>
     <string name="changed_data_error">Something went wrong!</string>
     <string name="data_changed_prompt">Data changed!</string>
+    <string name="new_group_trip">New group trip</string>
     <string name="create_new_trip">Create new trip</string>
     <string name="you_host">You host</string>
     <string name="you_participate">You participate</string>
@@ -160,6 +161,14 @@
     <string name="private_trip_option">This is a private trip</string>
     <string name="start_trip_past_date">This trip’s start date is in the past. Are you sure you want to start this trip?</string>
     <string name="start_trip_future_date">This trip’s start date is in the future. Are you sure you want to start this trip?</string>
+    <string name="join_group_trip_heading">To join a group trip, you must provide a trip code.</string>
+    <string name="join_group_trip_description">A trip code is 6 characters long. A trip host or participant can view the code on the trip information page. Your request to join the trip will have to be approved by the trip’s host first. The host will see your name and avatar.</string>
+    <string name="trip_code_hint">Trip Code</string>
+    <string name="error_code_length">The code must be exactly 6 characters long.</string>
+    <string name="join_request_successful">Successfully requested to join trip.</string>
+    <string name="join_this_trip">Join this trip</string>
+    <string name="cannot_join_trip">Cannot join trip</string>
+    <string name="join_group_trip_404">No group trip exists with the given code or the trip is in the past and cannot be joined anymore.</string>
 
     <plurals name="sharing_explanation_with_photos">
         <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>

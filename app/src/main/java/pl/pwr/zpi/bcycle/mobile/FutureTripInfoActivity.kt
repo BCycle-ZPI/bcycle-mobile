@@ -3,6 +3,7 @@ package pl.pwr.zpi.bcycle.mobile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.GoogleMap
@@ -91,6 +92,9 @@ class FutureTripInfoActivity : BCycleBaseActivity(), OnMyMapReadyCallback {
         participantsLV.adapter = adapter
         displayTripMarkers(markers, map)
         animateTo(markers[markers.size/2].latitude,markers[markers.size/2].longitude, map)
+        if (trip.startDate > ZonedDateTime.now()) {
+            inviteFAB.visibility = View.INVISIBLE
+        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
