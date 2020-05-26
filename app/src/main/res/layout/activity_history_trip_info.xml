@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
-            android:text="Trip started at:"
+            android:text="@string/trip_started_at"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/startTV"
             app:layout_constraintTop_toBottomOf="@+id/shareFAB" />
@@ -43,9 +43,8 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
             android:backgroundTint="@color/black"
-            android:text="Trip finished at:"
+            android:text="@string/trip_finished_at"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -70,13 +69,16 @@
 
         <Button
             android:id="@+id/backBT"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:text="BACK"
+            android:text="@string/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/photosBT" />
 
         <TextView
             android:id="@+id/distanceTV"
@@ -98,9 +100,8 @@
             android:id="@+id/textView16"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
             android:gravity="center"
-            android:text="Distance:"
+            android:text="@string/distance_history_label"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -109,21 +110,23 @@
             android:id="@+id/textView17"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
             android:gravity="center"
-            android:text="Duration:"
+            android:text="@string/duration_history_label"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@id/guideline4"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
         <Button
             android:id="@+id/photosBT"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/buttonColor"
-            android:text="SHOW PHOTOS"
-            app:layout_constraintBottom_toTopOf="@+id/backBT"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/show_photos"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/backBT"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -139,21 +142,25 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline"
             app:srcCompat="@drawable/ic_share_white" />
 
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="20dp"
+            android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:foregroundGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 </FrameLayout>

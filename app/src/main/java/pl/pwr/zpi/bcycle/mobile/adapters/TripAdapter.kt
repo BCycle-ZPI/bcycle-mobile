@@ -53,7 +53,7 @@ class TripAdapter<T>(private val trips: MutableList<T>, private val context: Con
             view.enddateTV.text =
                 dateToFriendlyString(item.endDate)
             view.tripnameTV.text = item.name
-            view.participNumTV.text = item.participants?.size.toString()
+            view.participNumTV.text = item.formatParticipantCount(context)
             view.roleTV.text =
                 if (item.host?.id == FirebaseAuth.getInstance().uid) context.resources.getString(R.string.you_host) else context.resources.getString(
                     R.string.you_participate

@@ -169,6 +169,22 @@
     <string name="join_this_trip">Join this trip</string>
     <string name="cannot_join_trip">Cannot join trip</string>
     <string name="join_group_trip_404">No group trip exists with the given code or the trip is in the past and cannot be joined anymore.</string>
+    <string name="trip_started_at">Trip started at:</string>
+    <string name="trip_finished_at">Trip finished at:</string>
+    <string name="back">BACK</string>
+    <string name="distance_history_label">Distance:</string>
+    <string name="duration_history_label">Duration:</string>
+    <string name="show_photos">SHOW PHOTOS</string>
+    <string name="view_participants_btn">View</string>
+    <string name="trip_start_date">Start date:</string>
+    <string name="trip_finish_date">Finish date:</string>
+    <string name="host_future_label">Host:</string>
+    <string name="participants_future_label">Participants:</string>
+    <string name="participants_count">%1$d</string>
+    <string name="participants_count_with_pending">%1$d (+%2$d)</string>
+    <string name="participant_host">Host</string>
+    <string name="participant_pending">Pending</string>
+    <string name="participants_cannot_modify">Cannot modify participant</string>
 
     <plurals name="sharing_explanation_with_photos">
         <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>

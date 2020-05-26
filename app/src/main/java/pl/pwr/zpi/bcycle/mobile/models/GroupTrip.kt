@@ -1,6 +1,8 @@
 package pl.pwr.zpi.bcycle.mobile.models
 
+import android.content.Context
 import org.threeten.bp.ZonedDateTime
+import pl.pwr.zpi.bcycle.mobile.R
 import pl.pwr.zpi.bcycle.mobile.UPCOMING_GROUP_TRIP_OFFSET_MINUTES
 
 class GroupTrip(
@@ -12,7 +14,7 @@ class GroupTrip(
     val startDate: ZonedDateTime,
     val endDate: ZonedDateTime,
     val route: List<GroupTripPoint>,
-    val participants: List<GroupTripParticipant>?,
+    var participants: List<GroupTripParticipant>?,
     var sharingUrl: String?,
     val photos: List<String>
 )
@@ -30,6 +32,17 @@ class GroupTrip(
         val now = ZonedDateTime.now()
         return startDate.minusMinutes(UPCOMING_GROUP_TRIP_OFFSET_MINUTES) <= now
                 && now <= endDate.plusMinutes(UPCOMING_GROUP_TRIP_OFFSET_MINUTES)
+    }
+
+    fun formatParticipantCount(context: Context): String {
+        if (participants == null) return "0"
+        val acceptedCount = participants!!.filter { it.status == ParticipantStatus.ACCEPTED }.count()
+        val pendingCount = participants!!.filter { it.status == ParticipantStatus.PENDING }.count()
+        return if (pendingCount > 0) {
+            context.getString(R.string.participants_count_with_pending, acceptedCount, pendingCount)
+        } else {
+            context.getString(R.string.participants_count, acceptedCount)
+        }
     }
 
     override val sortKey: ZonedDateTime
