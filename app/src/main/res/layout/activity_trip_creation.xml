@@ -29,6 +29,8 @@
         android:id="@+id/startdateBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:gravity="center"
         android:layout_marginStart="40dp"
         android:layout_marginTop="15dp"
         android:backgroundTint="@color/picker_button_background"
@@ -54,9 +56,10 @@
 
     <TextView
         android:id="@+id/startdateTV"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="START DATE"
+        android:foregroundGravity="center"
+        android:gravity="center"
         android:textColor="@color/picker_button_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"
@@ -70,7 +73,6 @@
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:text="START TIME"
         android:textColor="@color/cardview_light_background"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/startdateTV"
@@ -79,9 +81,8 @@
 
     <TextView
         android:id="@+id/finishdateTV"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="FINISH DATE"
         android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"
@@ -95,7 +96,6 @@
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:hint="FINISH TIME"
         android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/cardview_light_background"
         android:textSize="15sp"

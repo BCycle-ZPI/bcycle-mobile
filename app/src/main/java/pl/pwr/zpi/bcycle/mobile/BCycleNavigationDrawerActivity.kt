@@ -2,11 +2,11 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
-import pl.pwr.zpi.bcycle.mobile.ui.settings.SettingsFragment
-import pl.pwr.zpi.bcycle.mobile.utils.showToast
 
 abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
     protected lateinit var appBarConfiguration: AppBarConfiguration
@@ -107,6 +105,14 @@ abstract class BCycleNavigationDrawerActivity: BCycleBaseActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun navigateTo(itemId: Int) {
+        navController.navigate(itemId)
+    }
+
+    fun navigateUpToHome() {
+        navController.navigate(R.id.nav_home, null, NavOptions.Builder().setLaunchSingleTop(true).build())
     }
 
 

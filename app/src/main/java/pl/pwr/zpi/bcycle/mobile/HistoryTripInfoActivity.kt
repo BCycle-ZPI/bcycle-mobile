@@ -2,6 +2,7 @@ package pl.pwr.zpi.bcycle.mobile
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -16,7 +17,7 @@ import pl.pwr.zpi.bcycle.mobile.utils.dateToFriendlyString
 import pl.pwr.zpi.bcycle.mobile.utils.showToastError
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 
-class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, ShareDialogFragment.ShareDialogListener {
+class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, ShareDialogFragment.ShareDialogListener, OnPhotosWindowClosedCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var trip: Trip
@@ -48,11 +49,11 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, Share
     private fun setListeners() {
         backBT.setOnClickListener { finish() }
         photosBT.setOnClickListener {
+            fragmentContainer.visibility = View.VISIBLE
             if (photos.isNotEmpty()) {
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragmentContainer, PhotosFragment(
-                        this,
-                        photos
+                        this, photos, this
                     )
                 ).commit()
             } else {
@@ -92,5 +93,9 @@ class HistoryTripInfoActivity : AppCompatActivity(), OnMyMapReadyCallback, Share
 
     override fun setSharingUrlFromDialog(url: String?) {
         trip.sharingUrl = url
+    }
+
+    override fun onPhotosWindowClosed() {
+        fragmentContainer.visibility = View.GONE
     }
 }

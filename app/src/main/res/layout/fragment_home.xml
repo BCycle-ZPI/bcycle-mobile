@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/cardview_light_background"
-            android:text="@string/create_new_trip" />
+            android:text="@string/new_group_trip" />
 
         <Button
             android:id="@+id/jointripBT"

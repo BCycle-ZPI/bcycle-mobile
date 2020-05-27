@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
     android:background="@drawable/rounded_background"
+    android:padding="5dp"
     tools:context=".PhotosFragment">
 
     <Button
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:backgroundTint="@color/buttonColor"
-        android:text="BACK"
+        android:text="@string/back"
         android:textColor="@color/black" />
 
     <io.brotherjing.galleryview.GalleryView

@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_photos.*
 import pl.pwr.zpi.bcycle.mobile.adapters.UrlGalleryAdapter
 
-/**
- * A simple [Fragment] subclass.
- */
-class PhotosFragment(private val con: Context, private val photos:List<String>) : Fragment() {
+class PhotosFragment(private val con: Context, private val photos:List<String>, private val callback: OnPhotosWindowClosedCallback) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -24,6 +21,7 @@ class PhotosFragment(private val con: Context, private val photos:List<String>) 
         super.onViewCreated(view, savedInstanceState)
         gallery.adapter = UrlGalleryAdapter(con, photos)
         photosoffBT.setOnClickListener {
+            callback.onPhotosWindowClosed()
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
     }
