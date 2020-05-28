@@ -29,8 +29,6 @@ data class OngoingTripEvent(
         return TripPoint(latitude!!, longitude!!, altitude, timeReached)
     }
 
-    fun asLatLng(): LatLng = LatLng(lat, lng)
-
     companion object {
         fun pause() = OngoingTripEvent(
             null, null, null, ZonedDateTime.now(), OngoingTripEventType.PAUSE
