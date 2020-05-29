@@ -27,7 +27,7 @@
         android:layout_margin="14dp"
         android:alpha="0.8"
         android:backgroundTint="@color/cardview_light_background"
-        android:text="NEXT"
+        android:text="@string/next_button"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         android:layout_margin="8dp"
         android:alpha="0.7"
         android:backgroundTint="@color/cardview_light_background"
-        android:text="Zoom to \n start point"
+        android:text="@string/zoom_to_start_point"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
         android:layout_marginLeft="6dp"
         android:alpha="0.7"
         android:backgroundTint="@color/cardview_light_background"
-        android:text="Zoom to \n end point"
+        android:text="@string/zoom_to_end_point"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/zoomToStartBT"
         app:layout_constraintTop_toTopOf="@+id/zoomToStartBT" />
