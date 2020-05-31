@@ -2,8 +2,8 @@
     <string name="app_name">BCycle</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">BCycle</string>
+    <string name="nav_header_subtitle">BCycle</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -77,7 +77,7 @@
     <string name="form_not_filled_info">Text fields cannot be empty</string>
     <string name="choose_start_datetime">Choose the \n start date</string>
     <string name="choose_finish_datetime">Choose the \n finish date</string>
-    <string name="location_denied_prompt">Unable to show location - permission required</string>
+    <string name="location_denied_prompt">Unable to show location — permission required</string>
     <string name="prompt_choose_dates">You need to choose both the start and the end date of your trip</string>
     <string name="prompt_fill_field">Fill in the field</string>
     <string name="prompt_invalid_dates">The start date cannot be after the end date</string>
@@ -89,14 +89,14 @@
     <string name="set_as_start_point">Set as start point</string>
     <string name="set_as_end_point">Set as end point</string>
     <string name="remove_it">Remove it from the map</string>
-    <string name="warning_cant_set_and_delete_marker">You cannot set the point as start/end point of your trip and remove it.</string>
-    <string name="start_and_end_point"><![CDATA[START & END POINT]]></string>
+    <string name="start_and_end_point">START &amp; END POINT</string>
     <string name="prompt_is_trip_done">Have you finished planning your trip?</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="prompt_cannot_data">Cannot load your trip data</string>
     <string name="error_missing_start_or_end_marker">You need to provide both start and finish point of your trip!</string>
-    <string name="prompt_trid_added_successfully">Group trip was added successfully!</string>
+    <string name="prompt_trip_added_successfully">Group trip was added successfully!</string>
+    <string name="prompt_trip_edited_successfully">Group trip was edited successfully!</string>
     <string name="time_format">%1$dh %2$dmin</string>
 
     <string-array name="array_trip_points">
@@ -104,7 +104,6 @@
         <item>END POINT</item>
     </string-array>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="prompt_cancel_change">Changes canceled!</string>
     <string name="nothing_to_edit_prompt">Nothing to edit!</string>
     <string name="current_password_prompt">Current password</string>
@@ -113,6 +112,7 @@
     <string name="bad_password_prompt">Bad password!</string>
     <string name="changed_data_error">Something went wrong!</string>
     <string name="data_changed_prompt">Data changed!</string>
+    <string name="new_group_trip">New group trip</string>
     <string name="create_new_trip">Create new trip</string>
     <string name="you_host">You host</string>
     <string name="you_participate">You participate</string>
@@ -160,6 +160,47 @@
     <string name="private_trip_option">This is a private trip</string>
     <string name="start_trip_past_date">This trip’s start date is in the past. Are you sure you want to start this trip?</string>
     <string name="start_trip_future_date">This trip’s start date is in the future. Are you sure you want to start this trip?</string>
+    <string name="join_group_trip_heading">To join a group trip, you must provide a trip code.</string>
+    <string name="join_group_trip_description">A trip code is 6 characters long. A trip host or participant can view the code on the trip information page. Your request to join the trip will have to be approved by the trip’s host first. The host will see your name and avatar.</string>
+    <string name="trip_code_hint">Trip Code</string>
+    <string name="error_code_length">The code must be exactly 6 characters long.</string>
+    <string name="join_request_successful">Successfully requested to join trip.</string>
+    <string name="join_this_trip">Join this trip</string>
+    <string name="cannot_join_trip">Cannot join trip</string>
+    <string name="join_group_trip_404">No group trip exists with the given code or the trip is in the past and cannot be joined anymore.</string>
+    <string name="trip_started_at">Trip started at:</string>
+    <string name="trip_finished_at">Trip finished at:</string>
+    <string name="back">BACK</string>
+    <string name="distance_history_label">Distance:</string>
+    <string name="duration_history_label">Duration:</string>
+    <string name="show_photos">SHOW PHOTOS</string>
+    <string name="view_participants_btn">View</string>
+    <string name="trip_start_date">Start date:</string>
+    <string name="trip_finish_date">Finish date:</string>
+    <string name="host_future_label">Host:</string>
+    <string name="participants_future_label">Participants:</string>
+    <string name="participants_count">%1$d</string>
+    <string name="participants_count_with_pending">%1$d (+%2$d)</string>
+    <string name="participant_host">Host</string>
+    <string name="participant_pending">Pending</string>
+    <string name="participants_cannot_modify">Cannot modify participant</string>
+    <string name="enter_your_trip_name">Enter your trip name</string>
+    <string name="enter_trip_description_here">Enter trip description here</string>
+    <string name="zoom_to_start_point">Zoom to \n start point</string>
+    <string name="zoom_to_end_point">Zoom to \n end point</string>
+    <string name="change_password">Change password</string>
+    <string name="change_data">Change data</string>
+    <string name="save_changes">SAVE CHANGES</string>
+    <string name="trip_name_row">Trip name:</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="group_trip_details">Group Trip Details</string>
+    <string name="prompt_remove_trip">Are you sure you want to remove this trip? This operation cannot be undone!</string>
+    <string name="removing">Removing trip…</string>
+    <string name="remove_failed">Failed to remove trip!</string>
+    <string name="trip_create_failed">Failed to create trip!</string>
+    <string name="trip_edit_failed">Failed to edit trip!</string>
 
     <plurals name="sharing_explanation_with_photos">
         <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>

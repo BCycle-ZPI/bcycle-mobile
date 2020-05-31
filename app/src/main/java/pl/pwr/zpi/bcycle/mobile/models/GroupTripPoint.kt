@@ -4,7 +4,7 @@ data class GroupTripPoint(
     val latitude: Double,
     val longitude: Double,
     val ordinal: Int?
-) :TripPointTemplate() {
+) :TripPointTemplate(), java.io.Serializable {
     override val lat: Double
         get() = latitude
 

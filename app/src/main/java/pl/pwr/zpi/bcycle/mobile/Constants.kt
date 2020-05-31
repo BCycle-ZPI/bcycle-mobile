@@ -21,6 +21,8 @@ const val INTENT_EXTRA_SHARE_URL = "tripShareURL"
 const val INTENT_EXTRA_INVITE_TRIP_NAME = "tripName"
 const val INTENT_EXTRA_INVITE_CODE = "tripCode"
 const val INTENT_EXTRA_RECORD_GROUP_TRIP_ID = "groupTripId"
+const val INTENT_EXTRA_IS_EDITING = "isEditing"
+const val INTENT_EXTRA_EDITED_TRIP = "editedTrip"
 const val DIALOG_SHARE = "ShareDialog"
 const val DIALOG_INVITE = "InviteDialog"
 

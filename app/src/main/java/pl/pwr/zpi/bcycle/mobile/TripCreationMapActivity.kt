@@ -1,6 +1,7 @@
 package pl.pwr.zpi.bcycle.mobile
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -54,6 +55,10 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
     private lateinit var savedEndDate: ZonedDateTime
     private lateinit var savedName: String
     private lateinit var savedDesc: String
+
+    private var isEditing = false
+    private lateinit var editedTrip: GroupTrip
+    private var editedTripPoints: List<GroupTripPoint> = listOf()
     // endregion intent.extra data
 
     companion object {
@@ -81,6 +86,12 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
         savedName = extras.getString(NAME_KEY)!!
         savedEndDate = extras.getSerializable(END_DATE_KEY)!! as ZonedDateTime
         savedStartDate = extras.getSerializable(START_DATE_KEY)!! as ZonedDateTime
+
+        if (extras.getBoolean(INTENT_EXTRA_IS_EDITING)) {
+            isEditing = true
+            editedTrip = extras.getSerializable(INTENT_EXTRA_EDITED_TRIP)!! as GroupTrip
+            editedTripPoints = editedTrip.route
+        }
     }
 
     private fun setListeners() {
@@ -96,6 +107,7 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun showDialog(){
         LovelyStandardDialog(this)
             .setTopColorRes(R.color.colorAccent)
@@ -104,17 +116,29 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
             .setPositiveButton(R.string.yes) {
                 if(isRequiredDataGiven()){
                     val route = createMarkersList()
-                    ApiClient.groupTripApi.create(
-                        GroupTrip(
-                            savedName, savedDesc, savedStartDate, savedEndDate, route
-                        )
-                    ).background().subscribe({
-                        showToast(getString(R.string.prompt_trid_added_successfully))
-                        openGroupTrip(it.result)
-                        finish()
-                    }, { })
-                }
-                else{
+                    if (isEditing) {
+                        ApiClient.groupTripApi.update(
+                            editedTrip.id!!, GroupTrip(
+                                editedTrip.id, savedName, savedDesc, null, editedTrip.tripCode,
+                                savedStartDate, savedEndDate, route, editedTrip.participants, editedTrip.photos
+                            )
+                        ).background().subscribe({
+                            showToast(getString(R.string.prompt_trip_edited_successfully))
+                            openGroupTrip(editedTrip.id!!)
+                            finish()
+                        }, { err -> showToastError(R.string.trip_edit_failed) })
+                    } else {
+                        ApiClient.groupTripApi.create(
+                            GroupTrip(
+                                savedName, savedDesc, savedStartDate, savedEndDate, route
+                            )
+                        ).background().subscribe({
+                            showToast(getString(R.string.prompt_trip_added_successfully))
+                            openGroupTrip(it.result)
+                            finish()
+                        }, { err -> showToastError(R.string.trip_create_failed) })
+                    }
+                } else {
                     showToastError(R.string.error_missing_start_or_end_marker)
                 }
             }
@@ -173,6 +197,7 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
 
         handleMapGestures()
         getCurrentLocation()
+        addEditedTripMarkers()
 
         map.setOnMapLongClickListener {
             if(markerOptionsGuideShowed)
@@ -192,6 +217,36 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
         val mapSettings = map.uiSettings
         mapSettings?.isZoomGesturesEnabled = true
         mapSettings?.isScrollGesturesEnabled = true
+    }
+
+    private fun addEditedTripMarkers() {
+        if (editedTripPoints.isEmpty()) return
+        val editedLatLngs = editedTripPoints.map(GroupTripPoint::asLatLng)
+
+        for (latlng in editedLatLngs) {
+            val markerOpt =
+                MarkerOptions().position(latlng).icon(BitmapDescriptorFactory.defaultMarker())
+            val mark = map.addMarker(markerOpt)
+            mark?.isDraggable = true
+            myMarkers.add(mark!!)
+        }
+
+        markerStartPoint = myMarkers.first()
+        markerFinishPoint = myMarkers.last()
+
+        if (markerStartPoint == markerFinishPoint) {
+            markerStartPoint?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_bike_black))
+            markerStartPoint?.title = getString(R.string.start_and_end_point)
+            markerStartPoint?.showInfoWindow()
+        } else {
+            markerStartPoint?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_upward))
+            markerStartPoint?.title = getString(R.string.start_point)
+            markerStartPoint?.showInfoWindow()
+
+            markerFinishPoint?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_downward))
+            markerFinishPoint?.title = getString(R.string.end_point)
+            markerFinishPoint?.showInfoWindow()
+        }
     }
 
     // region markerClickListener

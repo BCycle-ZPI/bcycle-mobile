@@ -25,11 +25,11 @@ interface GroupTripApi {
     fun join(@Path("code") code: String): Completable
 
     @POST("group-trips/{tripId}/requests/{userId}")
-    fun acceptParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: Int): Completable
+    fun acceptParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: String): Completable
 
     @DELETE("group-trips/{tripId}/requests/{userId}")
-    fun rejectParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: Int): Completable
+    fun rejectParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: String): Completable
 
     @DELETE("group-trips/{tripId}/participants/{userId}")
-    fun removeParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: Int): Completable
+    fun removeParticipant(@Path("tripId") tripId: Int, @Path("userId") userId: String): Completable
 }

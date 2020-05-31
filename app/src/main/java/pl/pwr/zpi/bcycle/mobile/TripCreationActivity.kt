@@ -10,7 +10,9 @@ import kotlinx.android.synthetic.main.activity_trip_creation.*
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import pl.pwr.zpi.bcycle.mobile.models.GroupTrip
 import pl.pwr.zpi.bcycle.mobile.utils.content
+import pl.pwr.zpi.bcycle.mobile.utils.dateToLocal
 import pl.pwr.zpi.bcycle.mobile.utils.showToastWarning
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,12 +23,17 @@ class TripCreationActivity : AppCompatActivity() {
     companion object{
         val formatterDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).withZone(ZoneId.systemDefault())
     }
+
+    private lateinit var editedTrip: GroupTrip
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_creation)
         setListeners()
         supportActionBar?.title = getString(R.string.create_new_trip)
+        if (intent.getBooleanExtra(INTENT_EXTRA_IS_EDITING, false)) {
+            loadEditedTripData()
+        }
     }
 
     private fun setListeners() {
@@ -50,7 +57,29 @@ class TripCreationActivity : AppCompatActivity() {
         bundle.putSerializable(END_DATE_KEY,ZonedDateTime.parse( finishdateTV.text.toString() + " " +  finishtimeTV.text.toString(), formatterDateTime))
         intent.putExtra(DESCRIPTION_KEY,  descET.text.toString())
         intent.putExtras(bundle)
+
+        if (this.intent.getBooleanExtra(INTENT_EXTRA_IS_EDITING, false)) {
+            intent.putExtra(INTENT_EXTRA_IS_EDITING, true)
+            intent.putExtra(INTENT_EXTRA_EDITED_TRIP, editedTrip)
+        }
         return intent
+    }
+
+    private fun loadEditedTripData() {
+        editedTrip = intent.getSerializableExtra(INTENT_EXTRA_EDITED_TRIP) as GroupTrip
+        nameET.setText(editedTrip.name)
+        descET.setText(editedTrip.description)
+        val startDateString = dateToLocal(editedTrip.startDate).format(formatterDateTime)
+        val endDateString = dateToLocal(editedTrip.endDate).format(formatterDateTime)
+
+        val startDateLines = startDateString.split(" ")
+        val endDateLines = endDateString.split(" ")
+
+        startdateTV.setText(startDateLines[0])
+        starttimeTV.setText(startDateLines[1])
+
+        finishdateTV.setText(endDateLines[0])
+        finishtimeTV.setText(endDateLines[1])
     }
 
     private fun chooseDateTime(timeTV:TextView, dateTV:TextView, startDate:Boolean) {
