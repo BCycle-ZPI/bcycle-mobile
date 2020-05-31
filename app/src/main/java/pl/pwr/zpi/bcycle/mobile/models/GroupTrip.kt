@@ -15,17 +15,16 @@ class GroupTrip(
     val endDate: ZonedDateTime,
     val route: List<GroupTripPoint>,
     var participants: List<GroupTripParticipant>?,
-    var sharingUrl: String?,
     val photos: List<String>
 )
-    : TripTemplate() {
+    : TripTemplate(), java.io.Serializable {
     constructor(
         name: String,
         description: String,
         startDate: ZonedDateTime,
         endDate: ZonedDateTime,
         route: List<GroupTripPoint>
-    ) : this(null, name, description, null, null, startDate, endDate, route, null, null, listOf())
+    ) : this(null, name, description, null, null, startDate, endDate, route, null, listOf())
 
     /** Return if the trip is about to start/upcoming. Upcoming group trips are defined as: starting in less than 30 minutes or ended less than 30 minutes ago. */
     fun aboutToStart(): Boolean {

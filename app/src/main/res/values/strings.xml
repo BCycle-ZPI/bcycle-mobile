@@ -95,7 +95,8 @@
     <string name="no">no</string>
     <string name="prompt_cannot_data">Cannot load your trip data</string>
     <string name="error_missing_start_or_end_marker">You need to provide both start and finish point of your trip!</string>
-    <string name="prompt_trid_added_successfully">Group trip was added successfully!</string>
+    <string name="prompt_trip_added_successfully">Group trip was added successfully!</string>
+    <string name="prompt_trip_edited_successfully">Group trip was edited successfully!</string>
     <string name="time_format">%1$dh %2$dmin</string>
 
     <string-array name="array_trip_points">
@@ -191,6 +192,15 @@
     <string name="change_data">Change data</string>
     <string name="save_changes">SAVE CHANGES</string>
     <string name="trip_name_row">Trip name:</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="group_trip_details">Group Trip Details</string>
+    <string name="prompt_remove_trip">Are you sure you want to remove this trip? This operation cannot be undone!</string>
+    <string name="removing">Removing trip…</string>
+    <string name="remove_failed">Failed to remove trip!</string>
+    <string name="trip_create_failed">Failed to create trip!</string>
+    <string name="trip_edit_failed">Failed to edit trip!</string>
 
     <plurals name="sharing_explanation_with_photos">
         <item quantity="one">If sharing is enabled, the route, details, and %1$d photo will be visible on a web page. You can share the link to this webpage with your friends.</item>

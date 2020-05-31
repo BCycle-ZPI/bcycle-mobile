@@ -29,6 +29,9 @@ fun dateFromIso(date: String): ZonedDateTime =
         isoUtcFormatter
     )
 
+fun dateToLocal(date: ZonedDateTime): ZonedDateTime =
+    date.withZoneSameInstant(ZoneId.systemDefault())
+
 fun dateToFriendlyString(date: ZonedDateTime): String =
     date.withZoneSameInstant(ZoneId.systemDefault()).format(friendlyFormatter)
 

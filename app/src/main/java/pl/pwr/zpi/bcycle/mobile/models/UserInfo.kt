@@ -5,4 +5,4 @@ data class UserInfo(
     val displayName: String,
     val email: String,
     val photoUrl: String
-)
+) : java.io.Serializable

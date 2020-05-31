@@ -93,7 +93,8 @@
     <string name="no">nie</string>
     <string name="prompt_cannot_data">Nie można załadować danych wycieczki</string>
     <string name="error_missing_start_or_end_marker">Musisz wskazać punkt początkowy i końcowy wycieczki!</string>
-    <string name="prompt_trid_added_successfully">Wycieczka grupowa dodana pomyślnie!</string>
+    <string name="prompt_trip_added_successfully">Wycieczka grupowa dodana pomyślnie!</string>
+    <string name="prompt_trip_edited_successfully">Wycieczka grupowa zmieniona pomyślnie!</string>
     <string name="time_format">%1$dh %2$dmin</string>
     <string name="prompt_cancel_change">Zmiany anulowano!</string>
     <string name="nothing_to_edit_prompt">Nie ma nic do edycji!</string>
@@ -202,4 +203,13 @@
         <item quantity="few">Dodawanie %1$d zdjęć…</item>
         <item quantity="many">Dodawanie %1$d zdjęć…</item>
     </plurals>
+    <string name="remove">Usuń</string>
+    <string name="edit">Edytuj</string>
+    <string name="trip_details">Szczegóły wycieczki</string>
+    <string name="group_trip_details">Szczegóły wycieczki grupowej</string>
+    <string name="prompt_remove_trip">Czy na pewno chcesz usunąć wycieczkę? Tej operacji nie można cofnąć!</string>
+    <string name="removing">Usuwanie wycieczki…</string>
+    <string name="remove_failed">Nie udało się usunąć wycieczki!</string>
+    <string name="trip_create_failed">Nie udało się utworzyć wycieczki!</string>
+    <string name="trip_edit_failed">Nie udało się edytować wycieczki!</string>
 </resources>
