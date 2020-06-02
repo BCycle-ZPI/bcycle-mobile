@@ -45,7 +45,7 @@ interface OnMyMapReadyCallback : OnMapReadyCallback {
 
     fun showRoute(route: List<TripPoint>, googleMap: GoogleMap, context: Context) {
         val listOfLatLng = mutableListOf<LatLng>()
-        route.forEach { x -> listOfLatLng.add(LatLng(x.latitude, x.longitude)) }
+        route.sortedBy { r -> r.timeReached }.forEach { x -> listOfLatLng.add(LatLng(x.latitude, x.longitude)) }
         val polyline: Polyline = googleMap.addPolyline(
             PolylineOptions()
                 .clickable(true)
