@@ -66,8 +66,11 @@ class SettingsFragment : Fragment() {
         }
 
         saveBt.setOnClickListener(){
-            if(isDataEdited()) saveChanges()
-            else Toast.makeText(activity,getString(R.string.nothing_to_edit_prompt),Toast.LENGTH_SHORT).show()
+            if(!isDataEdited())  Toast.makeText(activity,getString(R.string.nothing_to_edit_prompt),Toast.LENGTH_SHORT).show()
+            else if(isPasswordEditedOk()) saveChanges()
+
+
+
         }
 
         allControls = listOf(cameraBt,passwordPT,repeatPasswordPT,saveBt,namePT,galleryBt,cameraBt,cancelBt)
@@ -85,7 +88,7 @@ class SettingsFragment : Fragment() {
             newName = namePT.content()
         }
 
-        if(isPasswordEditedOk()){
+        if(!isPasswordNotChanged()){
             newPassword = passwordPT.content()
         }
 
@@ -160,39 +163,43 @@ class SettingsFragment : Fragment() {
     }
 
     private fun isDataEdited(): Boolean =
-                isNameEdited()  || isImageEdited() || isPasswordEditedOk()
+                isNameEdited()  || isImageEdited() || isPasswordEdited()
 
     private fun isNameEdited(): Boolean = namePT.content().isNotEmpty()
 
     private fun isImageEdited(): Boolean = mImageUri!=null
 
+    private fun isPasswordEdited() :Boolean =
+        passwordPT.content().isNotEmpty()  || repeatPasswordPT.content().isNotEmpty()
+
+    private fun isPasswordNotChanged() : Boolean  =
+        passwordPT.content().isEmpty()  && repeatPasswordPT.content().isEmpty()
+
     private fun isPasswordEditedOk(): Boolean {
 
-        var correct = true
+       var correct = true
 
         if(passwordPT.content().isEmpty() && repeatPasswordPT.content().isEmpty()){
-            correct=false
+            correct=true
         }
-        else if (passwordPT.content().isNotEmpty()){
-
-            if(repeatPasswordPT.content().isNotEmpty()){
-                if(passwordPT.content().length <6 ){
+       else if(passwordPT.content().isNotEmpty()) {
+            if (repeatPasswordPT.content().isEmpty()) {
+                repeatPasswordPT.error = getString(R.string.empty_edit_text)
+                correct = false
+            } else if (passwordPT.content() != repeatPasswordPT.content()) {
+                repeatPasswordPT.error = getString(R.string.different_password_message)
+                correct = false
+            } else {
+                if (passwordPT.content().length < 6) {
                     passwordPT.error = getString(R.string.too_short_password_message)
                     correct = false
                 }
-                else if(passwordPT.content()!= repeatPasswordPT.content()) {
-                    repeatPasswordPT.error = getString(R.string.different_password_message)
-                    correct=false
-                }
-            } else {
-                correct=false
-                repeatPasswordPT.error = getString(R.string.empty_edit_text)
             }
-        } else {
-            correct=false
-            passwordPT.error = getString(R.string.empty_edit_text)
-        }
 
+        } else {
+            passwordPT.error = getString(R.string.empty_edit_text)
+            correct = false
+        }
         return correct
     }
 
