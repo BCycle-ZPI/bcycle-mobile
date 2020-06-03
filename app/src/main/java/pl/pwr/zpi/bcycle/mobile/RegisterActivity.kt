@@ -194,9 +194,16 @@ class RegisterActivity : AppCompatActivity() {
         showSpinnerAndDisableControls()
         auth
             .createUserWithEmailAndPassword(emailTV.content(), passwordPT.content())
-            .addOnSuccessListener { updateUserDetails(it.user!!) }
+            .addOnSuccessListener {
+                auth.currentUser?.sendEmailVerification()?.addOnCompleteListener(){ it ->
+                        if(it.isSuccessful)
+                            showToast("Please check your email for verification.")
+                        else
+                            showToast(it.exception?.message.toString())
+                            hideSpinnerAndEnableControls()
+                }
+                updateUserDetails(it.user!!) }
             .addOnFailureListener {
-
                 hideSpinnerAndEnableControls()
                 if (it.message.equals(getString(R.string.emial_exists_message))) {
                     emailTV.error = getString(R.string.emial_exists_message)

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -126,7 +127,8 @@ class TripCreationMapActivity : BCycleBaseActivity(), OnMapReadyCallback,
                             showToast(getString(R.string.prompt_trip_edited_successfully))
                             openGroupTrip(editedTrip.id!!)
                             finish()
-                        }, { err -> showToastError(R.string.trip_edit_failed) })
+                        }, { err ->
+                            showToastError(R.string.trip_edit_failed) })
                     } else {
                         ApiClient.groupTripApi.create(
                             GroupTrip(

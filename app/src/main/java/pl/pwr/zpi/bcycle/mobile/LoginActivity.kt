@@ -77,9 +77,14 @@ class LoginActivity : AppCompatActivity() {
         showSpinnerAndDisableControls()
         auth.signInWithEmailAndPassword(email.content(), password.content())
             .addOnSuccessListener {
-
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                if(auth.currentUser?.isEmailVerified!!){
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+                else {
+                    showToast("Please verify your email address.")
+                    hideSpinnerAndEnableControls()
+                }
             }.addOnFailureListener {
                 showToast(getString(R.string.failed_to_sign_in, it.localizedMessage))
                 hideSpinnerAndEnableControls()

@@ -125,7 +125,7 @@
     <string name="numb_private_trips_info">Liczba wycieczek prywatnych:</string>
     <string name="default_0">0</string>
     <string name="numb_group_trips_info">Liczba wycieczek grupowych:</string>
-    <string name="numb_created_group_trips_info">Liczba utworzonych wycieczek grupowych:</string>
+    <string name="numb_created_group_trips_info">Liczba utworzonych \nwycieczek grupowych:</string>
     <string name="total_kilometers_info">Całkowity dystans [km]:</string>
     <string name="total_time_info">Całkowity czas [min]:</string>
     <string name="not_sharing">Wycieczka nie jest udostępniona.</string>

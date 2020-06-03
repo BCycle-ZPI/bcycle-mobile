@@ -34,13 +34,22 @@ class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataCha
 
         configureMainNavigationDrawer(auth)
 
-        auth.currentUser?.run {
+        val currentUser = auth.currentUser?.run {
             ApiTokenManager.updateToken(this)
                 .addOnFailureListener {
                     showToast(getString(R.string.token_update_failed))
                 }
             updateNavigationDrawerHeader(this, storage)
-        } ?: openLoginScreen()
+        }
+        if (currentUser != null) {
+            if (!auth.currentUser?.isEmailVerified!!) {
+                showToast("wrong!")
+                openLoginScreen()
+            }
+
+        }
+        else openLoginScreen()
+
 
         if (intent.extras != null && intent.extras!!.containsKey(INTENT_EXTRA_MAIN_NAV_ID)) {
             navController.navigate(intent.extras!!.getInt(INTENT_EXTRA_MAIN_NAV_ID))
@@ -48,8 +57,10 @@ class MainActivity : BCycleNavigationDrawerActivity(),SettingsFragment.OnDataCha
     }
 
     private fun openLoginScreen() {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
